@@ -23,7 +23,14 @@
 
     <style>
       body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select { font-family: 'Atkinson Hyperlegible','Merriweather',sans-serif; }
-    </style></head>
+    
+/* Encabezado unificado de actividades (formato del libro) */
+.adt-skin .adt-head{display:flex!important;align-items:center!important;gap:26px!important;flex-wrap:wrap!important}
+.adt-skin .adt-head-text{display:block!important;min-width:0}
+.adt-skin .adt-head-num{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;border-radius:50%!important;background:#e8423b!important;color:#fff!important;border:0!important;padding:0!important;margin:0!important;font-size:44px!important;font-weight:700!important;line-height:1!important;flex:0 0 auto!important;box-shadow:none!important}
+.adt-skin .adt-head-kicker{display:block!important;color:#e8423b!important;font-size:1rem!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:.08em!important;line-height:1.2!important;margin:0 0 .25rem!important}
+.adt-skin .adt-head-title{display:block!important;color:#6e6c4f!important;font-size:2rem!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.02em!important;line-height:1.15!important;margin:0 0 .5rem!important}
+</style></head>
 
 <body class="min-h-screen flex items-center justify-center">
     <main class="w-full">
@@ -64,10 +71,12 @@
 .adt-notepad{background:#fff!important;border:3px solid #1d1d1d!important;border-radius:18px!important;box-shadow:0 12px 0 rgba(0,0,0,.08)!important;padding:46px 28px 28px!important;position:relative!important}
 .adt-notepad::before{content:'';position:absolute;top:10px;left:20px;right:20px;height:18px;background-image:radial-gradient(circle at 9px 9px,#fff 6px,#1d1d1d 7px,transparent 8px);background-size:34px 18px;background-repeat:repeat-x;pointer-events:none}</style><section data-section-type="activity_custom_sound_pairs" data-id="pg011_s2" aria-labelledby="activity-heading-pg011-40" class="adt-page-open max-w-6xl mx-auto my-8">
   <div class="adt-notepad rounded-3xl p-8 mb-10">
-    <h1 id="activity-heading-pg011-40" class="adt-h2 font-bold mb-4 text-amber-700 flex items-center gap-3 flex-wrap">
-      <span data-id="text-pg011-40" class="inline-flex items-center justify-center rounded-full bg-red-500 text-white px-5 py-3" data-adt-num>6</span>
-      <span data-id="text-pg011-41" class="text-red-500">S</span>
-      <span data-id="text-pg011-42">ARMAR PAREJAS</span>
+    <h1 id="activity-heading-pg011-40" class="adt-head mb-4">
+      <span data-id="text-pg011-40" class="adt-head-num" data-adt-num>6</span>
+      <span class="adt-head-text">
+        <span data-id="text-pg011-41" class="adt-head-kicker">S</span>
+        <span data-id="text-pg011-42" class="adt-head-title">ARMAR PAREJAS</span>
+      </span>
     </h1>
 
     <div class="p-6 text-left">

@@ -62,14 +62,21 @@
 .adt-skin > section.adt-page-open .adt-grid > *{background:#fff!important;border:1px dashed #ef3b35!important;border-radius:0!important;box-shadow:none!important;margin:-0.5px!important}
 /* bloque de instrucciones tipo bloc */
 .adt-notepad{background:#fff!important;border:3px solid #1d1d1d!important;border-radius:18px!important;box-shadow:0 12px 0 rgba(0,0,0,.08)!important;padding:46px 28px 28px!important;position:relative!important}
-.adt-notepad::before{content:'';position:absolute;top:10px;left:20px;right:20px;height:18px;background-image:radial-gradient(circle at 9px 9px,#fff 6px,#1d1d1d 7px,transparent 8px);background-size:34px 18px;background-repeat:repeat-x;pointer-events:none}</style><section data-section-type="activity_custom_multi_select_audio" data-id="pg010_s2" aria-labelledby="activity-heading-pg010-19" class="adt-page-open container mx-auto max-w-5xl bg-white rounded-lg px-24 max-lg:px-12 max-sm:px-6 pt-12 pb-12">
+.adt-notepad::before{content:'';position:absolute;top:10px;left:20px;right:20px;height:18px;background-image:radial-gradient(circle at 9px 9px,#fff 6px,#1d1d1d 7px,transparent 8px);background-size:34px 18px;background-repeat:repeat-x;pointer-events:none}
+/* Encabezado unificado de actividades (formato del libro) */
+.adt-skin .adt-head{display:flex!important;align-items:center!important;gap:26px!important;flex-wrap:wrap!important}
+.adt-skin .adt-head-text{display:block!important;min-width:0}
+.adt-skin .adt-head-num{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;border-radius:50%!important;background:#e8423b!important;color:#fff!important;border:0!important;padding:0!important;margin:0!important;font-size:44px!important;font-weight:700!important;line-height:1!important;flex:0 0 auto!important;box-shadow:none!important}
+.adt-skin .adt-head-kicker{display:block!important;color:#e8423b!important;font-size:1rem!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:.08em!important;line-height:1.2!important;margin:0 0 .25rem!important}
+.adt-skin .adt-head-title{display:block!important;color:#6e6c4f!important;font-size:2rem!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.02em!important;line-height:1.15!important;margin:0 0 .5rem!important}
+</style><section data-section-type="activity_custom_multi_select_audio" data-id="pg010_s2" aria-labelledby="activity-heading-pg010-19" class="adt-page-open container mx-auto max-w-5xl bg-white rounded-lg px-24 max-lg:px-12 max-sm:px-6 pt-12 pb-12">
   <div class="space-y-8">
     <div class="adt-notepad">
       <div class="flex items-start gap-4 mb-4">
-        <h1 class="adt-h2 inline-flex items-center justify-center rounded-full bg-red-500 text-white w-16 h-16 shrink-0" data-id="text-pg010-19" data-adt-num>5</h1>
+        <h1 class="adt-head-num" data-id="text-pg010-19" data-adt-num>5</h1>
         <div class="pt-2">
-          <h2 id="activity-heading-pg010-19" class="adt-h2 text-red-500" data-id="text-pg010-20">M</h2>
-          <h2 class="adt-h2 text-gray-700" data-id="text-pg010-21">&#xbf;CU&#xc1;LES SON?</h2>
+          <h2 id="activity-heading-pg010-19" class="adt-head-kicker" data-id="text-pg010-20">M</h2>
+          <h2 class="adt-head-title" data-id="text-pg010-21">&#xbf;CU&#xc1;LES SON?</h2>
         </div>
       </div>
       <div class="grid grid-cols-1 gap-4">

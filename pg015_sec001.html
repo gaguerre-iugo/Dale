@@ -23,7 +23,14 @@
 
     <style>
       body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select { font-family: 'Atkinson Hyperlegible','Merriweather',sans-serif; }
-    </style></head>
+    
+/* Encabezado unificado de actividades (formato del libro) */
+.adt-skin .adt-head{display:flex!important;align-items:center!important;gap:26px!important;flex-wrap:wrap!important}
+.adt-skin .adt-head-text{display:block!important;min-width:0}
+.adt-skin .adt-head-num{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;border-radius:50%!important;background:#e8423b!important;color:#fff!important;border:0!important;padding:0!important;margin:0!important;font-size:44px!important;font-weight:700!important;line-height:1!important;flex:0 0 auto!important;box-shadow:none!important}
+.adt-skin .adt-head-kicker{display:block!important;color:#e8423b!important;font-size:1rem!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:.08em!important;line-height:1.2!important;margin:0 0 .25rem!important}
+.adt-skin .adt-head-title{display:block!important;color:#6e6c4f!important;font-size:2rem!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.02em!important;line-height:1.15!important;margin:0 0 .5rem!important}
+</style></head>
 
 <body class="min-h-screen flex items-center justify-center">
     <main class="w-full">
@@ -77,10 +84,12 @@
         <div aria-hidden="true" class="mb-6 flex gap-7 overflow-hidden px-16 max-sm:px-6">
           <span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span><span class="h-8 w-8 shrink-0 rounded-full border-4 border-neutral-900 bg-white"></span>
         </div>
-        <h1 class="adt-h2 mb-6 flex flex-wrap items-center gap-5 font-extrabold tracking-wide text-left">
-          <span data-id="pg015_n0003" class="inline-flex h-28 w-28 items-center justify-center rounded-full bg-[#ef3f39] text-white shadow-lg max-sm:h-20 max-sm:w-20" data-adt-num>10</span>
-          <span data-id="pg015_n0004" class="text-[#ef3f39]">L</span>
-          <span data-id="pg015_n0005" class="text-[#74725d]">JUEGO DEL TABLERO</span>
+        <h1 class="adt-head mb-6">
+          <span data-id="pg015_n0003" class="adt-head-num" data-adt-num>10</span>
+          <span class="adt-head-text">
+            <span data-id="pg015_n0004" class="adt-head-kicker">L</span>
+            <span data-id="pg015_n0005" class="adt-head-title">JUEGO DEL TABLERO</span>
+          </span>
         </h1>
         <div class="space-y-5">
           <p class="adt-body max-w-3xl leading-relaxed text-neutral-950"><span data-id="pg015_n0008">En esta actividad se recorre un tablero y, en determinadas casillas, se resuelven consignas sobre el sonido inicial de las palabras.</span></p>

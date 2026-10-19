@@ -23,7 +23,14 @@
 
     <style>
       body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select { font-family: 'Atkinson Hyperlegible','Merriweather',sans-serif; }
-    </style></head>
+    
+/* Encabezado unificado de actividades (formato del libro) */
+.adt-skin .adt-head{display:flex!important;align-items:center!important;gap:26px!important;flex-wrap:wrap!important}
+.adt-skin .adt-head-text{display:block!important;min-width:0}
+.adt-skin .adt-head-num{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;border-radius:50%!important;background:#e8423b!important;color:#fff!important;border:0!important;padding:0!important;margin:0!important;font-size:44px!important;font-weight:700!important;line-height:1!important;flex:0 0 auto!important;box-shadow:none!important}
+.adt-skin .adt-head-kicker{display:block!important;color:#e8423b!important;font-size:1rem!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:.08em!important;line-height:1.2!important;margin:0 0 .25rem!important}
+.adt-skin .adt-head-title{display:block!important;color:#6e6c4f!important;font-size:2rem!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.02em!important;line-height:1.15!important;margin:0 0 .5rem!important}
+</style></head>
 
 <body class="min-h-screen flex items-center justify-center">
     <main class="w-full">
@@ -89,13 +96,11 @@
   <div class="w-full px-0 py-0 max-sm:py-0">
     <div class="adt-notepad">
       <div class="mb-6 flex items-center gap-6 max-sm:gap-4">
-        <div class="flex h-28 w-28 flex-none items-center justify-center rounded-full bg-[#ef3b35] shadow-lg max-sm:h-24 max-sm:w-24">
-          <h1 id="activity-heading-pg009-200" data-id="text-pg009-200" class="adt-h2 font-bold leading-none" style="color: #ffffff;" data-adt-num>4</h1>
-        </div>
+        <h1 id="activity-heading-pg009-200" data-id="text-pg009-200" class="adt-head-num" data-adt-num>4</h1>
 
         <div class="space-y-2">
-          <h2 data-id="text-pg009-201" class="adt-h2 font-bold tracking-wide" style="color: #ef3b35;">VOCALES</h2>
-          <h2 data-id="text-pg009-202" class="adt-h2 font-extrabold tracking-wide" style="color: #6f6e55;">MEMORY DE SONIDO INICIAL</h2>
+          <h2 data-id="text-pg009-201" class="adt-head-kicker">VOCALES</h2>
+          <h2 data-id="text-pg009-202" class="adt-head-title">MEMORY DE SONIDO INICIAL</h2>
         </div>
       </div>
 

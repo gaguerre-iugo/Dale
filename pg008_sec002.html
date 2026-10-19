@@ -71,13 +71,20 @@
 /* contenedor de zona (dos-zonas): blanco con borde del libro */
 .adt-zone{background:#fff!important;border:3px solid #1d1d1d!important;border-radius:18px!important;padding:20px!important;width:100%!important;box-sizing:border-box!important}
 /* Mano en las tarjetas que se pueden mover */
-.activity-card{cursor:pointer}</style><section data-section-type="activity_custom_drag_drop" data-id="pg008_s2" aria-labelledby="activity-heading-pg008-60" class="adt-page-open mx-auto p-4">
+.activity-card{cursor:pointer}
+/* Encabezado unificado de actividades (formato del libro) */
+.adt-skin .adt-head{display:flex!important;align-items:center!important;gap:26px!important;flex-wrap:wrap!important}
+.adt-skin .adt-head-text{display:block!important;min-width:0}
+.adt-skin .adt-head-num{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;border-radius:50%!important;background:#e8423b!important;color:#fff!important;border:0!important;padding:0!important;margin:0!important;font-size:44px!important;font-weight:700!important;line-height:1!important;flex:0 0 auto!important;box-shadow:none!important}
+.adt-skin .adt-head-kicker{display:block!important;color:#e8423b!important;font-size:1rem!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:.08em!important;line-height:1.2!important;margin:0 0 .25rem!important}
+.adt-skin .adt-head-title{display:block!important;color:#6e6c4f!important;font-size:2rem!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.02em!important;line-height:1.15!important;margin:0 0 .5rem!important}
+</style><section data-section-type="activity_custom_drag_drop" data-id="pg008_s2" aria-labelledby="activity-heading-pg008-60" class="adt-page-open mx-auto p-4">
   <div class="adt-notepad">
     <div class="flex flex-wrap items-start gap-4 mb-4">
-      <h1 class="adt-h2 font-bold mb-4 text-white bg-red-500 rounded-full w-24 h-24 flex items-center justify-center" data-id="text-pg008-60"><span data-adt-num>3</span></h1>
+      <h1 class="adt-head-num" data-id="text-pg008-60"><span data-adt-num>3</span></h1>
       <div class="flex-1 min-w-64">
-        <h2 id="activity-heading-pg008-60" class="adt-h2 font-bold mb-4 text-red-500" data-id="text-pg008-61">VOCALES</h2>
-        <h2 class="adt-h2 font-bold mb-4 text-amber-700" data-id="text-pg008-62">&#xbf;D&#xd3;NDE VA LA IMAGEN?</h2>
+        <h2 id="activity-heading-pg008-60" class="adt-head-kicker" data-id="text-pg008-61">VOCALES</h2>
+        <h2 class="adt-head-title" data-id="text-pg008-62">&#xbf;D&#xd3;NDE VA LA IMAGEN?</h2>
       </div>
     </div>
 
