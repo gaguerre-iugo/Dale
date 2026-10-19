@@ -1,0 +1,18 @@
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Entornos y dependencias (no forman parte del bundle)
+node_modules/
+venv/
+__pycache__/
+*.pyc
+
+# Carpetas de trabajo
+tmp/
+Export/
+
+# Archivos de editor
+.vscode/
+.idea/
