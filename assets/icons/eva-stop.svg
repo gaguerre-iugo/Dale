@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <!-- Detener. Derivado del ícono de pausa del set de EVA
+       (size=eva-icon-size-0-41.png): mismo círculo —centro (50, 50) y radio 35
+       sobre la grilla de 100— con un cuadrado calado del lado de las barras de
+       pausa (34), en lugar de las dos barras. El hueco se hace con
+       fill-rule="evenodd" para que sea transparente y el ícono tome el color del
+       botón. -->
+  <path fill-rule="evenodd" d="M12 3.6a8.4 8.4 0 1 0 0 16.8 8.4 8.4 0 0 0 0-16.8Zm-4.08 4.32h8.16v8.16H7.92Z"/>
+</svg>

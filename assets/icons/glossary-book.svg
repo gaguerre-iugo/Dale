@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+     fill="none" stroke="currentColor" stroke-width="1.7"
+     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <!-- Glosario: libro abierto con "Aa", según la propuesta del documento de
+       revisión (no existe un ícono equivalente en el set de EVA). -->
+  <path d="M6.4 2.4 3.5 9.7" />
+  <path d="M6.4 2.4l2.9 7.3" />
+  <path d="M4.5 7.1h3.8" />
+  <circle cx="16.4" cy="7.6" r="2.15" />
+  <path d="M18.55 5.45v4.3" />
+  <path d="M2.8 14.4c3-1.3 6.2-1.3 9.2 0 3-1.3 6.2-1.3 9.2 0" />
+  <path d="M12 14.4v4.6" />
+  <path d="M2.8 14.4v4.6c3-1.3 6.2-1.3 9.2 0 3-1.3 6.2-1.3 9.2 0v-4.6" />
+</svg>

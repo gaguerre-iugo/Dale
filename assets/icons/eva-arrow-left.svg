@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+     fill="none" stroke="currentColor" stroke-width="3.2"
+     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <!-- Espejo de la flecha derecha de EVA (misma geometría, reflejada en x=12). -->
+  <path d="M19.8 12H7.1" />
+  <path d="M7.44 8.04 4.44 12l3 3.96" />
+</svg>

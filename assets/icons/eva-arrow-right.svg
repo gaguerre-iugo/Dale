@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+     fill="none" stroke="currentColor" stroke-width="3.2"
+     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <!-- Flecha derecha de EVA. Geometría medida sobre el export de 100 px:
+       asta de 13 px con remate en x=17,5; remates de la cabeza en (69, 33,5) y
+       (69, 66,5); punta en (81,5, 50). Todo convertido a un viewBox de 24. -->
+  <path d="M4.2 12h12.7" />
+  <path d="M16.56 8.04 19.56 12l-3 3.96" />
+</svg>

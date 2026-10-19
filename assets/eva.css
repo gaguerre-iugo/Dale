@@ -1,0 +1,1628 @@
+/* ============================================================================
+   Piel EVA para el bundle ADT — Propuesta Dale!: Cuadernillo Juegos
+   ----------------------------------------------------------------------------
+   NO toca el runtime (base.bundle.local.js) ni el Tailwind compilado: sólo
+   redefine los tokens del ADT con los valores de EVA y reestiliza el dock, los
+   paneles y los controles. Los íconos del dock se cambian por máscaras CSS
+   sobre los SVG de EVA (assets/icons/), así heredan currentColor.
+
+   Orden de carga: después de content/tailwind_output.css y assets/fonts.css.
+   ========================================================================== */
+
+/* ── Tokens de EVA ───────────────────────────────────────────────────────── */
+:root {
+  --eva-color-white: #ffffff;
+  --eva-color-grey-50: #fcfcfc;
+  --eva-color-grey-100: #e1e3e6;
+  --eva-color-grey-200: #c4c7cc;
+  --eva-color-grey-300: #a6aab3;
+  --eva-color-grey-400: #898e99;
+  --eva-color-grey-500: #6b7280;
+  --eva-color-grey-600: #565b66;
+  --eva-color-grey-700: #40444d;
+  --eva-color-grey-800: #2b2e33;
+  --eva-color-grey-900: #15171a;
+
+  --eva-color-institucional-100: #ccecea;
+  --eva-color-institucional-200: #99d9d5;
+  --eva-color-institucional-300: #66c6c0;
+  --eva-color-institucional-400: #00a096;
+  --eva-color-institucional-500: #008078;
+  --eva-color-institucional-600: #00635d;
+  --eva-color-institucional-700: #00504b;
+  --eva-color-institucional-800: #00403c;
+  --eva-color-institucional-900: #00302d;
+
+  --eva-icon-size-xs: 12px;
+  --eva-icon-size-sm: 16px;
+  --eva-icon-size-xmd: 18px;
+  --eva-icon-size-md: 24px;
+  --eva-icon-size-lg: 32px;
+  --eva-icon-size-xl: 48px;
+  --eva-icon-size-xxl: 64px;
+  --eva-icon-size-0-99: 100px;
+
+  /* Tipografía de la interfaz (revisión UX, punto 24) */
+  --ui-title: 1.25rem;      /* N1 · 20 / 700 */
+  --ui-group: 1.0625rem;    /* N2 · 17 / 700 */
+  --ui-label: 1.0625rem;    /* N3 · 17 / 400 */
+  --ui-help: .9375rem;      /* N4 · 15 / 400 */
+  --ui-button: 1rem;
+  --ui-title-color: var(--eva-color-grey-900);
+  --ui-group-color: var(--eva-color-institucional-600);
+  --ui-label-color: var(--eva-color-grey-900);
+  --ui-help-color: var(--eva-color-grey-600);
+
+  --ui-bg: var(--eva-color-white);
+  --ui-text: var(--eva-color-grey-900);
+  --ui-text-muted: var(--eva-color-grey-600);
+  --ui-primary: var(--eva-color-institucional-600);
+  --ui-primary-hover: var(--eva-color-institucional-700);
+  --ui-primary-pressed: var(--eva-color-institucional-800);
+  --ui-selected-bg: var(--eva-color-institucional-100);
+  --ui-border: var(--eva-color-grey-100);
+  --ui-focus: var(--eva-color-institucional-600);
+  --ui-surface-hover: var(--eva-color-grey-100);
+  --ui-shadow: 0 -.25rem 1rem rgb(21 23 26 / 12%);
+  --ui-radius: .75rem;
+  --ui-focus-ring: 3px;
+}
+
+/* ── Tokens del ADT (shadcn / oklch) remapeados a EVA ────────────────────── */
+:root,
+.dark {
+  --background: #ffffff;
+  --foreground: #15171a;
+  --card: #ffffff;
+  --card-foreground: #15171a;
+  --popover: #ffffff;
+  --popover-foreground: #15171a;
+  --primary: #00635d;
+  --primary-foreground: #ffffff;
+  --secondary: #e1e3e6;
+  --secondary-foreground: #15171a;
+  --muted: #e1e3e6;
+  --muted-foreground: #565b66;
+  --accent: #ccecea;
+  --accent-foreground: #00302d;
+  --border: #e1e3e6;
+  --input: #a6aab3;
+  --ring: #00635d;
+  --radius: .75rem;
+}
+
+/* ── Dock (barra inferior del runtime) ───────────────────────────────────── */
+#nav-container [role="group"] {
+  background: var(--ui-bg) !important;
+  color: var(--ui-text) !important;
+  border-top: 1px solid var(--ui-border) !important;
+  box-shadow: var(--ui-shadow) !important;
+  backdrop-filter: none !important;
+}
+
+#nav-container [role="group"] button {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--ui-radius);
+  color: var(--ui-text);
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+#nav-container [role="group"] button:hover:not(:disabled) {
+  background: var(--ui-surface-hover) !important;
+  color: var(--ui-text) !important;
+}
+
+#nav-container [role="group"] button:focus-visible {
+  outline: var(--ui-focus-ring) solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+/* Anterior / Siguiente: pastilla EVA rellena */
+#nav-container [role="group"] button[aria-label="Página anterior"],
+#nav-container [role="group"] button[aria-label="Página siguiente"] {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 999px;
+  background: var(--ui-primary) !important;
+  color: #ffffff !important;
+}
+
+#nav-container [role="group"] button[aria-label="Página anterior"]:hover:not(:disabled),
+#nav-container [role="group"] button[aria-label="Página siguiente"]:hover:not(:disabled) {
+  background: var(--ui-primary-hover) !important;
+  color: #ffffff !important;
+}
+
+#nav-container [role="group"] button[aria-label="Página anterior"]:disabled,
+#nav-container [role="group"] button[aria-label="Página siguiente"]:disabled {
+  background: var(--eva-color-grey-100) !important;
+  color: var(--eva-color-grey-600) !important;
+}
+
+/* Contador de página y título */
+#nav-container [role="group"] {
+  font-size: var(--ui-help);
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-text-muted);
+}
+
+#nav-container [role="group"] button[aria-label="Menú principal"] {
+  font-size: var(--ui-help);
+  font-weight: 700;
+  color: var(--ui-text);
+}
+
+/* ── Íconos del dock: SVG de EVA por máscara (heredan currentColor) ──────── */
+#nav-container [role="group"] button[aria-label="Página siguiente"] svg,
+#nav-container [role="group"] button[aria-label="Página anterior"] svg,
+#nav-container [role="group"] button[aria-label="Menú principal"] svg,
+#nav-container [role="group"] button[aria-label="Glosario"] svg,
+#nav-container [role="group"] button[aria-label="Configuración"] svg,
+#nav-container [role="group"] button[aria-label="Activar texto a voz"] svg,
+#nav-container [role="group"] button[aria-label="Desactivar texto a voz"] svg {
+  display: none;
+}
+
+#nav-container [role="group"] button::before {
+  content: "";
+  display: none;                 /* sólo se muestra en los botones con ícono EVA */
+  width: var(--eva-icon-size-md);
+  height: var(--eva-icon-size-md);
+  background: currentColor;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* Botones con ícono de EVA: se dibuja la máscara. */
+#nav-container [role="group"] button:is(
+  [aria-label="Página siguiente"],
+  [aria-label="Página anterior"],
+  [aria-label="Menú principal"],
+  [aria-label="Glosario"],
+  [aria-label="Configuración"],
+  [aria-label="Activar texto a voz"],
+  [aria-label="Desactivar texto a voz"]
+)::before {
+  display: block;
+}
+
+#nav-container [role="group"] button[aria-label="Página siguiente"]::before {
+  -webkit-mask-image: url("./icons/eva-arrow-right.svg");
+  mask-image: url("./icons/eva-arrow-right.svg");
+}
+
+#nav-container [role="group"] button[aria-label="Página anterior"]::before {
+  -webkit-mask-image: url("./icons/eva-arrow-left.svg");
+  mask-image: url("./icons/eva-arrow-left.svg");
+}
+
+#nav-container [role="group"] button[aria-label="Menú principal"]::before {
+  -webkit-mask-image: url("./icons/eva-menu.svg");
+  mask-image: url("./icons/eva-menu.svg");
+}
+
+#nav-container [role="group"] button[aria-label="Glosario"]::before {
+  -webkit-mask-image: url("./icons/glossary-book.svg");
+  mask-image: url("./icons/glossary-book.svg");
+}
+
+#nav-container [role="group"] button[aria-label="Configuración"]::before {
+  -webkit-mask-image: url("./icons/eva-gear.svg");
+  mask-image: url("./icons/eva-gear.svg");
+}
+
+#nav-container [role="group"] button[aria-label="Activar texto a voz"]::before {
+  -webkit-mask-image: url("./icons/eva-play.svg");
+  mask-image: url("./icons/eva-play.svg");
+}
+
+#nav-container [role="group"] button[aria-label="Desactivar texto a voz"]::before {
+  -webkit-mask-image: url("./icons/eva-pause.svg");
+  mask-image: url("./icons/eva-pause.svg");
+}
+
+/* Un solo idioma (es-UY): el botón de idioma no aporta y se oculta. */
+#nav-container [role="group"] button[aria-label="Idioma"] {
+  display: none !important;
+}
+
+/* ── Paneles (diálogos del runtime) ─────────────────────────────────────── */
+[role="dialog"] {
+  background: var(--ui-bg) !important;
+  color: var(--ui-text) !important;
+  border: 1px solid var(--ui-border) !important;
+  border-radius: var(--ui-radius) !important;
+  box-shadow: 0 .25rem .75rem rgb(18 24 38 / 8%) !important;
+}
+
+[role="dialog"] h1,
+[role="dialog"] h2,
+[role="dialog"] h3 {
+  color: var(--ui-title-color);
+  font-size: var(--ui-title);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Los títulos de bloque del panel vienen en mayúsculas chicas. */
+[role="dialog"] .uppercase {
+  color: var(--ui-group-color) !important;
+  font-size: var(--ui-group) !important;
+  font-weight: 700 !important;
+  letter-spacing: .01em !important;
+}
+
+[role="dialog"] .text-muted-foreground {
+  color: var(--ui-help-color) !important;
+}
+
+[role="dialog"] hr,
+[role="dialog"] [class*="border-t"],
+[role="dialog"] [class*="border-b"] {
+  border-color: var(--ui-border) !important;
+}
+
+[role="dialog"] button:focus-visible,
+[role="dialog"] [role="switch"]:focus-visible {
+  outline: var(--ui-focus-ring) solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+/* ── Interruptores ──────────────────────────────────────────────────────── */
+[role="switch"] {
+  border-radius: 999px;
+  border-color: var(--ui-border) !important;
+}
+
+[role="switch"][data-state="checked"],
+[role="switch"][aria-checked="true"] {
+  background: var(--ui-primary) !important;
+  border-color: var(--ui-primary) !important;
+}
+
+[role="switch"][data-state="unchecked"],
+[role="switch"][aria-checked="false"] {
+  background: var(--eva-color-grey-100) !important;
+}
+
+[role="switch"] > * {
+  background: #ffffff !important;
+}
+
+/* ── Botones principales de los paneles ─────────────────────────────────── */
+[role="dialog"] button[data-variant="default"],
+[role="dialog"] button.bg-primary {
+  background: var(--ui-primary) !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+}
+
+[role="dialog"] button[data-variant="default"]:hover,
+[role="dialog"] button.bg-primary:hover {
+  background: var(--ui-primary-hover) !important;
+}
+
+/* ── Accesibilidad: foco visible en toda la interfaz ────────────────────── */
+#nav-container button:focus-visible,
+[role="dialog"] button:focus-visible {
+  outline: var(--ui-focus-ring) solid var(--ui-focus) !important;
+  outline-offset: 2px !important;
+}
+
+/* ── Paneles: tipografía y piezas EVA ──────────────────────────────────────
+   Estructura del runtime: h4 = título del panel; h3.text-base.uppercase =
+   título de bloque; .text-base.font-medium = etiqueta de renglón;
+   .rounded-xl.border = tarjeta de renglones; [role=tablist]/[role=tab] = solapas;
+   kbd = atajo; .rounded-full.bg-foreground/25 = botón de cierre. */
+
+[role="dialog"] h4 {
+  color: var(--ui-title-color) !important;
+  font-size: var(--ui-title) !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+[role="dialog"] h3 {
+  color: var(--ui-group-color) !important;
+  font-size: var(--ui-group) !important;
+  font-weight: 700 !important;
+  letter-spacing: .01em !important;
+  text-transform: none !important;
+}
+
+[role="dialog"] .text-base.font-medium {
+  color: var(--ui-label-color) !important;
+  font-size: var(--ui-label) !important;
+  font-weight: 400 !important;
+}
+
+[role="dialog"] .rounded-xl.border {
+  border-color: var(--ui-border) !important;
+  border-radius: var(--ui-radius) !important;
+  overflow: hidden;
+}
+
+/* Solapas (Índice / Lista de páginas · En esta página / Glosario del libro) */
+[role="dialog"] [role="tablist"] {
+  background: var(--eva-color-grey-100) !important;
+  border-radius: .5rem !important;
+  padding: .25rem !important;
+  gap: .25rem !important;
+  height: auto !important;
+}
+
+[role="dialog"] [role="tab"] {
+  border-radius: .375rem !important;
+  color: var(--ui-text-muted) !important;
+  font-size: var(--ui-help) !important;
+  font-weight: 700 !important;
+  padding: .375rem .5rem !important;
+}
+
+[role="dialog"] [role="tab"][aria-selected="true"],
+[role="dialog"] [role="tab"][data-state="active"] {
+  background: var(--ui-bg) !important;
+  color: var(--ui-primary) !important;
+  box-shadow: var(--ceibal-shadow-button, 1px 1px 4px rgb(0 0 0 / 10%)) !important;
+}
+
+[role="dialog"] [role="tab"]:focus-visible {
+  outline: var(--ui-focus-ring) solid var(--ui-focus) !important;
+  outline-offset: 2px !important;
+}
+
+/* Lista del índice */
+[role="dialog"] [role="tabpanel"] button {
+  border-radius: .5rem !important;
+  color: var(--ui-label-color) !important;
+  font-size: var(--ui-label) !important;
+  font-weight: 400 !important;
+  padding: .5rem .625rem !important;
+}
+
+[role="dialog"] [role="tabpanel"] button:hover {
+  background: var(--ui-surface-hover) !important;
+}
+
+[role="dialog"] [role="tabpanel"] button[aria-current],
+[role="dialog"] [role="tabpanel"] button[data-active="true"],
+[role="dialog"] [role="tabpanel"] button[data-state="active"] {
+  background: var(--ui-selected-bg) !important;
+  color: var(--eva-color-institucional-700) !important;
+  font-weight: 700 !important;
+}
+
+/* Atajos de teclado */
+[role="dialog"] kbd {
+  background: var(--eva-color-grey-100) !important;
+  color: var(--eva-color-grey-700) !important;
+  border: 1px solid var(--ui-border) !important;
+  border-radius: .375rem !important;
+  font-size: var(--ui-help) !important;
+  font-family: inherit !important;
+  padding: 0 .375rem !important;
+  min-width: 1.5rem;
+  justify-content: center;
+}
+
+/* Mensajes de panel (glosario vacío, etc.) */
+[role="dialog"] .text-muted-foreground {
+  color: var(--ui-help-color) !important;
+  font-size: var(--ui-help) !important;
+}
+
+/* Botón de cierre redondo del pie del panel */
+[role="dialog"] .rounded-full.bg-foreground\/25 {
+  background: var(--eva-color-grey-200) !important;
+  min-width: 2.5rem;
+  min-height: .375rem;
+}
+
+[role="dialog"] .rounded-full.bg-foreground\/25:hover {
+  background: var(--eva-color-grey-300) !important;
+}
+
+/* Los títulos de bloque del runtime también llevan `text-muted-foreground`; esta
+   regla (más específica) evita que el color/tamaño de ayuda les gane. */
+[role="dialog"] h3.text-muted-foreground,
+[role="dialog"] h3.uppercase {
+  color: var(--ui-group-color) !important;
+  font-size: var(--ui-group) !important;
+  font-weight: 700 !important;
+}
+
+/* ═══ Barra y reproductor del kit (1930) ═══════════════════════════════════
+   Se copian tal cual del kit: los selectores #reflow-pagination y
+   #reflow-tts-player son el contrato y el marcado se arma en eva-ui.js. */
+
+/* Reflowable, viewport-paginated reading mode matched to chapter 5. */
+:root {
+--reflow-font-scale: 1;
+  --reflow-controls-height: 0rem;
+  /* Punto 25: el reproductor de voz flota; la reserva es sÃ³lo la barra. */
+  --reflow-toolbar-reserve: 4rem;
+  --reflow-text-measure: 42rem;
+  --reflow-panel-reserve: 18.75rem;
+  --reflow-gutter: 1.25rem;
+  --reflow-block-padding: clamp(1.5rem, 4vh, 3rem);
+  --reflow-page-height: calc(
+    100svh - max(
+      var(--nav-height, 80px),
+      calc(var(--reflow-toolbar-reserve) + .5rem)
+    ) - var(--reflow-controls-height)
+  );
+
+  /* JerarquÃ­a tipogrÃ¡fica de la interfaz (punto 24 de la revisiÃ³n UX), con los
+     nombres del sistema de EVA. Cuatro niveles:
+
+       N1 Â· tÃ­tulo de panel      eva-text-body-bold-lg      20 px / 700
+       N2 Â· tÃ­tulo de grupo      eva-text-body-bold-md      17 px / 700
+       N3 Â· etiqueta de control  eva-text-body-regular-md   17 px / 400
+       N4 Â· ayuda o descripciÃ³n  eva-text-body-regular-sm   15 px / 400
+
+     La negrita se usa sÃ³lo en N1, N2 y la acciÃ³n principal de la barra. Los
+     tamaÃ±os estÃ¡n en variables para que un ajuste de la tabla sea un renglÃ³n.
+     El color de cada nivel (grey-900, institucional-600, grey-600) llega con el
+     tema claro del punto 18: sobre la barra oscura actual no se leerÃ­a. */
+  --eva-text-body-bold-lg: 1.25rem;      /* 20 px */
+  --eva-text-body-bold-md: 1.0625rem;    /* 17 px */
+  --eva-text-body-regular-md: 1.0625rem; /* 17 px */
+  --eva-text-body-regular-sm: .9375rem;  /* 15 px */
+
+  /* Punto 24 Â· La interfaz crece con Â«TamaÃ±o de letraÂ» hasta Â«GrandeÂ» (1,2) y
+     despuÃ©s se mantiene, para que la barra no se coma la pÃ¡gina. */
+  --ui-scale: min(var(--reflow-font-scale, 1), 1.2);
+
+  --ui-n1-size: calc(var(--eva-text-body-bold-lg) * var(--ui-scale));
+  --ui-n2-size: calc(var(--eva-text-body-bold-md) * var(--ui-scale));
+  --ui-n3-size: calc(var(--eva-text-body-regular-md) * var(--ui-scale));
+  --ui-n4-size: calc(var(--eva-text-body-regular-sm) * var(--ui-scale));
+  --ui-button: calc(1rem * var(--ui-scale));  /* eva-text-button Â· 16 px */
+  --ui-n1-color: var(--eva-color-grey-900);
+  --ui-n2-color: var(--eva-color-institucional-600);
+  --ui-n3-color: var(--eva-color-grey-900);
+  --ui-n4-color: var(--eva-color-grey-600);
+
+  /* Punto 24 Â· Nombres por nivel. */
+  --ui-title: var(--ui-n1-size);
+  --ui-group: var(--ui-n2-size);
+  --ui-label: var(--ui-n3-size);
+  --ui-help: var(--ui-n4-size);
+  --ui-title-color: var(--ui-n1-color);
+  --ui-group-color: var(--ui-n2-color);
+  --ui-label-color: var(--ui-n3-color);
+  --ui-help-color: var(--ui-n4-color);
+
+  /* Colores semÃ¡nticos de la interfaz (punto 18). La barra, los paneles y el
+     pop-up usan sÃ³lo estas variables, que apuntan a los tokens de EVA. */
+  --ui-bg: var(--eva-color-white);
+  --ui-border: var(--eva-color-grey-100);
+  --ui-text: var(--eva-color-grey-900);
+  --ui-text-muted: var(--eva-color-grey-600);
+  --ui-primary: var(--eva-color-institucional-600);
+  --ui-primary-hover: var(--eva-color-institucional-700);
+  --ui-primary-pressed: var(--eva-color-institucional-800);
+  --ui-selected-bg: var(--eva-color-institucional-100);
+  --ui-focus: var(--eva-color-institucional-600);
+
+  /* Alias con los nombres anteriores: el resto del CSS ya los usa. */
+  --ui-surface: var(--ui-bg);
+  --ui-surface-sunken: var(--eva-color-grey-100);
+  --ui-surface-hover: var(--eva-color-grey-100);
+  --ui-surface-selected: var(--ui-selected-bg);
+  --ui-border-strong: var(--eva-color-grey-500);
+  --ui-text-selected: var(--eva-color-institucional-700);
+  --ui-accent: var(--ui-primary);
+  --ui-accent-hover: var(--ui-primary-hover);
+  --ui-accent-pressed: var(--ui-primary-pressed);
+  --ui-accent-soft: var(--ui-selected-bg);
+  --ui-on-accent: var(--eva-color-white);
+  --ui-disabled-surface: var(--eva-color-grey-100);
+  --ui-disabled-text: var(--eva-color-grey-600);
+  --ui-shadow: 0 -.25rem 1rem rgb(21 23 26 / 12%);
+  --ui-shadow-raised: 0 .25rem 1rem rgb(21 23 26 / 12%);
+  --ui-weight-bold: 700;
+  --ui-weight-regular: 400;
+  --ui-icon-size: 1.5rem;     /* 24 px */
+  --ui-letter-spacing-title: .01em;
+  --ui-letter-spacing-label: .04em;
+
+  /* Escala del set de Ã­conos de EVA: el export trae cada Ã­cono en estos
+     tamaÃ±os con nombre propio. `md` (24 px) es el de la interfaz y `0-99`
+     (100 px) el que se usa para trazar el SVG. */
+  --eva-icon-size-xs: 12px;
+  --eva-icon-size-sm: 16px;
+  --eva-icon-size-xmd: 18px;
+  --eva-icon-size-md: 24px;
+  --eva-icon-size-lg: 32px;
+  --eva-icon-size-xl: 48px;
+  --eva-icon-size-xxl: 64px;
+  --eva-icon-size-0-99: 100px;
+
+  /* Tokens de EVA (tabla del punto 18). La escala institucional es la misma que
+     ya tenÃ­a el ADT; los grises son los de EVA. Estos tokens aplican al chrome
+     del lector y a las actividades, nunca a la obra ni al contenido editorial. */
+  --eva-color-white: #ffffff;
+  --eva-color-grey-50: #fcfcfc;
+  --eva-color-grey-100: #e1e3e6;
+  --eva-color-grey-200: #c4c7cc;
+  --eva-color-grey-300: #a6aab3;
+  --eva-color-grey-400: #898e99;
+  --eva-color-grey-500: #6b7280;
+  --eva-color-grey-600: #565b66;
+  --eva-color-grey-700: #40444d;
+  --eva-color-grey-800: #2b2e33;
+  --eva-color-grey-900: #15171a;
+  --eva-color-institucional-100: #ccecea;
+  --eva-color-institucional-200: #99d9d5;
+  --eva-color-institucional-300: #66c6c0;
+  --eva-color-institucional-400: #00a096;
+  --eva-color-institucional-500: #008078;
+  --eva-color-institucional-600: #00635d;
+  --eva-color-institucional-700: #00504b;
+  --eva-color-institucional-800: #00403c;
+  --eva-color-institucional-900: #00302d;
+
+  /* Alias heredados: los nombres del ADT apuntan a los tokens de EVA. Los grises
+     oscuros del ADT quedan fuera de la interfaz. */
+  --ceibal-institutional-100: var(--eva-color-institucional-100);
+  --ceibal-institutional-200: var(--eva-color-institucional-200);
+  --ceibal-institutional-300: var(--eva-color-institucional-300);
+  --ceibal-institutional-400: var(--eva-color-institucional-400);
+  --ceibal-institutional-500: var(--eva-color-institucional-500);
+  --ceibal-institutional-600: var(--eva-color-institucional-600);
+  --ceibal-institutional-700: var(--eva-color-institucional-700);
+  --ceibal-institutional-800: var(--eva-color-institucional-800);
+  --ceibal-institutional-900: var(--eva-color-institucional-900);
+  --ceibal-quiz-page: var(--eva-color-institucional-400);
+  --ceibal-gray-50: #f8f9fa;
+  --ceibal-gray-100: var(--eva-color-grey-100);
+  --ceibal-gray-200: var(--eva-color-grey-100);
+  --ceibal-gray-300: #d1d5db;
+  --ceibal-gray-400: #a9afbb;
+  --ceibal-gray-600: var(--eva-color-grey-500);
+  --ceibal-gray-700: var(--eva-color-grey-600);
+  --ceibal-gray-800: var(--eva-color-grey-100);
+  --ceibal-gray-900: var(--eva-color-grey-900);
+  --ceibal-success-surface: #edf8f1;
+  --ceibal-success-text: #275e2e;
+  --ceibal-error-surface: #fbefef;
+  --ceibal-error-text: #68160f;
+  --ceibal-space-1: .25rem;
+  --ceibal-space-2: .5rem;
+  --ceibal-space-3: .75rem;
+  --ceibal-space-4: 1rem;
+  --ceibal-space-5: 1.25rem;
+  --ceibal-space-6: 1.5rem;
+  --ceibal-space-8: 2rem;
+  --ceibal-space-16: 4rem;
+  --ceibal-space-24: 6rem;
+  --ceibal-space-40: 10rem;
+  --ceibal-radius-sm: .5rem;
+  --ceibal-radius-md: .75rem;
+  --ceibal-radius-lg: 1rem;
+  --ceibal-shadow-card: 0 .25rem .75rem rgb(18 24 38 / 8%);
+  --ceibal-shadow-button: 1px 1px 4px rgb(0 0 0 / 10%);
+  --ceibal-shadow-focus: 0 2px 4px var(--ceibal-institutional-500);
+  --ceibal-border-default: 1px;
+  --ceibal-border-focus: 3px;
+  --ceibal-focus-on-light: var(--ceibal-institutional-600);
+  --ceibal-focus-on-dark: var(--ceibal-institutional-400);
+}
+
+@media (max-width: 47.999rem) {
+/* On phones the reading column height is derived from the viewport, which mobile
+   browsers report in two flavours: the LARGE viewport (`dvh`/`lvh`, toolbars
+   collapsed) and the SMALL one (`svh`, toolbars on screen). While the address bar
+   and bottom toolbar are visible the actually visible area is the small viewport,
+   so a `dvh`-sized column is taller than what fits and its last line(s) are hidden
+   behind the browser chrome. Worse: `dvh` CHANGES while the page is open (Chrome
+   Android retracts the address bar as you scroll), so the column height changes,
+   the whole book re-paginates and the text under the reader jumps.
+   Pin the column to the always-visible `svh` instead: it never exceeds the visible
+   area and never changes while the page is open. When the toolbars collapse the
+   only cost is a little extra blank space at the bottom of the page, which is
+   preferable to losing a line of text or re-flowing the book. */
+:root {
+--reflow-page-height: calc(
+      100svh - max(
+        var(--nav-height, 80px),
+        calc(var(--reflow-toolbar-reserve) + .5rem)
+      ) - var(--reflow-controls-height) - 1rem
+    );
+}
+
+}
+
+@media (min-width: 72rem) {
+/* From laptop width upward, the book owns one stable central viewport and
+   permanently reserves the exact width of both reader panels. Font scaling
+   therefore changes only line wrapping and page count, never the width of
+   the text/image box; an open panel cannot cover the book. */
+:root {
+--reflow-gutter: var(--reflow-panel-reserve);
+}
+
+}
+
+@media (max-width: 47.999rem) {
+:root {
+--reflow-gutter: 1.25rem;
+}
+
+}
+
+#reflow-pagination {
+position: fixed;
+  z-index: 64;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns:
+    minmax(6rem, 1fr)
+    minmax(7.25rem, 1.15fr)
+    minmax(5rem, auto)
+    minmax(7.25rem, 1.15fr)
+    minmax(6.75rem, 1fr)
+    minmax(9.75rem, 1.05fr);
+  align-items: center;
+  gap: .25rem;
+  width: min(100vw, 68rem);
+  min-height: calc(4rem + env(safe-area-inset-bottom, 0px));
+  padding: .375rem .5rem calc(.375rem + env(safe-area-inset-bottom, 0px));
+  border: 1px solid var(--ui-border);
+  border-bottom: 0;
+  border-radius: var(--ceibal-radius-lg) var(--ceibal-radius-lg) 0 0;
+  color: var(--ui-text);
+  background: var(--ui-surface);
+  box-shadow: var(--ui-shadow);
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+#reflow-pagination.reflow-primary-toolbar-pending,
+#reflow-pagination.reflow-primary-toolbar-hidden {
+opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 150%);
+}
+
+#reflow-pagination button {
+display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 2.875rem;
+  align-items: center;
+  justify-content: center;
+  gap: .625rem;
+  padding: .75rem 1.25rem;
+  border: var(--ceibal-border-default) solid transparent;
+  border-radius: var(--ceibal-radius-md);
+  color: var(--ui-text);
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 120ms ease, border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+#reflow-pagination .reflow-toolbar-icon {
+flex: 0 0 auto;
+  min-width: 1.35rem;
+  font-size: 1.35rem;
+  line-height: 1;
+  text-align: center;
+}
+
+/* Los Ã­conos SVG heredan el color del botÃ³n y miden 24 px (punto 24). */
+/* Los Ã­conos SVG de la interfaz (barra, reproductor de voz y encabezados de
+   panel) miden 24 px (punto 24). */
+body.reflow-book .reflow-toolbar-svg {
+display: block;
+  flex: 0 0 auto;
+  width: var(--ui-icon-size);
+  height: var(--ui-icon-size);
+}
+
+#reflow-pagination .reflow-toolbar-label {
+overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--ui-n3-size);
+  font-weight: var(--ui-weight-regular);
+  letter-spacing: var(--ui-letter-spacing-label);
+}
+
+/* Las acciones secundarias dan su relleno horizontal para que las seis
+   columnas entren con la etiqueta completa (sin puntos suspensivos). */
+body.reflow-book
+  #reflow-pagination
+  .reflow-toolbar-action:not(.reflow-toolbar-primary) {
+gap: .375rem;
+  padding-inline: .5rem;
+}
+
+#reflow-pagination button:hover:not(:disabled) {
+background: var(--ui-surface-hover);
+}
+
+/* Anterior y Siguiente son la acciÃ³n principal de la barra (punto 3): mÃ¡s
+   altas que el resto (56 px), mÃ¡s anchas que Ãndice y Herramientas, y en el
+   color institucional con texto blanco (7,1:1 segÃºn la tabla de EVA). El
+   !important sostiene los 56 px frente a la regla de 48 px que el arnÃ©s aplica
+   a todos los botrones de la barra en pantallas grandes. */
+body.reflow-book #reflow-pagination .reflow-toolbar-primary {
+min-height: 3.5rem !important;
+  border-color: transparent;
+  color: #fff;
+  background: var(--ceibal-institutional-600);
+  box-shadow: var(--ceibal-shadow-button);
+}
+
+#reflow-pagination .reflow-toolbar-primary:hover:not(:disabled) {
+border-color: transparent;
+  background: var(--ceibal-institutional-700);
+}
+
+#reflow-pagination .reflow-toolbar-primary:active:not(:disabled) {
+background: var(--ceibal-institutional-800);
+}
+
+#reflow-previous .reflow-toolbar-label,
+#reflow-next .reflow-toolbar-label {
+font-weight: 700;
+}
+
+#reflow-pagination button[aria-expanded="true"],
+#reflow-pagination button[aria-pressed="true"] {
+color: var(--ui-text-selected);
+  background: var(--ui-surface-selected);
+}
+
+#reflow-pagination button:active:not(:disabled) {
+color: var(--ui-on-accent);
+  background: var(--ui-accent);
+}
+
+#reflow-pagination button:focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ui-focus);
+  outline-offset: 2px;
+  box-shadow: var(--ceibal-shadow-focus);
+}
+
+#reflow-pagination button:disabled {
+border-color: transparent;
+  color: var(--ui-disabled-text);
+  background: var(--ui-disabled-surface);
+  box-shadow: none;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+/* El estado deshabilitado se distingue por opacidad y por la ausencia de borde
+   (punto 3): al 40 % la flecha se lee sin confundirse con la habilitada. */
+#reflow-pagination .reflow-toolbar-primary:disabled {
+opacity: .4;
+  border-color: transparent;
+  color: #fff;
+  background: var(--ceibal-institutional-600);
+  box-shadow: none;
+}
+
+#reflow-pagination #reflow-previous:disabled,
+#reflow-pagination #reflow-next:disabled {
+opacity: .4;
+  border-color: transparent;
+}
+
+/* El contador muestra bloque y avance ("Cap. 1 Â· pÃ¡g. 3 de 18"). Tiene tres
+   formas y el CSS elige una segÃºn el ancho: larga, corta ("Cap. 1 Â· 3/18") y
+   mÃ­nima ("3/18", para telÃ©fonos angostos). Ver updateControls() en
+   reflow-book.js. */
+#reflow-page-status {
+min-width: 5rem;
+  padding-inline: .75rem;
+  text-align: center;
+  color: var(--ui-n4-color);
+  /* Punto 24 Â· El contador no crece con Â«TamaÃ±o de letraÂ»: a 620 px y Â«GrandeÂ»
+     desbordaba su celda. */
+  font-size: .9375rem !important;
+  font-weight: var(--ui-weight-regular);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+#reflow-page-status #reflow-progress-short,
+#reflow-page-status #reflow-progress-minimal {
+display: none;
+}
+
+@media (max-width: 51.999rem) {
+/* Con las seis columnas y todas las etiquetas visibles la barra necesita unos
+   832 px: por debajo, Ãndice, Glosario y Herramientas pasan a Ã­cono (conservan
+   su nombre accesible) y el contador usa la forma corta. Las flechas nunca
+   pierden su etiqueta. */
+#reflow-pagination {
+grid-template-columns:
+      2.75rem
+      minmax(5.5rem, 1fr)
+      minmax(9rem, 1.4fr)
+      minmax(5.5rem, 1fr)
+      2.75rem
+      2.75rem;
+}
+
+#reflow-pagination
+    .reflow-toolbar-action:not(.reflow-toolbar-primary)
+    .reflow-toolbar-label {
+position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+#reflow-page-status #reflow-progress-long {
+display: none;
+}
+
+#reflow-page-status #reflow-progress-short {
+display: inline;
+}
+
+}
+
+@media (max-width: 47.999rem) {
+#reflow-pagination {
+gap: .125rem;
+    width: 100vw;
+    padding: .375rem;
+    border-inline: 0;
+    border-radius: 0;
+}
+
+#reflow-pagination button {
+min-height: 2.75rem;
+    padding: .25rem;
+}
+
+#reflow-pagination .reflow-toolbar-primary {
+min-height: 3.5rem !important;
+}
+
+#reflow-page-status {
+min-width: 3.75rem;
+}
+
+}
+
+@media (max-width: 32rem) {
+/* Por debajo de 32 rem no entran a la vez la forma corta del contador ("Antes
+   de empezar Â· 3/12", unos 181 px) y las flechas con su etiqueta al costado. Se
+   resuelve apilando las flechas â€”Ã­cono arriba, texto abajo, como pide el
+   documento para cuando falta espacioâ€” y dejando el contador sÃ³lo con el
+   avance. Los botones conservan sus nombres accesibles completos. */
+#reflow-pagination {
+grid-template-columns:
+      2.75rem
+      minmax(3.25rem, .9fr)
+      minmax(3.75rem, 1.1fr)
+      minmax(3.25rem, .9fr)
+      2.75rem
+      2.75rem;
+}
+
+#reflow-pagination .reflow-toolbar-primary {
+flex-direction: column;
+    gap: .125rem;
+    padding: .25rem .125rem;
+}
+
+#reflow-pagination .reflow-toolbar-primary .reflow-toolbar-label {
+font-size: .7rem !important;
+    font-weight: var(--ui-weight-bold) !important;
+    line-height: 1.1;
+}
+
+#reflow-pagination .reflow-toolbar-primary .reflow-toolbar-svg {
+width: 1.25rem;
+    height: 1.25rem;
+}
+
+#reflow-page-status #reflow-progress-short {
+display: none;
+}
+
+#reflow-page-status #reflow-progress-minimal {
+display: inline;
+}
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+#reflow-pagination {
+transition: none;
+}
+
+}
+
+/* N3 Â· etiquetas de control: barra, filas y opciones del panel, Ã­ndice y
+   glosario. */
+/* Punto 24 Â· El texto de la barra usa eva-text-button (16 px), distinto del N3
+   de los paneles (17 px). */
+body.reflow-book #reflow-pagination .reflow-toolbar-label {
+font-size: var(--ui-button) !important;
+}
+
+/* Tercer uso permitido de la negrita: la acciÃ³n principal de la barra. */
+body.reflow-book #reflow-pagination .reflow-toolbar-primary .reflow-toolbar-label {
+font-weight: var(--ui-weight-bold) !important;
+}
+
+@media (min-width: 72rem) {
+/* 3. Touch/pen targets. On phones the reader keeps the 44px minimum; on large
+   boards, operated standing with a finger or capacitive pen, raise the flagged
+   controls to a 48px minimum with a little more breathing room. */
+body.reflow-book #reflow-pagination button {
+min-height: 3rem !important;
+}
+
+}
+
+/* The runtime adds this class to the currently spoken word. */
+body.reflow-book #content .bg-yellow-300 {
+color: #111827 !important;
+  background: #fde047 !important;
+  border-radius: .12em;
+  opacity: 1 !important;
+  transition: none !important;
+  animation: none !important;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Native ranges paint the active word or sentence without inserting spans
+   into already-paginated prose, so TTS cannot alter column geometry. */
+::highlight(adt-tts-active) {
+color: #111827;
+  background: #fde047;
+}
+
+/* Spoken text must remain identifiable without perceiving yellow. Native
+   highlight ranges accept text-decoration without inserting spans, so these
+   markers do not change line wrapping or pagination. */
+body.reflow-book[data-reflow-highlight-mode="word"]
+  #content *::highlight(adt-tts-active) {
+text-decoration-line: underline;
+  text-decoration-color: #111827;
+  text-decoration-style: solid;
+  text-decoration-thickness: 3px;
+  text-underline-offset: .12em;
+}
+
+/* El resaltado por oraciÃ³n usa el MISMO subrayado simple que el de palabra: una
+   sola lÃ­nea. Antes era `double` y se veÃ­a como dos lÃ­neas debajo del texto. */
+body.reflow-book[data-reflow-highlight-mode="sentence"]
+  #content *::highlight(adt-tts-active) {
+text-decoration-line: underline;
+  text-decoration-color: #111827;
+  text-decoration-style: solid;
+  text-decoration-thickness: 3px;
+  text-underline-offset: .12em;
+}
+
+body.reflow-book[data-reflow-highlight-mode="word"] #content
+  :is(.bg-yellow-300, .glossary-term.tts-glossary-covered) {
+text-decoration-line: underline !important;
+  text-decoration-color: #111827 !important;
+  text-decoration-style: solid !important;
+  text-decoration-thickness: 3px !important;
+  text-underline-offset: .12em !important;
+}
+
+body.reflow-book[data-reflow-highlight-mode="sentence"] #content
+  :is(.bg-yellow-300, .glossary-term.tts-glossary-covered) {
+text-decoration-line: underline !important;
+  text-decoration-color: #111827 !important;
+  text-decoration-style: solid !important;
+  text-decoration-thickness: 3px !important;
+  text-underline-offset: .12em !important;
+}
+
+/* A glossary wrapper has its own green background. While its text intersects
+   the active TTS range, paint that same wrapper yellow; removing the class on
+   the next tick reveals the original green again. */
+body.reflow-book #content .glossary-term.tts-glossary-covered {
+color: #111827 !important;
+  background: #fde047 !important;
+}
+
+body.reflow-book #content [data-sentence-index] {
+-webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* TTS wrappers must be typographically transparent. In particular, they
+   preserve the line boxes established before pagination at easy/xlarge. */
+body.reflow-book #content [data-word-index],
+body.reflow-book #content [data-sentence-index] {
+position: static !important;
+  display: inline !important;
+  float: none !important;
+  inset: auto !important;
+  box-sizing: content-box !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  white-space: inherit;
+  vertical-align: baseline !important;
+  transform: none !important;
+}
+
+/* Some responsive illustrations use object-fit: contain inside a taller
+   pagination box. This fixed overlay follows the pixels actually painted by
+   the image, rather than outlining the empty object-fit letterbox. */
+body.reflow-book .tts-image-highlight-overlay {
+position: fixed;
+  z-index: 45;
+  box-sizing: border-box;
+  border: 3px solid #111827;
+  box-shadow: 0 0 0 3px #facc15;
+  pointer-events: none;
+  background: transparent;
+  transition: none;
+}
+
+/* Read-aloud es una sesiÃ³n persistente, no una acciÃ³n de navegaciÃ³n primaria.
+   Punto 25: es un pop-up flotante que NO reserva carril. En pantalla ancha va
+   en el MARGEN DERECHO (fuera de la medida de lectura, 42rem) para no tapar el
+   texto; en angosta es una pastilla compacta centrada sobre la barra. */
+#reflow-tts-player {
+position: fixed;
+  z-index: 65;
+  right: 1rem;
+  left: auto;
+  bottom: calc(var(--reflow-primary-toolbar-height, 4rem) + .5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--ceibal-space-1);
+  width: auto;
+  max-width: calc((100vw - var(--reflow-text-measure, 42rem)) / 2 - 1rem);
+  padding: var(--ceibal-space-1);
+  border: var(--ceibal-border-default) solid var(--ui-border);
+  border-radius: var(--ceibal-radius-lg);
+  color: var(--ui-text);
+  background: var(--ui-surface);
+  box-shadow: var(--ui-shadow-raised);
+}
+
+#reflow-tts-player[hidden] {
+display: none;
+}
+
+#reflow-tts-player .reflow-tts-player-main {
+display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ceibal-space-1);
+  max-width: 100%;
+}
+
+#reflow-tts-player button {
+display: inline-flex;
+  width: auto;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ceibal-space-2);
+  padding: var(--ceibal-space-2);
+  border: var(--ceibal-border-default) solid transparent;
+  border-radius: var(--ceibal-radius-md);
+  color: var(--ui-text);
+  background: transparent;
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+#reflow-tts-player button:hover:not(:disabled) {
+background: var(--ui-surface-hover);
+}
+
+#reflow-tts-player button[aria-pressed="true"] {
+color: var(--ui-text-selected);
+  background: var(--ui-surface-selected);
+}
+
+#reflow-tts-player button:active:not(:disabled) {
+color: var(--ui-on-accent);
+  background: var(--ui-accent);
+}
+
+#reflow-tts-player button:focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ui-focus);
+  outline-offset: 2px;
+  box-shadow: var(--ceibal-shadow-focus);
+}
+
+/* El estado deshabilitado del reproductor lo pintaba una regla del runtime con
+   grey-500, que sobre la superficie clara quedaba en 4,32:1. Se fija con los
+   tokens del tema. */
+body.reflow-book #reflow-tts-player button:disabled {
+border-color: transparent !important;
+  color: var(--ui-disabled-text) !important;
+  background: var(--ui-disabled-surface) !important;
+  box-shadow: none;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+#reflow-tts-player .reflow-tts-player-icon {
+flex: 0 0 auto;
+  min-width: 1.35rem;
+  font-size: 1.2rem;
+  line-height: 1;
+  text-align: center;
+}
+
+#reflow-tts-player .reflow-tts-player-label {
+position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Word highlighting rebuilds the title as individual spans. Keep the visual
+   line break before â€œQUEâ€ even while that temporary markup is active. */
+body.reflow-book #content .preliminary-title-continuous
+  > [data-word-index="2"]::before {
+content: "";
+  display: block;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-tts-voice-setting {
+order: 23;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-tts-speed-setting {
+order: 24;
+}
+
+/* Densidad: el panel tiene que entrar sin scroll en 1366x900. Se recorta
+   espaciado propio (y nunca los textos de ayuda, que quedan completos); las
+   Ã¡reas tÃ¡ctiles se mantienen en el mÃ­nimo de 2.75rem del manual. */
+body.reflow-book .reflow-settings-organized .reflow-setting-row,
+body.reflow-book .reflow-settings-organized .reflow-reduce-motion-setting,
+body.reflow-book .reflow-settings-organized #reflow-tts-voice-setting,
+body.reflow-book .reflow-settings-organized #reflow-tts-speed-setting {
+padding: .5rem .25rem !important;
+}
+
+/* Voice selection follows the same Ceibal segmented-control language used
+   by font size, highlighting and navigation tabs. */
+#reflow-tts-voice-setting {
+box-sizing: border-box;
+  display: grid !important;
+  gap: .5rem !important;
+  width: 100% !important;
+  padding: .75rem .5rem !important;
+  border-top: 1px solid var(--ui-border) !important;
+}
+
+#reflow-tts-voice-label {
+color: var(--ceibal-gray-100) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+}
+
+.reflow-tts-voice-options,
+.reflow-tts-highlight-options {
+box-sizing: border-box;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .25rem;
+  width: 100% !important;
+  padding: .25rem;
+  border-radius: var(--ceibal-radius-md);
+  background: #252525;
+}
+
+.reflow-tts-voice-options button,
+.reflow-tts-highlight-options button {
+min-width: 0 !important;
+  min-height: 2.875rem;
+  padding: .5rem .35rem !important;
+  border: 1px solid transparent !important;
+  border-radius: .6rem !important;
+  color: var(--ceibal-gray-300) !important;
+  background: transparent !important;
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+}
+
+.reflow-tts-voice-options button[aria-checked="true"],
+.reflow-tts-highlight-options button[aria-checked="true"] {
+border-color: var(--ceibal-institutional-300) !important;
+  color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+  box-shadow: var(--ceibal-shadow-button);
+}
+
+.reflow-tts-voice-options:has(> button[hidden]),
+.reflow-tts-highlight-options:has(> button[hidden]) {
+grid-template-columns: minmax(0, 1fr);
+}
+
+.reflow-tts-voice-options > button[hidden],
+.reflow-tts-highlight-options > button[hidden] {
+display: none !important;
+}
+
+/* Playback speed belongs to the consolidated Tools panel. A two-column
+   segmented control keeps all four choices readable at the compact width. */
+#reflow-tts-speed-setting {
+box-sizing: border-box;
+  display: grid !important;
+  gap: .5rem !important;
+  width: 100% !important;
+  padding: .75rem .5rem !important;
+  border-top: 1px solid var(--ui-border) !important;
+}
+
+#reflow-tts-speed-label {
+color: var(--ceibal-gray-100) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+}
+
+.reflow-tts-speed-options {
+box-sizing: border-box;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .25rem;
+  width: 100% !important;
+  padding: .25rem;
+  border-radius: var(--ceibal-radius-md);
+  background: #252525;
+}
+
+.reflow-tts-speed-options button {
+min-width: 0 !important;
+  min-height: 2.875rem;
+  padding: .5rem .35rem !important;
+  border: 1px solid transparent !important;
+  border-radius: .6rem !important;
+  color: var(--ceibal-gray-300) !important;
+  background: transparent !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+}
+
+.reflow-tts-speed-options button[aria-checked="true"] {
+border-color: var(--ceibal-institutional-300) !important;
+  color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+  box-shadow: var(--ceibal-shadow-button);
+}
+
+.reflow-tts-speed-options button:focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ceibal-focus-on-dark) !important;
+  outline-offset: 2px !important;
+  box-shadow: var(--ceibal-shadow-focus) !important;
+}
+
+#reflow-tts-voice-setting[hidden] {
+display: none !important;
+}
+
+/* pg142 LF keeps the complete text in one semantic/TTS source node. This
+   hidden portion remains available to assistive reading, while its visible
+   sentence is a separate layout unit that can continue after the image. */
+body.reflow-book #content .reflow-tts-only {
+position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Punto 18 Â· La opciÃ³n elegida no se distingue sÃ³lo por el color: suma un check
+   visible (ademÃ¡s del relleno institucional). */
+body.reflow-book .reflow-reader-panel [role="radio"][aria-checked="true"]::after,
+body.reflow-book #reflow-tts-player .reflow-tts-voice-options button[aria-checked="true"]::after,
+body.reflow-book #reflow-tts-player .reflow-tts-speed-options button[aria-checked="true"]::after,
+body.reflow-book #reflow-tts-player .reflow-tts-highlight-options button[aria-checked="true"]::after {
+content: "âœ“";
+  margin-inline-start: .375rem;
+  font-weight: var(--ui-weight-bold);
+  line-height: 1;
+}
+
+@media (max-width: 63.999rem) {
+/* ==========================================================================
+   Punto 25 Â· Reproductor de voz flotante (pop-up)
+   --------------------------------------------------------------------------
+   Flota sobre el contenido, sin carril fijo: la reserva es sÃ³lo la barra. En
+   pantalla ancha ya estÃ¡ anclado al margen derecho (regla base, fuera de la
+   medida de lectura). En angosta es una pastilla compacta centrada sobre la
+   barra, con Reproducir/Pausa, Opciones, Minimizar y Cerrar; se puede minimizar
+   a un botÃ³n redondo de 48 px.
+   ========================================================================== */
+body.reflow-book #reflow-tts-player {
+right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    width: auto;
+    max-width: calc(100vw - 1rem);
+    padding: .25rem;
+}
+
+body.reflow-book #reflow-tts-player .reflow-tts-player-main {
+flex-wrap: nowrap;
+    justify-content: center;
+    gap: .125rem;
+}
+
+/* La pastilla angosta no lleva las flechas de audio: quedan Reproducir/Pausa,
+     Opciones, Minimizar y Cerrar (punto 25). */
+body.reflow-book #reflow-tts-player #reflow-tts-previous,
+  body.reflow-book #reflow-tts-player #reflow-tts-next {
+display: none !important;
+}
+
+body.reflow-book #reflow-tts-player button {
+gap: 0;
+    padding: .5rem;
+}
+
+}
+
+/* Opciones: se despliega dentro del mismo pop-up (voz y velocidad). */
+#reflow-tts-player .reflow-tts-player-options {
+box-sizing: border-box;
+  display: grid;
+  gap: .4rem;
+  width: 15rem;
+  max-width: 100%;
+  padding: .5rem;
+  border-top: 1px solid var(--ui-border);
+}
+
+#reflow-tts-player .reflow-tts-player-options[hidden] {
+display: none !important;
+}
+
+#reflow-tts-player .reflow-tts-player-options-title {
+color: var(--ui-text);
+  font-size: .95rem;
+  font-weight: 700;
+}
+
+/* Los controles de voz/velocidad heredan el lenguaje del panel; se repintan con
+   los tokens del tema claro para el pop-up flotante. */
+body.reflow-book #reflow-tts-player .reflow-tts-voice-options,
+body.reflow-book #reflow-tts-player .reflow-tts-speed-options,
+body.reflow-book #reflow-tts-player .reflow-tts-highlight-options {
+background: var(--ui-surface-hover);
+}
+
+body.reflow-book #reflow-tts-player .reflow-tts-voice-options button,
+body.reflow-book #reflow-tts-player .reflow-tts-speed-options button,
+body.reflow-book #reflow-tts-player .reflow-tts-highlight-options button {
+min-height: 2.5rem !important;
+  color: var(--ui-text) !important;
+  font-size: .95rem !important;
+}
+
+body.reflow-book #reflow-tts-player .reflow-tts-voice-options button[aria-checked="true"],
+body.reflow-book #reflow-tts-player .reflow-tts-speed-options button[aria-checked="true"],
+body.reflow-book #reflow-tts-player .reflow-tts-highlight-options button[aria-checked="true"] {
+border-color: var(--ui-accent) !important;
+  color: var(--ui-on-accent) !important;
+  background: var(--ui-accent) !important;
+}
+
+/* Punto 25 Â· Minimizado: sÃ³lo un botÃ³n redondo de 48 px que restaura los
+   controles. La evitaciÃ³n de la oraciÃ³n usa este estado (ver reflow-book.js). */
+body.reflow-book #reflow-tts-player .reflow-tts-fab {
+display: none;
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: var(--ceibal-border-default) solid var(--ui-border);
+  border-radius: 999px;
+  color: var(--ui-text);
+  background: var(--ui-surface);
+  box-shadow: var(--ui-shadow-raised);
+}
+
+body.reflow-book #reflow-tts-player.reflow-tts-player-minimized {
+padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body.reflow-book #reflow-tts-player.reflow-tts-player-minimized .reflow-tts-player-main,
+body.reflow-book #reflow-tts-player.reflow-tts-player-minimized .reflow-tts-player-options {
+display: none !important;
+}
+
+body.reflow-book #reflow-tts-player.reflow-tts-player-minimized .reflow-tts-fab {
+display: inline-flex;
+}
+
+
+/* ═══ Puente: la barra del kit reemplaza el dock ══════════════════════════
+   Se oculta con `visibility` y NO con `display: none`: los paneles del runtime
+   son popovers anclados a los botones del dock, así que el dock tiene que
+   conservar su caja para que se posicionen bien. `visibility: hidden` lo saca
+   del árbol de accesibilidad y del tabulador sin romper el anclaje. */
+#nav-container [role="group"] {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Íconos de EVA en la barra y el reproductor (máscaras, heredan currentColor) */
+#reflow-pagination .reflow-toolbar-icon[data-eva-icon],
+#reflow-tts-player .reflow-tts-player-icon[data-eva-icon] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#reflow-pagination .reflow-toolbar-icon[data-eva-icon]::before,
+#reflow-tts-player .reflow-tts-player-icon[data-eva-icon]::before {
+  content: "";
+  display: block;
+  width: var(--eva-icon-size-md);
+  height: var(--eva-icon-size-md);
+  background: currentColor;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+#reflow-pagination [data-eva-icon="menu"]::before,
+#reflow-pagination [data-eva-icon="gear"]::before,
+#reflow-pagination [data-eva-icon="glossary"]::before,
+#reflow-pagination [data-eva-icon="left"]::before,
+#reflow-pagination [data-eva-icon="right"]::before,
+#reflow-tts-player [data-eva-icon="play"]::before,
+#reflow-tts-player [data-eva-icon="stop"]::before,
+#reflow-tts-player [data-eva-icon="gear"]::before {
+  background: currentColor;
+}
+
+#reflow-pagination [data-eva-icon="menu"]::before {
+  -webkit-mask-image: url("./icons/eva-menu.svg");
+  mask-image: url("./icons/eva-menu.svg");
+}
+
+#reflow-pagination [data-eva-icon="gear"]::before,
+#reflow-tts-player [data-eva-icon="gear"]::before {
+  -webkit-mask-image: url("./icons/eva-gear.svg");
+  mask-image: url("./icons/eva-gear.svg");
+}
+
+#reflow-pagination [data-eva-icon="glossary"]::before {
+  -webkit-mask-image: url("./icons/glossary-book.svg");
+  mask-image: url("./icons/glossary-book.svg");
+}
+
+#reflow-pagination [data-eva-icon="left"]::before {
+  -webkit-mask-image: url("./icons/eva-arrow-left.svg");
+  mask-image: url("./icons/eva-arrow-left.svg");
+}
+
+#reflow-pagination [data-eva-icon="right"]::before {
+  -webkit-mask-image: url("./icons/eva-arrow-right.svg");
+  mask-image: url("./icons/eva-arrow-right.svg");
+}
+
+#reflow-tts-player [data-eva-icon="play"]::before {
+  -webkit-mask-image: url("./icons/eva-play.svg");
+  mask-image: url("./icons/eva-play.svg");
+}
+
+#reflow-tts-player [data-eva-icon="stop"]::before {
+  -webkit-mask-image: url("./icons/eva-stop.svg");
+  mask-image: url("./icons/eva-stop.svg");
+}
+
+/* ═══ Reproductor del runtime, vestido con EVA ════════════════════════════
+   El ADT trae su propio transporte (previous-audio / Pausa / next-audio /
+   Detener / Velocidad). Se reutiliza y se le da la forma de EVA: pastillas
+   rellenas para el transporte y secundaria para detener. */
+button[aria-label="previous-audio"],
+button[aria-label="next-audio"],
+button[aria-label="Pausa"],
+button[aria-label="Reproducir"] {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 999px;
+  background: var(--ui-primary) !important;
+  color: #ffffff !important;
+}
+
+button[aria-label="previous-audio"]:hover:not(:disabled),
+button[aria-label="next-audio"]:hover:not(:disabled),
+button[aria-label="Pausa"]:hover:not(:disabled),
+button[aria-label="Reproducir"]:hover:not(:disabled) {
+  background: var(--ui-primary-hover) !important;
+}
+
+button[aria-label="Detener"] {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 999px;
+  background: transparent !important;
+  color: var(--ui-primary) !important;
+  border: 2px solid var(--ui-primary) !important;
+}
+
+button[aria-label="Detener"]:hover:not(:disabled) {
+  background: var(--ui-selected-bg) !important;
+}
+
+button[aria-label^="Velocidad de reproducción"] {
+  font-size: var(--ui-help) !important;
+  color: var(--ui-text) !important;
+  border-radius: 999px !important;
+  min-height: 44px;
+}
+
+button[aria-label="previous-audio"]:focus-visible,
+button[aria-label="next-audio"]:focus-visible,
+button[aria-label="Pausa"]:focus-visible,
+button[aria-label="Reproducir"]:focus-visible,
+button[aria-label="Detener"]:focus-visible,
+button[aria-label^="Velocidad de reproducción"]:focus-visible {
+  outline: var(--ui-focus-ring) solid var(--ui-focus) !important;
+  outline-offset: 2px !important;
+}

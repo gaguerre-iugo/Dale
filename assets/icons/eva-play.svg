@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <!-- Trazado del set de EVA (size=eva-icon-size-0-4.png), normalizado al
+       viewBox de 24 que usa la interfaz. 7 nodos. -->
+  <path fill-rule="evenodd" d="M4.629 20.215 C3.493 19.327 3.359 18.457 3.374 12.068 C3.383 8.110 3.483 5.847 3.674 5.302 C4.041 4.252 5.060 3.497 6.061 3.532 C6.529 3.549 9.397 4.806 13.244 6.681 C20.224 10.083 20.400 10.219 20.400 12.196 C20.400 13.817 19.863 14.211 13.110 17.551 C6.547 20.796 5.710 21.059 4.629 20.215 Z"/>
+</svg>
