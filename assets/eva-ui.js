@@ -49,12 +49,25 @@
     return false;
   }
 
-  function estadoPagina() {
+  function totalDePaginas() {
     var grupo = document.querySelector("#nav-container [role='group']");
-    /* textContent y no innerText: el dock está oculto con `visibility: hidden`
-       y `innerText` devuelve vacío en ese caso. */
-    var m = grupo && (grupo.textContent || "").match(/(\d+)\s*\/\s*(\d+)/);
-    return m ? { actual: +m[1], total: +m[2] } : null;
+    var m = grupo && (grupo.textContent || "").match(/\d+\s*\/\s*(\d+)/);
+    return m ? +m[1] : null;
+  }
+
+  function estadoPagina() {
+    /* La página actual sale del meta de la página (posición 1-based): está
+       disponible desde el arranque y no depende de que el dock del runtime se
+       monte, así la barra no muestra un número viejo mientras eso pasa. */
+    var meta = document.querySelector('meta[name="page-section-id"]');
+    var actual = meta ? Number(meta.getAttribute("content")) : NaN;
+    if (!Number.isFinite(actual) || actual < 1) {
+      var grupo = document.querySelector("#nav-container [role='group']");
+      var m = grupo && (grupo.textContent || "").match(/(\d+)\s*\/\s*(\d+)/);
+      actual = m ? +m[1] : NaN;
+    }
+    if (!Number.isFinite(actual)) return null;
+    return { actual: actual, total: totalDePaginas() };
   }
 
   function lecturaActiva() {
@@ -159,16 +172,20 @@
       var largo = document.getElementById("reflow-progress-long");
       var corto = document.getElementById("reflow-progress-short");
       var mini = document.getElementById("reflow-progress-minimal");
-      var textoLargo = "pág. " + datos.actual + " de " + datos.total;
-      var textoCorto = datos.actual + "/" + datos.total;
+      var textoLargo = "pág. " + datos.actual +
+        (datos.total ? " de " + datos.total : "");
+      var textoCorto = datos.actual + (datos.total ? "/" + datos.total : "");
       if (largo && largo.textContent !== textoLargo) largo.textContent = textoLargo;
       if (corto && corto.textContent !== textoCorto) corto.textContent = textoCorto;
       if (mini && mini.textContent !== textoCorto) mini.textContent = textoCorto;
-      status.setAttribute("aria-label", "Página " + datos.actual + " de " + datos.total);
+      status.setAttribute(
+        "aria-label",
+        "Página " + datos.actual + (datos.total ? " de " + datos.total : "")
+      );
       var prev = document.getElementById("reflow-previous");
       var next = document.getElementById("reflow-next");
       if (prev) prev.disabled = datos.actual <= 1;
-      if (next) next.disabled = datos.actual >= datos.total;
+      if (next && datos.total) next.disabled = datos.actual >= datos.total;
     }
 
     var activa = lecturaActiva();
@@ -202,7 +219,6 @@
     requestAnimationFrame(function () {
       pendiente = false;
       arreglar();
-      if (!document.querySelector("#nav-container [role='group']")) return;
       document.body.classList.add("reflow-book");
       montarBarra();
       /* El reproductor propio no se monta: el runtime ya trae uno con transporte

@@ -1626,3 +1626,18 @@ button[aria-label^="Velocidad de reproducción"]:focus-visible {
   outline: var(--ui-focus-ring) solid var(--ui-focus) !important;
   outline-offset: 2px !important;
 }
+
+/* ═══ Ancho de los paneles ════════════════════════════════════════════════
+   El runtime dibuja los paneles a 30rem (480 px); el 1930 los usa como rieles
+   laterales de 18,75rem (300 px). Se acotan al ancho del riel de EVA y el
+   contenido interno se adapta. */
+[role="dialog"] {
+  width: min(18.75rem, calc(100vw - 1rem)) !important;
+  max-width: min(18.75rem, calc(100vw - 1rem)) !important;
+}
+
+[role="dialog"] > * {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
