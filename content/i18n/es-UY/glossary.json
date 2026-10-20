@@ -61,16 +61,6 @@
     "emoji": "🚗",
     "id": "gl006"
   },
-  "casilla": {
-    "word": "casilla",
-    "definition": "Cada espacio de un tablero o una grilla.",
-    "variations": [
-      "casilla",
-      "casillas"
-    ],
-    "emoji": "⬜",
-    "id": "gl007"
-  },
   "comparar": {
     "word": "comparar",
     "definition": "Mirar dos o más cosas para ver en qué se parecen o se diferencian.",
@@ -92,26 +82,6 @@
     "emoji": "✅",
     "id": "gl009"
   },
-  "consigna": {
-    "word": "consigna",
-    "definition": "Indicación que dice qué hay que hacer en una actividad.",
-    "variations": [
-      "consigna",
-      "consignas"
-    ],
-    "emoji": "📋",
-    "id": "gl010"
-  },
-  "dado": {
-    "word": "dado",
-    "definition": "Objeto pequeño con puntos en sus caras que se tira en algunos juegos.",
-    "variations": [
-      "dado",
-      "dados"
-    ],
-    "emoji": "🎲",
-    "id": "gl011"
-  },
   "elefante": {
     "word": "elefante",
     "definition": "Animal muy grande, con trompa y orejas grandes.",
@@ -121,18 +91,6 @@
     ],
     "emoji": "🐘",
     "id": "gl012"
-  },
-  "entrometido": {
-    "word": "entrometido",
-    "definition": "En estas actividades, es la imagen que no pertenece al grupo porque empieza con otro sonido.",
-    "variations": [
-      "entrometido",
-      "entrometida",
-      "entrometidos",
-      "entrometidas"
-    ],
-    "emoji": "❓",
-    "id": "gl013"
   },
   "fila": {
     "word": "fila",
@@ -174,16 +132,6 @@
     "emoji": "1️⃣",
     "id": "gl017"
   },
-  "lana": {
-    "word": "lana",
-    "definition": "Material suave que viene de algunos animales y se usa para tejer.",
-    "variations": [
-      "lana",
-      "lanas"
-    ],
-    "emoji": "🧶",
-    "id": "gl018"
-  },
   "lata": {
     "word": "lata",
     "definition": "Envase de metal que puede contener comida o bebida.",
@@ -194,18 +142,6 @@
     "emoji": "🥫",
     "id": "gl019"
   },
-  "león": {
-    "word": "león",
-    "definition": "Animal grande, fuerte, con melena en los machos.",
-    "variations": [
-      "león",
-      "leones",
-      "leona",
-      "leonas"
-    ],
-    "emoji": "🦁",
-    "id": "gl020"
-  },
   "letra": {
     "word": "letra",
     "definition": "Signo que usamos para escribir palabras.",
@@ -215,26 +151,6 @@
     ],
     "emoji": "🔠",
     "id": "gl021"
-  },
-  "luna": {
-    "word": "luna",
-    "definition": "Astro que vemos en el cielo, sobre todo de noche.",
-    "variations": [
-      "luna",
-      "lunas"
-    ],
-    "emoji": "🌙",
-    "id": "gl022"
-  },
-  "lupa": {
-    "word": "lupa",
-    "definition": "Objeto con vidrio que agranda lo que miramos.",
-    "variations": [
-      "lupa",
-      "lupas"
-    ],
-    "emoji": "🔍",
-    "id": "gl023"
   },
   "medalla": {
     "word": "medalla",
@@ -285,26 +201,6 @@
     "emoji": "⛰️",
     "id": "gl028"
   },
-  "moto": {
-    "word": "moto",
-    "definition": "Vehículo de dos ruedas con motor.",
-    "variations": [
-      "moto",
-      "motos"
-    ],
-    "emoji": "🏍️",
-    "id": "gl029"
-  },
-  "mouse": {
-    "word": "mouse",
-    "definition": "Objeto que se usa para mover la flecha y hacer clic en la computadora.",
-    "variations": [
-      "mouse",
-      "mouses"
-    ],
-    "emoji": "🖱️",
-    "id": "gl030"
-  },
   "muñeca": {
     "word": "muñeca",
     "definition": "Juguete con forma de persona. También puede ser la parte del cuerpo que une la mano con el brazo.",
@@ -314,16 +210,6 @@
     ],
     "emoji": "🪆",
     "id": "gl031"
-  },
-  "naipe": {
-    "word": "naipe",
-    "definition": "Carta que se usa para jugar.",
-    "variations": [
-      "naipe",
-      "naipes"
-    ],
-    "emoji": "🃏",
-    "id": "gl032"
   },
   "naranja": {
     "word": "naranja",
@@ -377,16 +263,6 @@
     "emoji": "👯",
     "id": "gl037"
   },
-  "participante": {
-    "word": "participante",
-    "definition": "Persona que juega o forma parte de una actividad.",
-    "variations": [
-      "participante",
-      "participantes"
-    ],
-    "emoji": "🧒",
-    "id": "gl038"
-  },
   "rama": {
     "word": "rama",
     "definition": "Parte de un árbol que sale del tronco y tiene hojas.",
@@ -416,16 +292,6 @@
     ],
     "emoji": "🐀",
     "id": "gl041"
-  },
-  "rayo": {
-    "word": "rayo",
-    "definition": "Luz fuerte que aparece en el cielo durante una tormenta.",
-    "variations": [
-      "rayo",
-      "rayos"
-    ],
-    "emoji": "⚡",
-    "id": "gl042"
   },
   "regalo": {
     "word": "regalo",
@@ -600,16 +466,6 @@
     "emoji": "➕",
     "id": "gl059"
   },
-  "tablero": {
-    "word": "tablero",
-    "definition": "Superficie de un juego donde se mueven fichas o se siguen casillas.",
-    "variations": [
-      "tablero",
-      "tableros"
-    ],
-    "emoji": "🎲",
-    "id": "gl060"
-  },
   "tarjeta": {
     "word": "tarjeta",
     "definition": "Cartelito o ficha con una imagen, palabra o número.",
@@ -619,16 +475,6 @@
     ],
     "emoji": "🃏",
     "id": "gl061"
-  },
-  "teclado": {
-    "word": "teclado",
-    "definition": "Parte de la computadora con teclas para escribir o jugar.",
-    "variations": [
-      "teclado",
-      "teclados"
-    ],
-    "emoji": "⌨️",
-    "id": "gl062"
   },
   "trampa": {
     "word": "trampa",
