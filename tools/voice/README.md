@@ -112,11 +112,27 @@ reales de cada item.
   propio texto tiene pausas internas y la alineacion de numeros es fragil.
 - Requisito: `faster-whisper` ademas de `ffmpeg`.
 
-Estado actual: aplicado a **Asesora** en paginas 1 y 2 (5 + 10 items), con cada
-segmento verificado por transcripcion. **Consultor** sigue por item: la cuota
-diaria de Gemini (100 pedidos/dia en Tier 1) se agoto durante la prueba. Cuando
-se renueve, el mismo comando completa las dos voces:
+Estado actual: **las dos voces** usan bloques en las paginas 1 y 2 (5 + 10
+items). Asesora se genero con `gemini-3.8-flash-tts` y Consultor con
+`gemini-3.8-flash-lite-tts`, porque la cuota diaria del modelo Flash (100
+pedidos/dia en Tier 1) se agoto. La cuota es por proyecto y por modelo: el
+mismo API key tiene una cuota distinta para Lite. Cuando se renueve Flash,
+Consultor se puede regenerar con el modelo grande:
 
 ```bash
-python tools/voice/generar_bloques.py
+python tools/voice/generar_bloques.py --voice consultor
 ```
+
+Cada segmento se verifico por transcripcion (faster-whisper).
+
+### Ritmo
+
+Los audios de las paginas 1 y 2 se bajaron un 12% con `atempo` (preserva el
+tono) porque la toma continua salia mas rapida que la generacion item por item:
+
+```bash
+python tools/voice/ajustar_tempo.py --factor 0.88 --paginas pg001 pg002
+```
+
+No es idempotente: correrlo dos veces vuelve a frenar. Si 0.88 sigue rapido,
+probá 0.85; para volver atras, `git checkout` de los MP3.

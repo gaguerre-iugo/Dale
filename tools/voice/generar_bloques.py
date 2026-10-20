@@ -70,9 +70,9 @@ def norm(word):
     return re.sub(r"[^a-z0-9]", "", s)
 
 
-def synth(texto, voice, dest, key, intentos=6):
+def synth(texto, voice, dest, key, model=MODEL, intentos=6):
     body = {
-        "model": MODEL,
+        "model": model,
         "input": [{"type": "user_input", "content": [{
             "type": "text", "text": texto,
             "annotations": [{"type": "speech_metadata", "style": STYLE}]}]}],
@@ -195,6 +195,8 @@ def alinear(textos, words):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--model", default=MODEL)
+    ap.add_argument("--voice", action="append", choices=list(VOICES))
     args = ap.parse_args()
 
     speech = json.loads((I18N / "speech_texts.json").read_text(encoding="utf-8"))
@@ -203,6 +205,8 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
         for slug, voice in VOICES.items():
+            if args.voice and slug not in args.voice:
+                continue
             for bi, ids in enumerate(BLOQUES, 1):
                 faltan = [i for i in ids if i not in speech]
                 if faltan:
@@ -213,7 +217,7 @@ def main():
                 if args.dry_run:
                     continue
                 raw = tmp / f"{slug}_{bi}.wav"
-                if not synth("\n".join(textos), voice, raw, key):
+                if not synth("\n".join(textos), voice, raw, key, args.model):
                     print("   fallo la sintesis")
                     report.append({"voz": slug, "bloque": bi, "estado": "sintesis"})
                     continue

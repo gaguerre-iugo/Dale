@@ -24,3 +24,5 @@ tools/voice/*.log
 
 # Temporales del generador por bloques
 tools/voice/_*
+
+tools/voice/bloques_reporte.json
