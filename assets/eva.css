@@ -3242,3 +3242,170 @@ color: var(--ui-n4-color) !important;
 }
 
 /* === /eva-kit:panels === */
+
+/* ============================================================================
+   Tipografía del libro — Atkinson Hyperlegible
+   ----------------------------------------------------------------------------
+   Escala aprobada (móvil / escritorio):
+     Título de capítulo .... 28 px / 36 px
+     Encabezado (H2) ....... 22 px / 28 px
+     Subtítulo (H3) ........ 18 px / 22 px
+     Cuerpo ................ 18 px / 20 px
+     Pie de imagen / nota .. 16 px / 16 px
+
+   Alcance: solo el contenido del libro (#content). La interfaz (dock, paneles,
+   navegación) ya declara Atkinson en assets/fonts.css.
+
+   Este bloque va al final a propósito: cada página lleva incrustada una piel
+   (.adt-skin) que fuerza font-family ADTArimo y tamaños con !important. Con la
+   especificidad del id #content estas reglas quedan por encima sin necesidad de
+   editar los 12 HTML.
+   ========================================================================== */
+
+:root {
+  --adt-book-font: "Atkinson Hyperlegible", "Merriweather", ui-sans-serif, system-ui, sans-serif;
+  --adt-fs-chapter: 28px;
+  --adt-fs-section: 22px;
+  --adt-fs-subhead: 18px;
+  --adt-fs-body: 18px;
+  --adt-fs-caption: 16px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --adt-fs-chapter: 36px;
+    --adt-fs-section: 28px;
+    --adt-fs-subhead: 22px;
+    --adt-fs-body: 20px;
+  }
+}
+
+/* Una sola familia para todo el texto. FontAwesome queda excluida: si heredara
+   Atkinson, sus glifos se convertirían en cuadros vacíos. */
+#content,
+#content *:not(.fa):not(.fas):not(.far):not(.fab):not(.fa-solid):not(.fa-regular):not(.fa-brands) {
+  font-family: var(--adt-book-font) !important;
+}
+
+/* Cuerpo: tamaño base del bloque de lectura (también alcanza a los divs de
+   texto sin clase de tamaño, como la página de créditos). */
+#content {
+  font-size: var(--adt-fs-body);
+}
+
+/* Títulos de capítulo. Portada y separadores quedan afuera: son composiciones
+   gráficas (el título de tapa se dibuja a 72 px a propósito). */
+#content section:not([data-section-type="front_cover"]):not([data-section-type="separator"]) :is(h1, .adt-h1):not(.adt-head-num):not([data-adt-num]) {
+  font-size: var(--adt-fs-chapter) !important;
+  line-height: 1.2 !important;
+}
+
+/* Los tamaños de exhibición (text-2xl y mayores) se respetan: son números de
+   actividad, letras de columna y contadores, no texto de lectura. Se excluyen
+   dentro de :where() para no inflar la especificidad de las reglas. */
+#content :is(h2, .adt-h2):where(:not([class*="text-2xl"]):not([class*="text-3xl"]):not([class*="text-4xl"]):not([class*="text-5xl"]):not([class*="text-6xl"]):not([class*="text-7xl"])) {
+  font-size: var(--adt-fs-section) !important;
+}
+
+#content :is(h3, .adt-h3):where(:not([class*="text-2xl"]):not([class*="text-3xl"]):not([class*="text-4xl"]):not([class*="text-5xl"]):not([class*="text-6xl"]):not([class*="text-7xl"])) {
+  font-size: var(--adt-fs-subhead) !important;
+}
+
+#content :is(h4, h5, h6, .adt-h4, .adt-h5, .adt-h6):where(:not([class*="text-2xl"]):not([class*="text-3xl"]):not([class*="text-4xl"]):not([class*="text-5xl"]):not([class*="text-6xl"]):not([class*="text-7xl"])) {
+  font-size: var(--adt-fs-body) !important;
+}
+
+/* Párrafos, listas y texto corrido: es la base de las consignas. */
+#content :is(p, li, dd, dt, blockquote, .adt-body):where(:not([class*="text-2xl"]):not([class*="text-3xl"]):not([class*="text-4xl"]):not([class*="text-5xl"]):not([class*="text-6xl"]):not([class*="text-7xl"])) {
+  font-size: var(--adt-fs-body) !important;
+}
+
+/* Pies de imagen, notas y micro-etiquetas. Va después del cuerpo para que un
+   <p class="adt-caption"> conserve 16 px. */
+#content :is(figcaption, small, .adt-caption, .sr-feedback) {
+  font-size: var(--adt-fs-caption) !important;
+}
+
+/* Cabecera de actividad: la etiqueta sobre el título (la letra o sílaba de la
+   ronda) usa el tamaño de subtítulo, y el título el de encabezado de sección. */
+#content .adt-skin .adt-head-kicker {
+  font-size: var(--adt-fs-subhead) !important;
+  line-height: 1.2 !important;
+}
+
+#content .adt-skin .adt-head-title {
+  font-size: var(--adt-fs-section) !important;
+  line-height: 1.15 !important;
+}
+
+/* Atkinson tiene 400 y 700: los pesos 800/900 se sintetizan y engordan el
+   trazo, así que se normalizan a 700. */
+#content .adt-skin :is(h1, h2, h3, h4) {
+  font-weight: 700 !important;
+}
+
+/* Etiquetas de tarjetas y tableros (pg009 y pg012 las fijaban en 1.05rem). */
+#content .adt-skin :is(.adt-label-plain, .adt-label-red) {
+  font-size: var(--adt-fs-body) !important;
+}
+
+/* Suelo tipográfico: ninguna utilidad de Tailwind deja el texto por debajo del
+   cuerpo (18/20) ni del pie (16). */
+#content :is(.text-xs, .text-sm) {
+  font-size: var(--adt-fs-caption) !important;
+}
+
+#content :is(.text-base, .text-lg) {
+  font-size: var(--adt-fs-body) !important;
+}
+
+/* ============================================================================
+   Fondo de la hoja en las actividades
+   ----------------------------------------------------------------------------
+   El runtime reserva 140 px al pie del body para que el dock no tape texto. Ese
+   hueco quedaba blanco y cortaba el entramado al final de cada actividad.
+
+   El entramado se pinta también en el body de las páginas de actividad, con la
+   misma imagen, escala y origen (0 0) que el .adt-skin incrustado, así la trama
+   continúa sin costura hasta el borde de la ventana. Al ser fondo del canvas,
+   todo lo demás (dock, paneles, botones) queda por encima.
+   La imagen es el mismo tile que traen las páginas en base64, extraído a
+   assets/adt-entramado.png para no repetir 98 KB de data URI en cada hoja.
+   ========================================================================== */
+
+/* Misma imagen, escala y anclaje que declara la piel de cada página
+   (background-size:706px 408px; background-position:center top), para que la
+   trama siga exactamente donde termina la del .adt-skin. */
+body:has(.adt-skin) {
+  background-image: url("./adt-entramado.png");
+  background-repeat: repeat;
+  background-size: 706px 408px;
+  background-position: center top;
+}
+
+/* ============================================================================
+   Hover legible en los selectores del panel de Herramientas
+   ----------------------------------------------------------------------------
+   La piel pintaba las opciones no elegidas con texto blanco sobre un tinte del
+   16 % (casi blanco), así que al pasar el mouse la letra desaparecía. Acá el
+   hover pasa a fondo blanco, borde verde suave y texto oscuro; la opción
+   elegida conserva su relleno verde y la letra blanca.
+   ========================================================================== */
+
+/* Tamaño de letra: cuatro "A" de tamaño creciente. */
+body.reflow-book .reflow-reader-panel.reflow-accessibility-panel .reflow-font-settings-options button[role="radio"]:hover:not(:disabled):not([aria-disabled="true"]):not([aria-checked="true"]):not([aria-pressed="true"]) {
+  color: var(--ui-text) !important;
+  background: var(--ui-surface) !important;
+  border-color: var(--ceibal-institutional-300) !important;
+}
+
+/* Voz, velocidad y resaltado: mismo síntoma en los botones segmentados. */
+body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts-voice-options, .reflow-tts-speed-options, .reflow-tts-highlight-options) button[role="radio"]:hover:not(:disabled):not([aria-disabled="true"]):not([aria-checked="true"]) {
+  color: var(--ui-text) !important;
+  background: var(--ui-surface) !important;
+  border-color: var(--ceibal-institutional-300) !important;
+}
+
+/* El entramado es fondo del canvas: el dock (z 55/56) y la barra de navegación
+   (z 64) quedan siempre por encima, sin tocar su apilado. */
+

@@ -47,9 +47,11 @@
   font-display: swap;
 }
 
-/* Apply the font globally */
+/* Apply the font globally.
+   Atkinson Hyperlegible is the book face (accessible typeface); Merriweather
+   stays as the fallback of the local stack. */
 body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select {
-  font-family: "Merriweather", serif;
+  font-family: "Atkinson Hyperlegible", "Merriweather", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Chrome UI font. FontAwesome marker classes are exempt: this ID+universal
