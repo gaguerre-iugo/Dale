@@ -61,7 +61,34 @@
     '[data-eva-tools] .reflow-shortcuts-link kbd{background:var(--ui-surface)!important;border:1px solid var(--ui-border)!important;border-radius:.45rem!important;padding:.15rem .45rem!important;font-weight:700;color:var(--ui-text)!important}',
     'body.reflow-book [data-eva-tools] .reflow-settings-block-title{margin:.5rem 0 .125rem!important;font-size:1rem!important;color:var(--ceibal-institutional-600)!important}',
     'body.reflow-book [data-eva-tools] .reflow-panel-control-header button{border:2px solid var(--ceibal-institutional-500)!important;border-radius:.45rem!important;color:var(--ceibal-institutional-700)!important}',
-    'body.reflow-book #reflow-tts-player .reflow-tts-fab{background:var(--ceibal-institutional-600)!important;border-color:var(--ceibal-institutional-600)!important;color:#fff!important}'
+    'body.reflow-book #reflow-tts-player .reflow-tts-fab{background:var(--ceibal-institutional-600)!important;border-color:var(--ceibal-institutional-600)!important;color:#fff!important}',
+    /* Ayuda de atajos: fila del panel de Herramientas y modal. */
+    '[data-eva-tools] button.reflow-shortcuts-link{display:flex;align-items:center;justify-content:space-between;gap:.75rem;width:100%;margin:.35rem 0 0;padding:.65rem 0 .5rem;border:0!important;border-top:1px solid var(--ui-border)!important;border-radius:.55rem;background:transparent!important;font:inherit;color:inherit;text-align:left;cursor:pointer;transition:color .15s ease}',
+    '[data-eva-tools] button.reflow-shortcuts-link kbd{flex:0 0 auto;min-width:4.25rem;padding:.3rem .5rem!important;font-size:.9375rem!important;transition:border-color .15s ease,color .15s ease}',
+    /* Sin fondo al pasar el mouse: la fila se lee como el resto de la lista y
+       el aviso es el color del texto y del recuadro de la tecla. */
+    'body.reflow-book [data-eva-tools] button.reflow-shortcuts-link:hover,body.reflow-book [data-eva-tools] button.reflow-shortcuts-link:active{background:transparent!important;color:var(--ceibal-institutional-700)}',
+    'body.reflow-book [data-eva-tools] button.reflow-shortcuts-link:hover kbd{border-color:var(--ceibal-institutional-500)!important;color:var(--ceibal-institutional-700)!important}',
+    'body.reflow-book [data-eva-tools] button.reflow-shortcuts-link:focus-visible{outline:3px solid var(--ui-accent);outline-offset:2px;border-radius:.55rem}',
+    '.eva-shortcuts{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:1.5rem}',
+    '.eva-shortcuts[hidden]{display:none!important}',
+    '.eva-shortcuts-backdrop{position:absolute;inset:0;background:rgba(14,24,27,.45)}',
+    /* La piel acota todo [role="dialog"] a 18.75rem (el riel del dock), así que
+       la ayuda fija su propio ancho y superficie con el id por delante. */
+    '#eva-shortcuts .eva-shortcuts-dialog{position:relative;width:min(36rem,100%)!important;max-width:min(36rem,100%)!important;max-height:calc(100dvh - 3rem);overflow-y:auto;background:#edf1f3!important;border:0!important;border-radius:1rem!important;padding:1.5rem 1.75rem 1.75rem!important;box-shadow:0 24px 60px rgba(0,0,0,.28);color:#17313a}',
+    '#eva-shortcuts .eva-shortcuts-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.35rem}',
+    '#eva-shortcuts .eva-shortcuts-title{margin:0;font-size:1.25rem;font-weight:700;line-height:1.2;color:#15323c}',
+    '#eva-shortcuts .eva-shortcuts-close{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;padding:0;border:1px solid #9dbcb7!important;border-radius:.65rem!important;background:#d9e9e6!important;color:#0f4d4a;cursor:pointer}',
+    '#eva-shortcuts .eva-shortcuts-close svg{width:1.15rem;height:1.15rem}',
+    '#eva-shortcuts .eva-shortcuts-close:hover{background:#cbe2de!important}',
+    '#eva-shortcuts .eva-shortcuts-close:focus-visible{outline:3px solid #008078;outline-offset:2px}',
+    '#eva-shortcuts .eva-shortcuts-list{margin:0;display:flex;flex-direction:column;gap:.85rem;width:auto!important;max-width:none!important}',
+    '#eva-shortcuts .eva-shortcuts-row{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;width:auto!important;max-width:none!important}',
+    '#eva-shortcuts .eva-shortcuts-row dt{margin:0;font-size:1.0625rem;line-height:1.3;color:#243b44}',
+    '#eva-shortcuts .eva-shortcuts-row dd{margin:0;flex:0 0 auto;width:auto!important}',
+    '#eva-shortcuts .eva-shortcuts-row kbd{display:inline-block;min-width:5.5rem;padding:.35rem .7rem;border:1px solid #8d9aa1;border-radius:.4rem;background:#fff;font:inherit;font-size:.9375rem;font-weight:700;text-align:center;color:#1f2f36;box-shadow:0 1px 0 rgba(0,0,0,.08)}',
+    'body.eva-shortcuts-open{overflow:hidden}',
+    '@media (max-width:30rem){#eva-shortcuts .eva-shortcuts-dialog{padding:1.25rem!important}#eva-shortcuts .eva-shortcuts-row{gap:1rem}#eva-shortcuts .eva-shortcuts-row kbd{min-width:4.5rem;padding:.3rem .5rem}}'
   ].join("\n");
 
   function ensureStyles() {
@@ -138,6 +165,150 @@
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", code: "Escape", keyCode: 27, which: 27, bubbles: true }));
   }
 
+  /* ── Atajos de teclado ─────────────────────────────────────────────────── */
+  var SHORTCUTS = [
+    { keys: "Alt+I", label: "Abrir el índice", action: "index" },
+    { keys: "Alt+H", label: "Abrir Herramientas", action: "tools" },
+    { keys: "Alt+G", label: "Abrir el glosario", action: "glossary" },
+    { keys: "Alt+A", label: "Mostrar u ocultar esta ayuda", action: "help" },
+    { keys: "Esc", label: "Cerrar el panel abierto", action: "close" }
+  ];
+
+  var shortcutsReturnFocus = null;
+
+  function shortcutsDialog() {
+    return document.getElementById("eva-shortcuts");
+  }
+
+  function mountShortcuts() {
+    if (shortcutsDialog()) return;
+    var wrap = document.createElement("div");
+    wrap.id = "eva-shortcuts";
+    wrap.className = "eva-shortcuts";
+    wrap.hidden = true;
+    wrap.innerHTML =
+      '<div class="eva-shortcuts-backdrop" data-shortcuts-dismiss="1"></div>' +
+      '<div class="eva-shortcuts-dialog" role="dialog" aria-modal="true" aria-labelledby="eva-shortcuts-title">' +
+        '<div class="eva-shortcuts-head">' +
+          '<h2 class="eva-shortcuts-title" id="eva-shortcuts-title">Atajos de teclado</h2>' +
+          '<button type="button" class="eva-shortcuts-close" data-shortcuts-dismiss="1" aria-label="Cerrar">' + ICONS.close + '</button>' +
+        '</div>' +
+        '<dl class="eva-shortcuts-list">' +
+          SHORTCUTS.map(function (s) {
+            return '<div class="eva-shortcuts-row"><dt>' + s.label + '</dt><dd><kbd>' + s.keys + '</kbd></dd></div>';
+          }).join("") +
+        '</dl>' +
+      '</div>';
+    document.body.appendChild(wrap);
+    wrap.addEventListener("click", function (ev) {
+      var target = ev.target && ev.target.closest ? ev.target.closest("[data-shortcuts-dismiss]") : null;
+      if (target) closeShortcuts();
+    });
+  }
+
+  function openShortcuts() {
+    mountShortcuts();
+    var wrap = shortcutsDialog();
+    if (!wrap) return;
+    shortcutsReturnFocus = document.activeElement;
+    wrap.hidden = false;
+    /* Defensa: si el panel de Herramientas llegó a marcar aria-hidden en sus
+       hermanos, la ayuda tiene que quedar visible para lectores de pantalla. */
+    wrap.removeAttribute("aria-hidden");
+    document.body.classList.add("eva-shortcuts-open");
+    var cerrar = wrap.querySelector(".eva-shortcuts-close");
+    if (cerrar) cerrar.focus();
+  }
+
+  function closeShortcuts() {
+    var wrap = shortcutsDialog();
+    if (!wrap || wrap.hidden) return;
+    /* Se retira del DOM: así el diálogo modal del runtime nunca lo deja con
+       aria-hidden ni con el foco atrapado cuando vuelve a abrirse. */
+    wrap.remove();
+    document.body.classList.remove("eva-shortcuts-open");
+    var volver = shortcutsReturnFocus;
+    shortcutsReturnFocus = null;
+    if (volver && typeof volver.focus === "function") {
+      try { volver.focus(); } catch (_e) {}
+    }
+  }
+
+  function toggleShortcuts() {
+    var wrap = shortcutsDialog();
+    if (wrap && !wrap.hidden) closeShortcuts();
+    else openShortcuts();
+  }
+
+  /* El panel de Herramientas es un diálogo modal del runtime: atrapa el foco y
+     deja el resto del documento con aria-hidden. Por eso se cierra antes de
+     mostrar la ayuda, y la ayuda se abre sola como diálogo. */
+  function openShortcutsFromTools() {
+    closeNativeDialog();
+    setTimeout(openShortcuts, 250);
+  }
+
+  function runShortcut(action) {
+    if (action === "help") { toggleShortcuts(); return; }
+    var wrap = shortcutsDialog();
+    if (wrap && !wrap.hidden) closeShortcuts();
+    if (action === "index") {
+      var indice = document.getElementById("reflow-index");
+      if (indice) indice.click();
+      return;
+    }
+    if (action === "tools") {
+      var herramientas = document.getElementById("reflow-tools");
+      if (herramientas) herramientas.click();
+      return;
+    }
+    if (action === "glossary") {
+      var glosario = document.getElementById("reflow-glossary");
+      if (glosario) glosario.click();
+    }
+  }
+
+  function isEditable(el) {
+    if (!el || !el.tagName) return false;
+    var tag = el.tagName;
+    return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable === true;
+  }
+
+  var SHORTCUT_ACTIONS = { KeyI: "index", KeyH: "tools", KeyG: "glossary", KeyA: "help" };
+
+  function onShortcutKey(ev) {
+    var wrap = shortcutsDialog();
+    var abierta = Boolean(wrap) && !wrap.hidden;
+
+    if (ev.key === "Escape" || ev.code === "Escape") {
+      if (abierta) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        closeShortcuts();
+      }
+      /* Sin la ayuda abierta no se intercepta: el runtime ya cierra sus
+         paneles con Escape. */
+      return;
+    }
+
+    if (abierta && ev.key === "Tab") {
+      /* La ayuda tiene un solo control: el foco no sale del diálogo. */
+      ev.preventDefault();
+      var cerrar = wrap.querySelector(".eva-shortcuts-close");
+      if (cerrar) cerrar.focus();
+      return;
+    }
+
+    if (!ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey || isEditable(ev.target)) return;
+    var action = SHORTCUT_ACTIONS[ev.code];
+    if (!action) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    runShortcut(action);
+  }
+
+  document.addEventListener("keydown", onShortcutKey, true);
+
   var FONT_SIZES = [16, 17.5, 19, 20.5];
   var FONT_LABELS = ["Normal", "Grande", "Extra grande", "Máximo"];
   var FONT_KEYS = ["normal", "large", "xlarge", "xxlarge"];
@@ -206,7 +377,8 @@
         '<p class="reflow-settings-block-title">Pantalla</p>' +
         switchRow("reduceMotion", "Reducir movimiento", "Sigue la configuración del sistema: movimiento reducido desactivado.") +
         switchRow("hideMenus", "Ocultar menús automáticamente", "") +
-        '<p class="reflow-shortcuts-link"><span>Atajos de teclado</span><kbd>Alt+A</kbd></p>' +
+        '<button type="button" class="reflow-shortcuts-link" data-shortcuts-open="1" aria-haspopup="dialog">' +
+          '<span>Atajos de teclado</span><kbd>Alt+A</kbd></button>' +
       '</div>';
 
     shell.querySelector(".reflow-panel-close").addEventListener("click", closeNativeDialog);
@@ -243,6 +415,8 @@
         syncTools(shell);
       });
     });
+    var atajos = shell.querySelector("[data-shortcuts-open]");
+    if (atajos) atajos.addEventListener("click", openShortcutsFromTools);
     syncTools(shell);
   }
 
