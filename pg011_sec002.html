@@ -69,7 +69,15 @@
 .adt-skin > section.adt-page-open .adt-grid > *{background:#fff!important;border:1px dashed #ef3b35!important;border-radius:0!important;box-shadow:none!important;margin:-0.5px!important}
 /* bloque de instrucciones tipo bloc */
 .adt-notepad{background:#fff!important;border:3px solid #1d1d1d!important;border-radius:18px!important;box-shadow:0 12px 0 rgba(0,0,0,.08)!important;padding:46px 28px 28px!important;position:relative!important}
-.adt-notepad::before{content:'';position:absolute;top:10px;left:20px;right:20px;height:18px;background-image:radial-gradient(circle at 9px 9px,#fff 6px,#1d1d1d 7px,transparent 8px);background-size:34px 18px;background-repeat:repeat-x;pointer-events:none}</style><section data-section-type="activity_custom_sound_pairs" data-id="pg011_s2" aria-labelledby="activity-heading-pg011-40" class="adt-page-open max-w-6xl mx-auto my-8">
+.adt-notepad::before{content:'';position:absolute;top:10px;left:20px;right:20px;height:18px;background-image:radial-gradient(circle at 9px 9px,#fff 6px,#1d1d1d 7px,transparent 8px);background-size:34px 18px;background-repeat:repeat-x;pointer-events:none}
+/* Parejas: puntero y estados (selección y pareja encontrada) */
+.sound-card{position:relative!important;transition:none!important}
+.sound-card:not(:disabled),.sound-card:not(:disabled) img{cursor:pointer}
+.adt-skin > section.adt-page-open .adt-grid > .sound-card.is-selected{border:2px solid #6d6a54!important;background:#eae7d8!important;box-shadow:0 0 0 4px rgba(109,106,84,.22)!important}
+.adt-skin > section.adt-page-open .adt-grid > .sound-card.is-matched{border:2px solid #1a9e4b!important;background:#fff!important;box-shadow:none!important}
+.adt-skin > section.adt-page-open .adt-grid > .sound-card.is-matched,.adt-skin > section.adt-page-open .adt-grid > .sound-card.is-matched img{cursor:default}
+.sound-card .activity-feedback-icon{position:absolute;top:8px;right:12px;color:#1a9e4b;font-size:1.6rem;font-weight:700;line-height:1}
+</style><section data-section-type="activity_custom_sound_pairs" data-id="pg011_s2" aria-labelledby="activity-heading-pg011-40" class="adt-page-open max-w-6xl mx-auto my-8">
   <div class="adt-notepad rounded-3xl p-8 mb-10">
     <h1 id="activity-heading-pg011-40" class="adt-head mb-4">
       <span data-id="text-pg011-40" class="adt-head-num" data-adt-num>6</span>
@@ -80,7 +88,7 @@
     </h1>
 
     <div class="p-6 text-left">
-      <p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-1">Mir&#xe1; las im&#xe1;genes que aparecen en la pantalla y tocalas para escuchar atentamente c&#xf3;mo se llama cada una.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-2">Ten&#xe9;s que armar 3 parejas de palabras que empiecen con el mismo sonido.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-3">Busc&#xe1; y junt&#xe1; las im&#xe1;genes que empiezan con el mismo sonido.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-4">&#xbf;Ten&#xe9;s dudas? Toc&#xe1; una imagen para escuchar nuevamente su nombre y reconocer su sonido inicial antes de buscar su pareja.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-5">Segu&#xed; jugando hasta encontrar las 3 parejas completas.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-6">&#xa1;Atenci&#xf3;n! Hay dos tarjetas trampa que no tienen pareja.</p>
+      <p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-1">Mir&#xe1; las im&#xe1;genes y tocalas para escuchar c&#xf3;mo se llama cada una.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-2">Arm&#xe1; 3 parejas de palabras que empiecen con el mismo sonido.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-3">Eleg&#xed; una tarjeta y despu&#xe9;s otra que empiece igual para formar la pareja.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-4">&#xbf;Ten&#xe9;s dudas? <br>Toc&#xe1; una imagen para escuchar otra vez su nombre y comparar su sonido inicial.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-5">Segu&#xed; jugando hasta encontrar las 3 parejas.</p><p class="text-lg leading-relaxed text-gray-800" data-id="text-pg011-43-6">&#xa1;Atenci&#xf3;n! <br>Hay 2 tarjetas trampa que no tienen pareja.</p>
     </div>
 
     <div class="mt-8">
@@ -139,6 +147,21 @@
       section.dataset.adtInitialized = 'true';
 
       const cards = Array.from(section.querySelectorAll('[data-activity-item]'));
+      // Orden aleatorio de las tarjetas en cada carga
+      (function () {
+        const firstCard = section.querySelector('[data-activity-item]');
+        const grid = firstCard ? firstCard.closest('.adt-grid') : null;
+        if (!grid) return;
+        const slots = Array.from(grid.children);
+        for (let i = slots.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = slots[i];
+          slots[i] = slots[j];
+          slots[j] = temp;
+        }
+        slots.forEach(function (slot) { grid.appendChild(slot); });
+      })();
+
       const status = section.querySelector('[data-activity-status]');
       const pairSlots = Array.from(section.querySelectorAll('[data-pair-slot]'));
       let selectedCard = null;
@@ -156,34 +179,35 @@
       };
 
       const clearVisualState = function (card) {
-        card.classList.remove('border-blue-500', 'bg-blue-50', 'ring-4', 'ring-blue-200', 'border-green-500', 'bg-green-50', 'ring-green-300', 'shadow-lg', 'border-red-500', 'bg-red-100', 'opacity-70');
+        card.classList.remove('is-selected', 'is-matched');
         const badge = card.querySelector('.activity-feedback-icon');
         if (badge) badge.remove();
       };
 
-      const addBadge = function (card, symbol, srLabel, colorClass) {
+      const addBadge = function (card, symbol, srLabel) {
         const badge = document.createElement('span');
-        badge.className = 'activity-feedback-icon mt-3 inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-bold ' + colorClass;
-        badge.setAttribute('aria-label', srLabel);
-        badge.textContent = symbol + ' ' + srLabel;
+        badge.className = 'activity-feedback-icon';
+        badge.setAttribute('aria-hidden', 'true');
+        badge.textContent = symbol;
         card.appendChild(badge);
       };
+        card.setAttribute('aria-label', (card.dataset.label || '') + ', ' + srLabel);
 
       const setSelected = function (card) {
         if (selectedCard && selectedCard !== card) {
           clearVisualState(selectedCard);
-          selectedCard.classList.add('border-gray-200');
+          selectedCard.setAttribute('aria-pressed', 'false');
         }
         selectedCard = card;
         clearVisualState(card);
-        card.classList.remove('border-gray-200');
-        card.classList.add('border-blue-500', 'bg-blue-50', 'ring-4', 'ring-blue-200');
+        card.classList.add('is-selected');
+        card.setAttribute('aria-pressed', 'true');
       };
 
       const clearSelected = function () {
         if (selectedCard && selectedCard.dataset.matched !== 'true') {
           clearVisualState(selectedCard);
-          selectedCard.classList.add('border-gray-200');
+          selectedCard.setAttribute('aria-pressed', 'false');
         }
         selectedCard = null;
       };
@@ -208,27 +232,11 @@
           clearVisualState(card);
           card.dataset.matched = 'true';
           card.setAttribute('aria-pressed', 'true');
-          card.classList.remove('border-gray-200');
-          card.classList.add('border-green-500', 'bg-green-50', 'ring-4', 'ring-green-300', 'shadow-lg');
-          addBadge(card, '✓', 'Pareja encontrada', 'bg-green-100 text-green-700');
+          card.disabled = true;
+          card.setAttribute('aria-disabled', 'true');
+          card.classList.add('is-matched');
+          addBadge(card, '✓', 'pareja encontrada, no seleccionable');
         });
-      };
-
-      const markMismatch = function (first, second) {
-        [first, second].forEach(function (card) {
-          clearVisualState(card);
-          card.classList.remove('border-gray-200');
-          card.classList.add('border-red-500', 'bg-red-100');
-          addBadge(card, '✗', 'No hacen pareja', 'bg-red-100 text-red-700');
-        });
-        window.setTimeout(function () {
-          [first, second].forEach(function (card) {
-            if (!card.dataset.matched) {
-              clearVisualState(card);
-              card.classList.add('border-gray-200');
-            }
-          });
-        }, 900);
       };
 
       const handleChoice = function (card) {
@@ -280,7 +288,10 @@
             }
           }
         } else {
-          markMismatch(first, second);
+          clearVisualState(first);
+          clearVisualState(second);
+          first.setAttribute('aria-pressed', 'false');
+          second.setAttribute('aria-pressed', 'false');
           selectedCard = null;
           if (status) {
             status.textContent = '✗ Estas tarjetas no empiezan con el mismo sonido. Probá otra vez.';
@@ -332,8 +343,9 @@
           cards.forEach(function (card) {
             delete card.dataset.matched;
             card.setAttribute('aria-pressed', 'false');
+            card.disabled = false;
+            card.removeAttribute('aria-disabled');
             clearVisualState(card);
-            card.classList.add('border-gray-200');
           });
           updatePairSlots();
           if (status) {
