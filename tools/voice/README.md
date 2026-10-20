@@ -94,3 +94,29 @@ Con Playwright sobre el libro servido en HTTP y desde `file://`:
 - Normalización global de volumen cuando esté todo convertido.
 - El resaltado palabra por palabra queda fuera del dock porque este libro tiene
   `features.highlight=false` (1930 lo tiene activo y por eso lo muestra).
+
+
+## Fluidez: lectura por bloques
+
+Generar cada texto por separado hace que la tapa y los creditos suenen a lista:
+cada clip trae su propia entonacion y sus silencios. `generar_bloques.py` pide
+**una toma continua por bloque de items cortos** y la corta en los limites
+reales de cada item.
+
+- La alineacion es forzada: faster-whisper (`base`, CPU int8) da timestamps por
+  palabra y se alinean contra `speech_texts.json` con Needleman-Wunsch. No
+  depende de que el modelo respete pausas: pedir `<long pause>` daba conteos
+  distintos en cada toma.
+- Solo agrupa items cortos (tapa, creditos). Los textos largos o con numeros
+  deletreados (ISBN, datos de edicion) siguen generandose por item: ahi el
+  propio texto tiene pausas internas y la alineacion de numeros es fragil.
+- Requisito: `faster-whisper` ademas de `ffmpeg`.
+
+Estado actual: aplicado a **Asesora** en paginas 1 y 2 (5 + 10 items), con cada
+segmento verificado por transcripcion. **Consultor** sigue por item: la cuota
+diaria de Gemini (100 pedidos/dia en Tier 1) se agoto durante la prueba. Cuando
+se renueve, el mismo comando completa las dos voces:
+
+```bash
+python tools/voice/generar_bloques.py
+```

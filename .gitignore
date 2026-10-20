@@ -21,3 +21,6 @@ tools/voice/*.log
 # Archivos de editor
 .vscode/
 .idea/
+
+# Temporales del generador por bloques
+tools/voice/_*
