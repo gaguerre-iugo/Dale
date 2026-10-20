@@ -1,0 +1,170 @@
+/* Ajustes de interfaz para el lector con dos voces.
+ *
+ * 1. La barra flotante de lectura (prev/play/next/stop + voz + velocidad + volumen)
+ *    se renderiza dentro de un contenedor de 300px (--dock-width). Al agregar el
+ *    selector de voz el contenido no entraba y el volumen quedaba fuera de pantalla.
+ *    El contenedor pasa a ajustarse al contenido.
+ * 2. En Configuracion, la fila "Voz del narrador" + control segmentado no entra en
+ *    los 300px del panel: se permite el salto de linea en las filas con radios.
+ * 3. En pantallas chicas la barra se envuelve en vez de desbordar.
+ */
+
+div:has(> [role="group"][aria-label="Controles de lectura en voz alta"]) {
+  width: max-content !important;
+  max-width: none !important;
+}
+
+[role="group"][aria-labelledby]:has(> div > [role="radio"]) {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  div:has(> [role="group"][aria-label="Controles de lectura en voz alta"]) {
+    max-width: calc(100vw - 0.5rem) !important;
+  }
+
+  [role="group"][aria-label="Controles de lectura en voz alta"] {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+/* === EVA: panel de Herramientas y reproductor del kit === */
+
+/* El transporte nativo sigue en el DOM (se usa por accesibilidad y por el
+   puente), pero su barra flotante la reemplaza el reproductor del kit. */
+div:has(> [role="group"][aria-label="Controles de lectura en voz alta"]) {
+  display: none !important;
+}
+
+/* Contenedor del panel: el runtime lo crea como popover de 300 px. */
+[data-eva-tools="1"] {
+  width: min(18.75rem, 100vw) !important;
+  max-width: min(18.75rem, 100vw) !important;
+  border-radius: var(--ceibal-radius-md) !important;
+}
+
+[data-eva-tools="1"] > .eva-tools-shell {
+  width: 100% !important;
+  max-width: none !important;
+  height: min(42rem, calc(100dvh - 6rem)) !important;
+  padding: 1rem !important;
+  gap: .5rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+[data-eva-tools="1"] .reflow-settings-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: .25rem;
+}
+
+[data-eva-tools="1"] .reflow-panel-control-header {
+  flex: 0 0 auto;
+}
+
+/* Fila de voz/velocidad del panel: etiqueta arriba y control a lo ancho. */
+[data-eva-tools="1"] .reflow-setting-row:has(> [role="radiogroup"]) {
+  grid-template-columns: minmax(0, 1fr) !important;
+  row-gap: .5rem !important;
+}
+
+[data-eva-tools="1"] .reflow-setting-row > [role="radiogroup"] {
+  width: 100%;
+}
+
+/* El control segmentado del kit nace oscuro (pensado para el dock flotante).
+   Dentro del panel claro usa la superficie hundida y texto oscuro. */
+[data-eva-tools="1"] .reflow-tts-voice-options,
+[data-eva-tools="1"] .reflow-tts-speed-options {
+  background: var(--ui-surface-sunken) !important;
+}
+
+[data-eva-tools="1"] .reflow-tts-voice-options button,
+[data-eva-tools="1"] .reflow-tts-speed-options button {
+  min-height: 2.5rem !important;
+  color: var(--ui-text) !important;
+  font-size: .95rem !important;
+}
+
+[data-eva-tools="1"] .reflow-tts-voice-options button[aria-checked="true"],
+[data-eva-tools="1"] .reflow-tts-speed-options button[aria-checked="true"] {
+  border-color: var(--ui-accent) !important;
+  color: var(--ui-on-accent) !important;
+  background: var(--ui-accent) !important;
+}
+
+/* Títulos de bloque en turquesa institucional, como el 1930. */
+[data-eva-tools="1"] .reflow-settings-block-title {
+  color: var(--ceibal-institutional-600) !important;
+}
+
+/* Cierre con recuadro turquesa (foco visible permanente del kit). */
+[data-eva-tools="1"] .reflow-panel-close {
+  border: 2px solid var(--ceibal-institutional-500) !important;
+  border-radius: .45rem !important;
+  color: var(--ceibal-institutional-700) !important;
+}
+
+[data-eva-tools="1"] > .eva-tools-shell {
+  height: min(46rem, calc(100dvh - 4rem)) !important;
+}
+
+/* Compactar filas para que el panel entre completo, como el 1930. */
+body.reflow-book [data-eva-tools="1"] .reflow-setting-row {
+  padding-block: .35rem !important;
+  min-height: 0 !important;
+}
+
+body.reflow-book [data-eva-tools="1"] .reflow-settings-block-title {
+  color: var(--ceibal-institutional-600) !important;
+}
+
+body.reflow-book [data-eva-tools="1"] .reflow-panel-control-header button {
+  border: 2px solid var(--ceibal-institutional-500) !important;
+  border-radius: .45rem !important;
+  color: var(--ceibal-institutional-700) !important;
+}
+
+/* Fila del panel: etiqueta a la izquierda, control a la derecha. */
+body.reflow-book [data-eva-tools="1"] .reflow-setting-row {
+  display: flex !important;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem 1rem;
+}
+
+body.reflow-book [data-eva-tools="1"] .reflow-setting-row > .reflow-setting-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+body.reflow-book [data-eva-tools="1"] .reflow-setting-row > [role="switch"] {
+  flex: 0 0 auto;
+}
+
+body.reflow-book [data-eva-tools="1"] .reflow-setting-row:has(> [role="radiogroup"]) {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+body.reflow-book [data-eva-tools="1"] .reflow-settings-block-title {
+  font-size: 1rem !important;
+}
+
+body.reflow-book [data-eva-tools="1"] .reflow-setting-row {
+  padding-block: .2rem !important;
+}
+
+body.reflow-book [data-eva-tools="1"] .reflow-settings-block-title {
+  margin: .5rem 0 .125rem !important;
+}
+
+body.reflow-book #reflow-tts-player .reflow-tts-fab {
+  background: var(--ceibal-institutional-600) !important;
+  border-color: var(--ceibal-institutional-600) !important;
+  color: #fff !important;
+}

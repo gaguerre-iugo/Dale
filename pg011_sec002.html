@@ -30,7 +30,9 @@
 .adt-skin .adt-head-num{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;border-radius:50%!important;background:#e8423b!important;color:#fff!important;border:0!important;padding:0!important;margin:0!important;font-size:44px!important;font-weight:700!important;line-height:1!important;flex:0 0 auto!important;box-shadow:none!important}
 .adt-skin .adt-head-kicker{display:block!important;color:#e8423b!important;font-size:1rem!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:.08em!important;line-height:1.2!important;margin:0 0 .25rem!important}
 .adt-skin .adt-head-title{display:block!important;color:#6e6c4f!important;font-size:2rem!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.02em!important;line-height:1.15!important;margin:0 0 .5rem!important}
-</style></head>
+</style>
+    <link href="./assets/voice-ui.css?v=1" rel="stylesheet">
+</head>
 
 <body class="min-h-screen flex items-center justify-center">
     <main class="w-full">
@@ -146,7 +148,6 @@
       if (!section || section.dataset.adtInitialized === 'true') return;
       section.dataset.adtInitialized = 'true';
 
-      const cards = Array.from(section.querySelectorAll('[data-activity-item]'));
       // Orden aleatorio de las tarjetas en cada carga
       (function () {
         const firstCard = section.querySelector('[data-activity-item]');
@@ -162,6 +163,7 @@
         slots.forEach(function (slot) { grid.appendChild(slot); });
       })();
 
+      const cards = Array.from(section.querySelectorAll('[data-activity-item]'));
       const status = section.querySelector('[data-activity-status]');
       const pairSlots = Array.from(section.querySelectorAll('[data-pair-slot]'));
       let selectedCard = null;
@@ -190,8 +192,8 @@
         badge.setAttribute('aria-hidden', 'true');
         badge.textContent = symbol;
         card.appendChild(badge);
-      };
         card.setAttribute('aria-label', (card.dataset.label || '') + ', ' + srLabel);
+      };
 
       const setSelected = function (card) {
         if (selectedCard && selectedCard !== card) {
@@ -231,9 +233,9 @@
         [first, second].forEach(function (card) {
           clearVisualState(card);
           card.dataset.matched = 'true';
-          card.setAttribute('aria-pressed', 'true');
           card.disabled = true;
           card.setAttribute('aria-disabled', 'true');
+          card.setAttribute('aria-pressed', 'true');
           card.classList.add('is-matched');
           addBadge(card, '✓', 'pareja encontrada, no seleccionable');
         });
@@ -342,9 +344,9 @@
           matchedPairs = [];
           cards.forEach(function (card) {
             delete card.dataset.matched;
-            card.setAttribute('aria-pressed', 'false');
             card.disabled = false;
             card.removeAttribute('aria-disabled');
+            card.setAttribute('aria-pressed', 'false');
             clearVisualState(card);
           });
           updatePairSlots();

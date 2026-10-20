@@ -65,16 +65,21 @@ Dale/                                  # repository root = the web app
 │           ├── texts.json             # Display text (textId → string)
 │           ├── speech_texts.json      # Prepared read-aloud wording
 │           ├── audios.json            # Audio mappings (textId → mp3 filename)
+│           ├── audio_voices.json      # Two narrators: Asesora (primary) / Consultor (secondary)
+│           ├── voices/                # Per-voice audio: voices/{asesora,consultor}/audio/*.mp3
 │           ├── glossary.json          # Glossary (word → object)
 │           ├── images.json            # {} placeholder
 │           ├── videos.json            # {} placeholder
 │           ├── timecode/
 │           │   └── timecode_output.json   # {} (no word-level sync for this book)
-│           └── audio/                 # 436 MP3 files
+│           └── audio/                 # 436 MP3 files (base/historic voice)
 │
 └── assets/
     ├── config.json                    # Title, languages, feature flags
-    ├── base.bundle.local.js           # Main JS runtime (loaded by every page)
+    ├── base.bundle.local.js           # Main JS runtime (patched: voice menu + __adtKit bridge)
+    ├── eva.css                        # EVA skin + ported eva-kit panels (loaded by every page)
+    ├── eva-ui.js                      # EVA adapter: toolbar, tools panel, player (defer)
+    ├── voice-ui.css                   # Legacy layout fixes for the native voice controls
     ├── offline-preloader.js           # Generated: embeds pages + JSON for file://
     ├── scorm.js                       # SCORM 1.2 bridge
     ├── base.bundle.min.js             # Minified runtime copy — NOT loaded
@@ -105,9 +110,12 @@ Every page loads three classic scripts at the end of `<body>`, **in this order**
 <script src="./assets/base.bundle.local.js"></script>
 ```
 
-- **`offline-preloader.js`** is generated. It holds an inline map of 25 keys — all 12 page HTML files, `index.html`, `assets/config.json`, `content/pages.json`, `content/toc.json`, `content/navigation/nav.html`, the six `content/i18n/es-UY/*.json` files, `content/i18n/es-UY/timecode/timecode_output.json`, and `assets/interface_translations/es-UY/interface_translations.json`. It does **not** embed images, audio or CSS. Its purpose is to let the book open from `file://` (where `fetch` of local JSON is blocked). **After editing any of those files, regenerate this preloader**; otherwise the `file://` copy serves stale content while the HTTP-served copy shows the edit.
+- **`offline-preloader.js`** is generated. It holds an inline map of 25 keys — all 12 page HTML files, `index.html`, `assets/config.json`, `content/pages.json`, `content/toc.json`, `content/navigation/nav.html`, the six `content/i18n/es-UY/*.json` files, `content/i18n/es-UY/timecode/timecode_output.json`, and `assets/interface_translations/es-UY/interface_translations.json`. It also carries `audio_voices.json` through an added runtime assignment (`tools/voice/patch_preloader.py`), so the voice menu works from `file://`. It does **not** embed images, audio or CSS. Its purpose is to let the book open from `file://` (where `fetch` of local JSON is blocked). **After editing any of those files, regenerate this preloader** —and re-run the patch—; otherwise the `file://` copy serves stale content while the HTTP-served copy shows the edit.
 - **`scorm.js`** exposes the SCORM 1.2 API when the bundle runs inside an LMS.
-- **`base.bundle.local.js`** is the reader runtime (interface, dock, glossary, read-aloud, easy-read, state).
+- **`base.bundle.local.js`** is the reader runtime (interface, dock, glossary, read-aloud, easy-read, state). It is patched —not hand-edited— twice: the narrator dropdown in the native dock (`tools/voice/patch_dock_voice.py`) and the `window.__adtKit` bridge that lets the EVA adapter read/change settings and drive playback (`tools/eva/patch_runtime_bridge.py`). A backup of the original bundle is kept by the first script.
+- **`eva.css`** is the EVA skin and the ported eva-kit components (toolbar, player, panels). The panel block is appended by `tools/eva/port_kit_css.py`, which rewrites the kit's `url("../icons/…")` to `url("./icons/…")`.
+- **`eva-ui.js`** mounts the EVA toolbar, the custom **Herramientas** panel and the kit read-aloud player, and forwards every action to the runtime. It hides the native dock and the native read-aloud toolbar, which stay in the DOM for anchoring and transport. Settings need `window.__adtKit`.
+- **`voice-ui.css`** is the legacy layout fix for the native voice controls. The visible UI no longer uses it; kept for the hidden native toolbar.
 
 The page content starts hidden (`#content` has the `opacity-0` class) and the runtime removes it after the interface initialises. On a cold load the fade-in can take a second or two; that is expected.
 
@@ -207,6 +215,21 @@ Maps each text ID to its MP3 filename in `audio/`:
 ```
 
 Audio files live at `content/i18n/{lang}/audio/{filename}.mp3`. The mapping is 1:1 and complete: 436 keys, 436 files, no orphans.
+
+### `content/i18n/{lang}/audio_voices.json` — Two Narrators
+
+Optional. Declares alternate narrators; the runtime shows a "Voz del narrador" control only when **both** maps are non-empty.
+
+```json
+{
+  "voices": {
+    "primary":   { "label": "Asesora",   "audios": { "pg001_n0002": "../voices/asesora/audio/pg001_n0002.mp3" } },
+    "secondary": { "label": "Consultor", "audios": { "pg001_n0002": "../voices/consultor/audio/pg001_n0002.mp3" } }
+  }
+}
+```
+
+The runtime builds `./content/i18n/{lang}/audio/{filename}`, so the `../` is what lets a voice live in `voices/<voz>/audio/`. Each map must cover **all** 688 ids (converted pages point at the voice, the rest fall back to the historical MP3); the runtime picks one whole map, it does not fall back per id. The selection persists in `localStorage.narratorVoice` and is exposed in both the tools panel and the read-aloud dock. See `tools/voice/README.md`.
 
 ### `content/i18n/{lang}/glossary.json` — Glossary
 
@@ -406,11 +429,13 @@ Update both:
 | `gl{NNN}.mp3` | Glossary word pronunciation |
 | `gl{NNN}_def.mp3` | Glossary definition read-aloud |
 
+Per-voice files keep the same id as the filename but live under `content/i18n/es-UY/voices/{asesora,consultor}/audio/`, and are declared in `audio_voices.json`.
+
 Filenames match their text ID in every case, so `audios.json` can stay a 1:1 map.
 
 ## Important: What Not to Edit
 
-- **`assets/base.bundle.local.js`** — compiled JS runtime; do not modify. `assets/base.bundle.min.js` and `activities.bundle.local.js` are other builds of the same runtime and are not loaded by any page.
+- **`assets/base.bundle.local.js`** — compiled JS runtime; do not edit by hand. The dock narrator menu is added by `tools/voice/patch_dock_voice.py` (idempotent, keeps a `.orig` backup). `assets/base.bundle.min.js` and `activities.bundle.local.js` are other builds of the same runtime and are not loaded by any page.
 - **`assets/offline-preloader.js`** — generated; regenerate it instead of hand-editing.
 - **`assets/libs/`** — vendored third-party libraries (FontAwesome).
 - **`assets/fonts/`** and **`assets/fonts.css`** — font files and their declarations.
@@ -425,4 +450,4 @@ Files that exist in the bundle but are not used by it. They are harmless, and re
 - `assets/auto-fit.js`, `assets/activities.bundle.local.js`, `assets/tailwind_css.css` — never referenced.
 - `assets/base.bundle.min.js`, `assets/base.bundle.min.js.map` — unused build of the runtime (~4.5 MB).
 - `content/i18n/es-UY/images.json`, `videos.json`, `timecode/timecode_output.json` — empty placeholders (`{}`).
-- The runtime requests `content/i18n/es-UY/audio_voices.json` and `content/i18n/es-UY/timecode/timecode_voices.json`, which do not exist. Both 404s are expected and handled; they only mean no alternate voice catalogue is installed.
+- The runtime requests `content/i18n/es-UY/timecode/timecode_voices.json`, which does not exist; the 404 is expected and handled (no timecoded alternate voice). `audio_voices.json` now exists and is embedded by the preloader patch.

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* ============================================================================
    Piel EVA para el bundle ADT — Propuesta Dale!: Cuadernillo Juegos
    ----------------------------------------------------------------------------
@@ -1369,7 +1370,7 @@ body.reflow-book .reflow-reader-panel [role="radio"][aria-checked="true"]::after
 body.reflow-book #reflow-tts-player .reflow-tts-voice-options button[aria-checked="true"]::after,
 body.reflow-book #reflow-tts-player .reflow-tts-speed-options button[aria-checked="true"]::after,
 body.reflow-book #reflow-tts-player .reflow-tts-highlight-options button[aria-checked="true"]::after {
-content: "âœ“";
+content: "✓";
   margin-inline-start: .375rem;
   font-weight: var(--ui-weight-bold);
   line-height: 1;
@@ -1641,3 +1642,1603 @@ button[aria-label^="Velocidad de reproducción"]:focus-visible {
   max-width: 100% !important;
   min-width: 0 !important;
 }
+
+/* === eva-kit:panels (portado) === */
+@media (min-width: 48rem) {
+body.reflow-book.reflow-panel-left-open main {
+transform: none !important;
+}
+
+body.reflow-book.reflow-panel-right-open main {
+transform: none !important;
+}
+
+}
+
+@media (max-width: 30rem) {
+body.reflow-book .reflow-reader-panel.reflow-navigation-panel,
+  body.reflow-book .reflow-reader-panel.reflow-accessibility-panel,
+  body.reflow-book .reflow-reader-panel.reflow-glossary-panel {
+width: min(18rem, calc(100vw - .75rem)) !important;
+    max-width: calc(100vw - .75rem) !important;
+}
+
+}
+
+/* Reading size is part of the accessibility settings panel. */
+#reflow-font-settings {
+display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 1rem 0;
+}
+
+#reflow-font-settings > header {
+padding: 0 0 .5rem;
+}
+
+#reflow-font-settings h3 {
+margin: 0;
+  color: rgb(255 255 255 / 58%);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.reflow-font-settings-card {
+display: flex;
+  flex-direction: column;
+  gap: var(--ceibal-space-3);
+  padding: var(--ceibal-space-3);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ceibal-radius-lg);
+  color: var(--ui-text);
+  background: var(--ui-surface-sunken);
+}
+
+#reflow-font-settings-label {
+font-size: 1rem;
+  font-weight: 700;
+}
+
+.reflow-font-settings-options {
+display: grid;
+  /* Punto 10 · Diseño A: fila de cuatro «A» de tamaño creciente (el nombre va
+     en la etiqueta accesible). Antes era una grilla 2×2 de palabras. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--ceibal-space-1);
+  padding: var(--ceibal-space-1);
+  border-radius: var(--ceibal-radius-md);
+  background: var(--ui-surface);
+}
+
+.reflow-font-settings-options button {
+min-height: 2.875rem;
+  padding: var(--ceibal-space-2) var(--ceibal-space-1);
+  border: 1px solid transparent;
+  border-radius: var(--ceibal-radius-sm);
+  color: var(--ui-text);
+  background: transparent;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reflow-font-settings-options button[aria-pressed="true"] {
+border-color: transparent;
+  color: var(--ui-on-accent);
+  background: var(--ui-accent);
+  box-shadow: var(--ceibal-shadow-button);
+}
+
+.reflow-font-settings-options button:focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ui-focus);
+  outline-offset: 2px;
+  box-shadow: var(--ceibal-shadow-focus);
+}
+
+/* Punto 10 · La «A» crece con cada opción; el nombre del tamaño queda en
+   `aria-label` (arriba), no visible. */
+.reflow-font-settings-options .reflow-font-size-glyph {
+display: inline-block;
+  line-height: 1;
+  /* Punto 24 · La opción seleccionable no cambia el peso (400); se distingue por
+     el relleno y el check. */
+  font-weight: 400;
+}
+
+.reflow-font-settings-options button[data-reflow-font-size="normal"] .reflow-font-size-glyph {
+font-size: 1rem;
+}
+
+.reflow-font-settings-options button[data-reflow-font-size="large"] .reflow-font-size-glyph {
+font-size: 1.3rem;
+}
+
+.reflow-font-settings-options button[data-reflow-font-size="xlarge"] .reflow-font-size-glyph {
+font-size: 1.62rem;
+}
+
+.reflow-font-settings-options button[data-reflow-font-size="xxlarge"] .reflow-font-size-glyph {
+font-size: 1.95rem;
+}
+
+/* The Tools panel follows the approved information architecture without
+   wrapping every preference in a separate card. Native runtime controls keep
+   their state and event handlers; this layer only supplies order, grouping
+   and accessible explanatory text. */
+body.reflow-book .reflow-settings-organized {
+gap: 0 !important;
+  padding-inline: .75rem !important;
+}
+
+body.reflow-book .reflow-settings-organized > section {
+gap: 0 !important;
+  padding-block: .75rem !important;
+}
+
+body.reflow-book .reflow-settings-organized > section > header {
+padding: 0 0 .5rem !important;
+}
+
+body.reflow-book .reflow-settings-organized > section h3 {
+margin: 0 !important;
+  color: var(--ceibal-gray-300) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.25 !important;
+  text-transform: none !important;
+}
+
+body.reflow-book .reflow-settings-organized > section > div {
+padding-inline: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-row {
+box-sizing: border-box;
+  min-width: 0;
+  padding: .75rem .25rem !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--ui-border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+body.reflow-book .reflow-settings-organized
+  .reflow-settings-preferences-continuation {
+padding-top: 0 !important;
+}
+
+body.reflow-book .reflow-settings-organized
+  .reflow-settings-preferences-continuation > header {
+display: none !important;
+}
+
+/* Tres bloques con título: Leer, Escuchar y Pantalla. Las secciones y tarjetas
+   que renderiza el runtime se aplanan con display:contents para que sus filas
+   sean ítems del mismo flujo; así se agrupan por bloque sin mover nodos que
+   React controla. El orden visual lo fija siempre `order`, nunca el DOM. */
+body.reflow-book .reflow-settings-organized > section,
+body.reflow-book .reflow-settings-organized > section > div,
+body.reflow-book .reflow-settings-organized
+  .reflow-settings-section-reading .reflow-settings-list,
+body.reflow-book .reflow-settings-organized .reflow-font-settings-card {
+display: contents !important;
+}
+
+/* Los encabezados de sección se reemplazan por los títulos de bloque. */
+body.reflow-book .reflow-settings-organized > section > header {
+display: none !important;
+}
+
+/* Los atajos de teclado se mudaron a su ayuda propia (Alt+A o el enlace al
+   pie del panel): el índice de teclas ya no ocupa lugar acá. */
+body.reflow-book .reflow-settings-organized .reflow-settings-section-shortcuts {
+display: none !important;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-settings-block-title {
+margin: .75rem 0 .25rem !important;
+  color: var(--ui-n2-color) !important;
+  font-size: var(--ui-n2-size);
+  font-weight: var(--ui-weight-bold);
+  letter-spacing: var(--ui-letter-spacing-label);
+  line-height: 1.25;
+}
+
+/* Leer */
+body.reflow-book .reflow-settings-organized #reflow-settings-block-leer {
+order: 10;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-font-settings-label {
+order: 12;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-font-settings-options {
+order: 13;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-easy-read {
+order: 14;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-describe-images {
+order: 15;
+}
+
+/* Escuchar: el interruptor primero, la reproducción automática justo debajo y
+   después las opciones de voz, velocidad y resaltado. */
+body.reflow-book .reflow-settings-organized #reflow-settings-block-escuchar {
+order: 20;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-read-aloud {
+order: 21;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-autoplay {
+order: 22;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-highlight {
+order: 25;
+}
+
+/* Pantalla */
+body.reflow-book .reflow-settings-organized #reflow-settings-block-pantalla {
+order: 30;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-reduce-motion-setting {
+order: 31;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-reduce-motion-system {
+order: 32;
+}
+
+body.reflow-book .reflow-settings-organized
+  .reflow-settings-preferences-continuation .reflow-setting-row {
+order: 33;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-shortcuts-link {
+order: 40;
+}
+
+/* Resaltado, Voz, Velocidad y Reproducción automática sólo tienen sentido con
+   la lectura en voz alta activada: se ocultan —no se dejan deshabilitados—
+   para que la sección de lectura no muestre controles inservibles. La clase la
+   pone y la saca syncReadAloudDependentRows() en reflow-book.js. */
+body.reflow-book .reflow-settings-organized .reflow-setting-tts-hidden {
+display: none !important;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-description {
+font-size: .9rem !important;
+  line-height: 1.25 !important;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-font-settings-label {
+padding: .5rem .25rem .25rem !important;
+  font-size: 1rem !important;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-font-settings-options {
+margin-bottom: .25rem !important;
+  gap: 2px !important;
+  padding: 2px !important;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-font-settings-options button {
+min-height: 2.75rem !important;
+  font-size: 1rem !important;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-reduce-motion-system {
+margin: 0 .25rem .5rem !important;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-description {
+display: block;
+  margin-top: .2rem;
+  color: var(--ceibal-gray-400);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+body.reflow-book .reflow-settings-organized
+  .reflow-setting-description[hidden] {
+display: none !important;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-setting-disabled {
+color: var(--ceibal-gray-400) !important;
+  background: rgb(255 255 255 / 3%) !important;
+}
+
+body.reflow-book .reflow-settings-organized
+  .reflow-setting-disabled [role="radio"] {
+color: var(--ceibal-gray-500) !important;
+  background: transparent !important;
+  cursor: not-allowed !important;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-font-settings {
+padding-bottom: 0 !important;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-font-settings-card {
+padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-font-settings-label {
+padding: .5rem .25rem .25rem;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-font-settings-options {
+margin-bottom: .5rem;
+}
+
+body.reflow-book .reflow-settings-organized .reflow-reduce-motion-setting {
+display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .75rem .25rem;
+  border-top: 1px solid var(--ui-border);
+}
+
+body.reflow-book .reflow-settings-organized
+  .reflow-reduce-motion-setting > label {
+min-width: 0;
+  color: var(--ceibal-gray-100);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-reduce-motion-system {
+min-height: 2.75rem;
+  margin: 0 .25rem .5rem;
+  padding: .5rem .75rem;
+  border: 1px solid var(--ceibal-gray-600);
+  border-radius: var(--ceibal-radius-md);
+  color: var(--ceibal-gray-100);
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-reduce-motion-system[hidden] {
+display: none !important;
+}
+
+body.reflow-book .reflow-settings-organized #reflow-reduce-motion-system:hover {
+border-color: var(--ceibal-institutional-300);
+  background: rgb(102 198 192 / 16%);
+}
+
+body.reflow-book .reflow-settings-organized #reflow-reduce-motion-system:focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ceibal-focus-on-dark);
+  outline-offset: 2px;
+  box-shadow: var(--ceibal-shadow-focus);
+}
+
+body.reflow-book .reflow-reader-panel {
+width: min(18.75rem, 100vw) !important;
+  max-width: min(18.75rem, 100vw) !important;
+  animation-duration: 1ms !important;
+  animation-delay: 0ms !important;
+  transition: none !important;
+}
+
+body.reflow-book .reflow-panel-control-header {
+display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.75rem;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--ceibal-gray-700);
+  color: var(--ceibal-gray-50);
+}
+
+body.reflow-book .reflow-panel-control-header-glossary {
+grid-template-columns: minmax(0, auto) minmax(0, 1fr) 2.75rem;
+}
+
+body.reflow-book .reflow-panel-control-title {
+min-width: 0;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+body.reflow-book .reflow-panel-control-header-glossary
+  .reflow-panel-control-title {
+text-align: center;
+}
+
+body.reflow-book .reflow-panel-control-header button {
+display: inline-flex;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  padding: .4rem .55rem;
+  border: 1px solid transparent;
+  border-radius: var(--ceibal-radius-md);
+  color: var(--ceibal-gray-50);
+  background: rgb(255 255 255 / 8%);
+  font-size: var(--ui-n3-size);
+  font-weight: var(--ui-weight-regular);
+  line-height: 1;
+}
+
+/* Escala N1–N4 aplicada a barra, paneles, índice y glosario (punto 24). La
+   negrita queda en N1 y N2; N3 y N4 van en redonda. Los colores de cada nivel
+   se aplican con el tema claro (punto 18). */
+body.reflow-book .reflow-panel-control-header :is(h1, h2, h3, h4),
+body.reflow-book .reflow-panel-native-header > :is(h1, h2, h3, h4) {
+font-size: var(--ui-n1-size) !important;
+  font-weight: var(--ui-weight-bold) !important;
+  letter-spacing: var(--ui-letter-spacing-title) !important;
+}
+
+/* N2 · títulos de grupo: bloques del panel y capítulos del índice. */
+body.reflow-book .reflow-settings-organized .reflow-settings-block-title,
+body.reflow-book .reflow-navigation-panel .reflow-index-group,
+body.reflow-book .reflow-navigation-panel [data-reflow-toc-level="1"],
+body.reflow-book .reflow-glossary-panel .reflow-index-group {
+font-size: var(--ui-n2-size) !important;
+  font-weight: var(--ui-weight-bold) !important;
+}
+
+body.reflow-book .reflow-accessibility-panel .reflow-setting-row :is(span, label, strong, b),
+body.reflow-book .reflow-accessibility-panel [role="radio"],
+body.reflow-book .reflow-accessibility-panel [role="switch"] + :is(span, label),
+body.reflow-book .reflow-font-settings-options button,
+body.reflow-book .reflow-shortcuts-link,
+body.reflow-book .reflow-font-settings-card :is(label, span):not(.reflow-font-size-glyph),
+body.reflow-book .reflow-reduce-motion-setting :is(label, span),
+body.reflow-book .reflow-panel-control-header button,
+body.reflow-book .reflow-navigation-panel [role="tab"],
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button,
+body.reflow-book .reflow-glossary-panel [role="tab"],
+body.reflow-book .reflow-glossary-panel [role="tabpanel"] li > button,
+body.reflow-book .reflow-panel-native-header > p,
+body.reflow-book [aria-label="dock-label"]:not(:has(button[title="Enviar"])) button {
+font-size: var(--ui-n3-size) !important;
+  font-weight: var(--ui-weight-regular) !important;
+}
+
+/* N4 · ayudas, descripciones, estados y contador. */
+body.reflow-book .reflow-setting-description,
+body.reflow-book .reflow-panel :is(.text-sm, .text-muted-foreground),
+body.reflow-book .reflow-control-status {
+font-size: var(--ui-n4-size) !important;
+  font-weight: var(--ui-weight-regular) !important;
+}
+
+/* Íconos de la interfaz a 24 px en todos los contextos (punto 24). */
+body.reflow-book .reflow-panel-control-header svg,
+body.reflow-book .reflow-panel-control-header img,
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button > svg,
+body.reflow-book .reflow-glossary-panel [role="tabpanel"] li > button > svg {
+width: var(--ui-icon-size) !important;
+  height: var(--ui-icon-size) !important;
+}
+
+body.reflow-book .reflow-panel-control-header button:hover {
+border-color: var(--ceibal-institutional-300);
+  background: rgb(102 198 192 / 16%);
+}
+
+body.reflow-book .reflow-panel-control-header .reflow-panel-back {
+justify-self: start;
+}
+
+body.reflow-book .reflow-panel-control-header .reflow-panel-close {
+justify-self: end;
+  font-size: 1.5rem;
+}
+
+body.reflow-book .reflow-panel-native-title {
+position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* EVA exposes one three-pixel focus treatment. Reader panels use the
+   accessible dark-surface token while retaining each control's own radius. */
+body.reflow-book .reflow-reader-panel :is(
+  button,
+  input,
+  [role="tab"],
+  [role="radio"],
+  [role="switch"]
+):focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ceibal-focus-on-dark) !important;
+  outline-offset: 2px !important;
+  box-shadow: var(--ceibal-shadow-focus) !important;
+}
+
+body.reflow-book .reflow-reader-panel.reflow-navigation-panel {
+width: min(18rem, 100vw) !important;
+  max-width: min(18rem, 100vw) !important;
+  border-radius: 0 var(--ceibal-radius-md) var(--ceibal-radius-md) 0 !important;
+  color: var(--ceibal-gray-50) !important;
+  background: var(--ui-bg) !important;
+  box-shadow: var(--ceibal-shadow-card), 0 .5rem 1.5rem rgb(0 0 0 / 22%) !important;
+}
+
+body.reflow-book .reflow-navigation-panel > div:first-child {
+gap: .75rem !important;
+  padding: 1rem !important;
+}
+
+body.reflow-book .reflow-navigation-panel h4 {
+margin: 0 !important;
+  color: var(--ceibal-gray-50) !important;
+  font-size: 1.5rem !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+}
+
+body.reflow-book .reflow-navigation-panel input[placeholder="Buscar"] {
+height: 3.5rem !important;
+  padding-left: 2.75rem !important;
+  border: 2px solid var(--ceibal-gray-600) !important;
+  border-radius: var(--ceibal-radius-md) !important;
+  color: var(--ceibal-gray-50) !important;
+  background: var(--ui-bg) !important;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 4%) !important;
+}
+
+body.reflow-book .reflow-navigation-panel input[placeholder="Buscar"]:focus {
+border-color: var(--ceibal-focus-on-dark) !important;
+  outline: var(--ceibal-border-focus) solid var(--ceibal-focus-on-dark) !important;
+  outline-offset: 2px !important;
+  box-shadow: var(--ceibal-shadow-focus) !important;
+}
+
+body.reflow-book .reflow-reader-panel.reflow-accessibility-panel {
+width: min(18rem, 100vw) !important;
+  max-width: min(18rem, 100vw) !important;
+  border-radius: var(--ceibal-radius-md) 0 0 var(--ceibal-radius-md) !important;
+}
+
+body.reflow-book .reflow-reader-panel.reflow-language-panel {
+display: none !important;
+}
+
+body.reflow-book .reflow-panel-pending {
+visibility: hidden !important;
+}
+
+/* Stock switches and segmented buttons restore their saved state with
+   150 ms transitions. Suppress those transitions only while Tools performs
+   its first hidden paint, then release them two frames after the complete
+   state is visible so later user interactions remain animated. */
+body.reflow-book .reflow-accessibility-panel.reflow-panel-pending *,
+body.reflow-book .reflow-accessibility-panel.reflow-settings-first-paint * {
+animation: none !important;
+  transition: none !important;
+}
+
+body.reflow-book .reflow-reader-panel.reflow-glossary-panel {
+width: min(18.75rem, 100vw) !important;
+  max-width: min(18.75rem, 100vw) !important;
+  border-radius: var(--ceibal-radius-md) 0 0 var(--ceibal-radius-md) !important;
+}
+
+body.reflow-book .reflow-reader-panel > div:first-child {
+width: 100% !important;
+  max-width: none !important;
+  padding-inline: .625rem !important;
+}
+
+body.reflow-book .reflow-reader-panel.reflow-glossary-panel > div:first-child {
+padding-inline: .75rem !important;
+}
+
+body.reflow-book .reflow-glossary-panel [role="tabpanel"] li > button {
+padding-inline: .5rem !important;
+}
+
+/* Base UI gives the settings scroller a fit-content inner width. At the
+   compact panel size that preserves the former 20rem layout and creates a
+   hidden horizontal strip. Let the settings column use the available width
+   and reclaim only redundant card padding; labels may wrap naturally. */
+body.reflow-book .reflow-accessibility-panel
+  > div:first-child
+  > [role="presentation"]
+  > [role="presentation"]
+  > [role="presentation"] {
+box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+body.reflow-book .reflow-accessibility-panel
+  > div:first-child
+  > [role="presentation"]
+  > [role="presentation"]
+  > [role="presentation"]
+  > div {
+box-sizing: border-box !important;
+  width: 100% !important;
+  padding-inline: .5rem !important;
+}
+
+body.reflow-book .reflow-accessibility-panel section > .rounded-xl,
+body.reflow-book .reflow-accessibility-panel .reflow-font-settings-card {
+padding-inline: .5rem !important;
+}
+
+/* Resaltado comparte la jerarquía de «Voz del narrador» y «Velocidad»: la
+   etiqueta va en negrita sobre su propia línea y las opciones Palabra/Oración
+   usan el mismo control segmentado que las voces, para que los tres bloques de
+   «Escuchar» se lean igual. El runtime renderiza el grupo como
+   [role="group"] > span + div > [role="radio"]. */
+body.reflow-book .reflow-accessibility-panel
+  .reflow-setting-highlight[role="group"] {
+display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  column-gap: 0 !important;
+  row-gap: .5rem !important;
+  min-width: 0 !important;
+}
+
+body.reflow-book .reflow-accessibility-panel
+  .reflow-setting-highlight[role="group"] > span {
+grid-column: 1 !important;
+  color: var(--ceibal-gray-100) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+}
+
+/* Contenedor de opciones: conserva los radios del runtime y adopta el mismo
+   lenguaje visual que .reflow-tts-voice-options (fondo hundido y botón activo
+   en turquesa institucional). */
+body.reflow-book .reflow-accessibility-panel
+  .reflow-setting-highlight[role="group"] > div {
+grid-column: 1 !important;
+  justify-self: stretch !important;
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .25rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: .25rem !important;
+  border: 0 !important;
+  border-radius: var(--ceibal-radius-md) !important;
+  background: #252525 !important;
+  box-shadow: none !important;
+}
+
+body.reflow-book .reflow-accessibility-panel
+  .reflow-setting-highlight[role="group"] > div > [role="radio"] {
+min-width: 0 !important;
+  min-height: 2.875rem !important;
+  padding: .5rem .35rem !important;
+  border: 1px solid transparent !important;
+  border-radius: .6rem !important;
+  color: var(--ceibal-gray-300) !important;
+  background: transparent !important;
+  font-size: 1.125rem !important;
+  font-weight: var(--ui-weight-regular) !important;
+  box-shadow: none !important;
+}
+
+body.reflow-book .reflow-accessibility-panel
+  .reflow-setting-highlight[role="group"] > div > [role="radio"][aria-checked="true"] {
+border-color: var(--ceibal-institutional-300) !important;
+  color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+  box-shadow: var(--ceibal-shadow-button) !important;
+}
+
+body.reflow-book .reflow-accessibility-panel
+  .reflow-setting-highlight[role="group"] > div > [role="radio"]:focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ceibal-focus-on-dark) !important;
+  outline-offset: 2px !important;
+  box-shadow: var(--ceibal-shadow-focus) !important;
+}
+
+/* El aviso de disponibilidad es el tercer hijo del grupo: en la grilla de una
+   sola columna se acomoda debajo del control, sin pisarlo. */
+body.reflow-book .reflow-accessibility-panel
+  .reflow-setting-highlight[role="group"]
+  > #reflow-highlight-requirement {
+grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+  justify-self: stretch !important;
+  margin-top: 0 !important;
+}
+
+/* The second navigation tab needs slightly more room than the first one.
+   Redistribute the existing tab-list width instead of widening the panel. */
+body.reflow-book .reflow-navigation-panel [role="tablist"] {
+grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr) !important;
+  height: 3.5rem !important;
+  padding: .25rem !important;
+  border: 1px solid var(--ceibal-gray-700) !important;
+  border-radius: var(--ceibal-radius-md) !important;
+  background: var(--ui-surface-hover) !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tab"] {
+border-radius: .6rem !important;
+  color: var(--ceibal-gray-400) !important;
+  font-size: 1.125rem !important;
+  font-weight: 400 !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tab"][aria-selected="true"] {
+border-color: var(--ceibal-institutional-500) !important;
+  color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+  box-shadow: var(--ceibal-shadow-button) !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] ul {
+padding: .25rem 0 !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button {
+box-sizing: border-box !important;
+  min-height: 2.75rem !important;
+  margin: 0 0 .375rem !important;
+  padding: .625rem .75rem !important;
+  border: 1px solid transparent !important;
+  border-radius: .625rem !important;
+  color: var(--ceibal-gray-100) !important;
+  background: rgb(255 255 255 / 4%) !important;
+  font-size: var(--ui-n3-size) !important;
+  font-weight: var(--ui-weight-regular) !important;
+  line-height: 1.35 !important;
+  text-align: left !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button:hover,
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button:focus-visible {
+border-color: var(--ceibal-institutional-300) !important;
+  color: #fff !important;
+  background: rgb(102 198 192 / 16%) !important;
+}
+
+/* El índice traía `focus:outline-none` en la clase de sus botones: con teclado
+   el foco sólo se notaba por el cambio de fondo. Ahora usa el mismo anillo
+   turquesa que los botones de la barra. */
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button:focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ceibal-focus-on-dark) !important;
+  outline-offset: 2px;
+  box-shadow: var(--ceibal-shadow-focus);
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button[aria-current] {
+border-color: var(--ceibal-institutional-400) !important;
+  color: #fff !important;
+  /* Accessible variant (#008078 = 4.82:1 with white text) instead of the
+     identity teal --ceibal-quiz-page (#00A096 = 3.25:1), so the selected index
+     entry meets WCAG 1.4.3 for normal-size text. */
+  background: var(--ceibal-institutional-600) !important;
+  box-shadow: inset .25rem 0 0 var(--ceibal-institutional-200) !important;
+}
+
+body.reflow-book .reflow-navigation-panel [data-reflow-visual-pages="true"]
+  .reflow-index-group {
+padding: .875rem .25rem .4rem !important;
+  color: var(--ceibal-institutional-600) !important;
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+body.reflow-book .reflow-navigation-panel [data-reflow-visual-pages="true"]
+  .reflow-index-group[data-reflow-index-level="2"] {
+margin-left: .75rem !important;
+  font-size: 1.0625rem !important;
+  font-weight: 600 !important;
+}
+
+body.reflow-book .reflow-navigation-panel [data-reflow-visual-pages="true"]
+  .reflow-index-group[data-reflow-index-level="3"] {
+margin-left: 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"]
+  button[data-reflow-toc-level="1"] {
+min-height: 3rem !important;
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"]
+  button[data-reflow-toc-level="2"] {
+width: calc(100% - .75rem) !important;
+  margin-left: .75rem !important;
+  font-size: 1.0625rem !important;
+  font-weight: 600 !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"]
+  button.reflow-toc-activity-entry {
+display: flex !important;
+  min-height: 3.75rem !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: .125rem !important;
+}
+
+body.reflow-book .reflow-navigation-panel .reflow-toc-activity-title {
+display: block !important;
+  max-width: 100% !important;
+  color: inherit !important;
+  font: inherit !important;
+  line-height: 1.3 !important;
+}
+
+body.reflow-book .reflow-navigation-panel .reflow-toc-activity-status {
+display: block !important;
+  color: var(--ceibal-gray-400) !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+}
+
+body.reflow-book .reflow-navigation-panel
+  [data-reflow-activity-status="incomplete"] .reflow-toc-activity-status {
+color: #ffd783 !important;
+}
+
+body.reflow-book .reflow-navigation-panel
+  [data-reflow-activity-status="complete"] .reflow-toc-activity-status {
+color: #9de3bb !important;
+}
+
+body.reflow-book .reflow-navigation-panel
+  .reflow-toc-activity-entry[aria-current] .reflow-toc-activity-status {
+color: #fff !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"]
+  button[data-reflow-toc-level="3"] {
+width: calc(100% - 1.5rem) !important;
+  margin-left: 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"]
+  .reflow-index-page-button {
+width: calc(100% - 1.5rem) !important;
+  min-height: 2.75rem !important;
+  margin-left: 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+}
+
+/* Punto 13 · Encabezados de grupo del índice («Antes de empezar», «Sobre el
+   libro»). La lista la maneja el runtime (React) y no admite nodos propios, así
+   que el encabezado se pinta como contenido generado sobre la primera entrada
+   visible de cada grupo. */
+body.reflow-book .reflow-navigation-panel [role="tabpanel"]
+  li[data-reflow-toc-group-start]::before {
+content: attr(data-reflow-toc-group-start);
+  display: block;
+  padding: .875rem .25rem .4rem;
+  color: var(--ceibal-institutional-600);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+/* Punto 13 · El «Fin» del índice no aporta: se oculta (toc.json: hidden). */
+body.reflow-book .reflow-navigation-panel [role="tabpanel"]
+  li.reflow-toc-hidden {
+display: none !important;
+}
+
+/* A single green convention communicates every active accessible mode. */
+body.reflow-book .reflow-accessibility-panel
+  [role="radio"][aria-checked="true"] {
+color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+}
+
+/* Interruptores on/off de los paneles (Herramientas y Glosario) con los SVG de
+   EVA (`assets/icons/eva-switch-off.svg` y `eva-switch-on.svg`): pista y perilla
+   viajan juntas en una imagen por estado. Se oculta la perilla nativa y el pase
+   inline del motor neutraliza el fondo oscuro que dibujaba el runtime.
+
+   La pista visible es la caja de contenido (52 x 24 px, la proporción del SVG de
+   73 x 34), así que el elemento conserva su área táctil de 48 px de alto. */
+body.reflow-book .reflow-reader-panel [role="switch"] {
+box-sizing: border-box !important;
+  position: relative !important;
+  width: 60px !important;
+  min-width: 60px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 11px 3px !important;
+  border-color: transparent !important;
+  border-radius: 999px !important;
+  background-color: transparent !important;
+  background-image: url("./icons/eva-switch-off.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 100% 100% !important;
+  background-origin: content-box !important;
+  background-clip: border-box !important;
+}
+
+body.reflow-book .reflow-reader-panel [role="switch"][aria-checked="true"] {
+background-image: url("./icons/eva-switch-on.svg") !important;
+}
+
+body.reflow-book .reflow-reader-panel [role="switch"]
+  :is([data-slot="switch-thumb"], .reflow-custom-switch-thumb) {
+display: none !important;
+}
+
+body.reflow-book .reflow-panel-anchor {
+top: 0 !important;
+  bottom: auto !important;
+  transform: translateY(var(--reflow-panel-top, 0)) !important;
+}
+
+body.reflow-book .reflow-panel-anchor-left {
+right: auto !important;
+  left: 0 !important;
+}
+
+body.reflow-book .reflow-panel-anchor-right {
+right: 0 !important;
+  left: auto !important;
+}
+
+body.reflow-book .reflow-reader-panel-tall {
+height: var(
+    --reflow-panel-max-height,
+    calc(100dvh - var(--nav-height, 60px) - 1rem)
+  ) !important;
+  max-height: var(
+    --reflow-panel-max-height,
+    calc(100dvh - var(--nav-height, 60px) - 1rem)
+  ) !important;
+}
+
+body.reflow-book .reflow-reader-panel-tall > div:first-child {
+height: 100% !important;
+  max-height: 100% !important;
+}
+
+/* Glossary: same surface, controls and active-state hierarchy as Index and
+   Configuration. Equal minmax columns plus a real gap prevent tab overlap. */
+body.reflow-book .reflow-reader-panel.reflow-glossary-panel {
+border: 1px solid var(--ceibal-gray-700) !important;
+  background: var(--ui-bg) !important;
+  box-shadow: 0 .5rem 1.5rem rgb(0 0 0 / 24%) !important;
+}
+
+body.reflow-book .reflow-glossary-panel
+  .reflow-panel-native-header {
+display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  column-gap: 1rem !important;
+  align-items: center !important;
+}
+
+body.reflow-book .reflow-glossary-panel
+  .reflow-panel-native-header > h4 {
+min-width: 0 !important;
+  font-size: 1.125rem !important;
+  line-height: 1.2 !important;
+}
+
+body.reflow-book .reflow-glossary-panel
+  .reflow-panel-native-header > div {
+display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: .35rem !important;
+  min-width: 0 !important;
+  font-size: 1rem !important;
+  line-height: 1.15 !important;
+}
+
+@media (max-width: 30rem) {
+body.reflow-book .reflow-panel-control-header-glossary {
+grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+}
+
+body.reflow-book .reflow-panel-control-header .reflow-panel-back > span:last-child {
+position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+}
+
+body.reflow-book .reflow-glossary-panel input:is([type="search"], [placeholder="Buscar"]) {
+box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  border: 1px solid var(--ceibal-gray-600) !important;
+  border-radius: var(--ceibal-radius-md) !important;
+  color: #fff !important;
+  background: var(--ui-bg) !important;
+  font-size: 1.125rem !important;
+}
+
+body.reflow-book .reflow-glossary-panel input:is([type="search"], [placeholder="Buscar"]):focus {
+border-color: var(--ceibal-focus-on-dark) !important;
+  outline: var(--ceibal-border-focus) solid var(--ceibal-focus-on-dark) !important;
+  outline-offset: 2px;
+  box-shadow: var(--ceibal-shadow-focus) !important;
+}
+
+body.reflow-book .reflow-glossary-panel [role="tablist"] {
+box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .35rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  padding: .25rem !important;
+  border: 1px solid var(--ceibal-gray-700) !important;
+  border-radius: var(--ceibal-radius-md) !important;
+  background: var(--ui-surface-hover) !important;
+}
+
+body.reflow-book .reflow-glossary-panel [role="tab"] {
+box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 3rem !important;
+  padding: .55rem .3rem !important;
+  border: 1px solid transparent !important;
+  border-radius: .6rem !important;
+  color: var(--ceibal-gray-400) !important;
+  background: transparent !important;
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+body.reflow-book .reflow-glossary-panel [role="tab"][aria-selected="true"] {
+border-color: var(--ceibal-institutional-300) !important;
+  color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+  box-shadow: var(--ceibal-shadow-button) !important;
+}
+
+body.reflow-book .reflow-glossary-panel [role="tabpanel"] li > button {
+box-sizing: border-box !important;
+  width: 100% !important;
+  margin-bottom: .4rem !important;
+  padding: .65rem .6rem !important;
+  border: 1px solid transparent !important;
+  border-radius: .625rem !important;
+  color: var(--ceibal-gray-100) !important;
+  background: rgb(255 255 255 / 4%) !important;
+  font-size: 1.125rem !important;
+  text-align: left !important;
+}
+
+body.reflow-book .reflow-glossary-panel [role="tabpanel"] li > button:hover,
+body.reflow-book .reflow-glossary-panel [role="tabpanel"] li > button:focus-visible {
+border-color: var(--ceibal-institutional-300) !important;
+  background: rgb(102 198 192 / 16%) !important;
+}
+
+/* At fast narration rates only sentence highlighting is meaningful. The
+   runtime also enforces the setting; this state explains the restriction to
+   sighted pointer and keyboard users. */
+body.reflow-book .reflow-accessibility-panel [role="radio"].reflow-speed-disabled {
+opacity: .42 !important;
+  cursor: not-allowed !important;
+  color: var(--ceibal-gray-500) !important;
+  box-shadow: none !important;
+}
+
+/* Normalized interaction states. Every control family keeps its established
+   shape, while hover, pressed, disabled, loading and result states use the
+   same surface/border language and never rely on opacity alone. */
+body.reflow-book .reflow-reader-panel [role="tab"] {
+cursor: pointer !important;
+  transition: color 120ms ease, background-color 120ms ease,
+    border-color 120ms ease, box-shadow 120ms ease;
+}
+
+/* White interface text needs the darker accessible variant. The canonical
+   #00A096 remains available for identity surfaces, icons and borders. */
+body.reflow-book .reflow-reader-panel [role="tab"][aria-selected="true"],
+body.reflow-book .reflow-reader-panel [role="radio"][aria-checked="true"],
+body.reflow-book .reflow-reader-panel button[aria-pressed="true"]:not([role="switch"]) {
+border-color: var(--ceibal-institutional-300) !important;
+  color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+}
+
+/* Selected Index entries (chapter/section in the TOC and page-number list)
+   mark themselves with aria-current and are painted by the runtime with the
+   identity teal #00A096, giving white text only 3.25:1 (below the 4.5:1 needed
+   for normal-size text, WCAG 1.4.3). Repaint the active item with the darker
+   accessible variant #008078 (institutional-500 = 4.82:1) keeping white text. */
+body.reflow-book .reflow-navigation-panel [aria-current]:not([aria-current="false"]),
+body.reflow-book .reflow-reader-panel [aria-current="location"],
+body.reflow-book .reflow-reader-panel [aria-current="page"] {
+color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+}
+
+body.reflow-book .reflow-reader-panel [role="tab"]:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) {
+border-color: var(--ceibal-institutional-300) !important;
+  color: #fff !important;
+  background: rgb(102 198 192 / 16%) !important;
+}
+
+body.reflow-book .reflow-reader-panel [role="tab"]:active:not(:disabled):not([aria-disabled="true"]),
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button:active:not(:disabled),
+body.reflow-book .reflow-glossary-panel [role="tabpanel"] li > button:active:not(:disabled),
+body.reflow-book .reflow-panel-control-header button:active:not(:disabled),
+body.reflow-book #reflow-reduce-motion-system:active:not(:disabled) {
+border-color: var(--ceibal-institutional-200) !important;
+  color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 20%) !important;
+}
+
+body.reflow-book .reflow-accessibility-panel [role="radio"] {
+cursor: pointer !important;
+  transition: color 120ms ease, background-color 120ms ease,
+    border-color 120ms ease, box-shadow 120ms ease;
+}
+
+body.reflow-book .reflow-accessibility-panel [role="radio"]:hover:not(:disabled):not([aria-disabled="true"]):not([aria-checked="true"]):not([aria-pressed="true"]) {
+border-color: var(--ceibal-institutional-300) !important;
+  color: #fff !important;
+  background: rgb(102 198 192 / 16%) !important;
+}
+
+body.reflow-book .reflow-accessibility-panel [role="radio"]:active:not(:disabled):not([aria-disabled="true"]) {
+border-color: var(--ceibal-institutional-200) !important;
+  color: #fff !important;
+  background: var(--ceibal-institutional-600) !important;
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 20%) !important;
+}
+
+body.reflow-book .reflow-reader-panel [role="switch"]::after {
+content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 52px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  pointer-events: none;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+body.reflow-book .reflow-reader-panel [role="switch"]:hover:not(:disabled):not([aria-disabled="true"]) {
+border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body.reflow-book .reflow-reader-panel
+  [role="switch"]:hover:not(:disabled):not([aria-disabled="true"])::after {
+box-shadow: 0 0 0 3px rgb(102 198 192 / 55%);
+}
+
+body.reflow-book .reflow-reader-panel [role="switch"]:active:not(:disabled):not([aria-disabled="true"]) {
+border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body.reflow-book .reflow-reader-panel
+  [role="switch"]:active:not(:disabled):not([aria-disabled="true"])::after {
+box-shadow: 0 0 0 3px rgb(0 128 120 / 45%);
+}
+
+body.reflow-book .reflow-reader-panel :is(
+  button,
+  [role="tab"],
+  [role="radio"],
+  [role="switch"]
+):is(:disabled, [aria-disabled="true"]) {
+border-color: var(--ceibal-gray-400) !important;
+  border-style: dashed !important;
+  color: var(--ceibal-gray-400) !important;
+  background: #2d333d !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  cursor: not-allowed !important;
+}
+
+/* Reusable state contract for controls that acquire asynchronous validation
+   in this or later books. Dotted, dashed and double borders preserve meaning
+   without requiring the status color to be perceived. */
+body.reflow-book :is(.reflow-reader-panel, #content) :is(
+  button,
+  [role="tab"],
+  [role="radio"],
+  [role="switch"],
+  .glossary-term
+):is([aria-busy="true"], [data-interaction-state="loading"]) {
+border-color: var(--ceibal-institutional-300) !important;
+  border-style: dotted !important;
+  box-shadow: inset 3px 0 0 var(--ceibal-institutional-200) !important;
+  cursor: progress !important;
+}
+
+body.reflow-book :is(.reflow-reader-panel, #content) :is(
+  button,
+  [role="tab"],
+  [role="radio"],
+  [role="switch"],
+  .glossary-term
+):is([aria-invalid="true"], [data-interaction-state="error"]) {
+border-color: #f28b82 !important;
+  border-style: dashed !important;
+  box-shadow: inset 3px 0 0 #f28b82 !important;
+}
+
+body.reflow-book :is(.reflow-reader-panel, #content) :is(
+  button,
+  [role="tab"],
+  [role="radio"],
+  [role="switch"],
+  .glossary-term
+)[data-interaction-state="success"] {
+border-color: #79c98c !important;
+  border-style: double !important;
+  box-shadow: inset 3px 0 0 #79c98c !important;
+}
+
+body.reflow-book .reflow-reader-panel [data-reflow-tts-voice][aria-busy="true"] {
+border-color: var(--ceibal-institutional-300) !important;
+  border-style: dashed !important;
+  color: #fff !important;
+  background: #293d3c !important;
+  cursor: progress !important;
+}
+
+body.reflow-book .reflow-reader-panel [data-reflow-tts-voice][aria-busy="true"]::after {
+content: "…";
+  margin-left: .3rem;
+  font-weight: 700;
+}
+
+body.reflow-book .reflow-reader-panel [data-reflow-tts-voice][data-interaction-state="error"] {
+border-color: #f28b82 !important;
+  border-style: dashed !important;
+  color: #ffd7d4 !important;
+  background: #4a2525 !important;
+}
+
+body.reflow-book .reflow-control-status {
+display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: .5rem;
+  padding: .55rem .65rem;
+  border: 1px solid var(--ceibal-gray-600);
+  border-radius: var(--ceibal-radius-md);
+  color: var(--ceibal-gray-100);
+  background: var(--ui-bg);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+body.reflow-book .reflow-control-status[hidden] {
+display: none !important;
+}
+
+body.reflow-book .reflow-control-status::before {
+flex: 0 0 auto;
+  width: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+body.reflow-book .reflow-control-status[data-state="loading"] {
+border-style: dashed;
+  border-color: var(--ceibal-institutional-300);
+}
+
+body.reflow-book .reflow-control-status[data-state="loading"]::before {
+content: "…";
+}
+
+body.reflow-book .reflow-control-status[data-state="error"] {
+border-color: #f28b82;
+  color: #ffd7d4;
+  background: #4a2525;
+}
+
+body.reflow-book .reflow-control-status[data-state="error"]::before {
+content: "×";
+}
+
+body.reflow-book .reflow-control-status[data-state="success"] {
+border-color: #79c98c;
+  color: #d9f7e0;
+  background: #21402a;
+}
+
+body.reflow-book .reflow-control-status[data-state="success"]::before {
+content: "✓";
+}
+
+@media (min-width: 72rem) {
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button,
+  body.reflow-book .reflow-navigation-panel [role="tabpanel"]
+    .reflow-index-page-button,
+  body.reflow-book .reflow-panel-control-header button,
+  body.reflow-book .reflow-settings-organized #reflow-reduce-motion-system {
+min-height: 3rem !important;
+}
+
+/* Segmented radios (Resaltado Palabra/Oración, narrator voice, speed) have
+     no explicit height and were the main sub-44px offenders. */
+body.reflow-book .reflow-accessibility-panel [role="radio"] {
+display: inline-flex !important;
+    min-height: 3rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+body.reflow-book .reflow-navigation-panel [role="tabpanel"] li > button {
+margin-bottom: .5rem !important;
+}
+
+}
+
+/* ==========================================================================
+   Punto 18 · Tema claro de los paneles (etapa 2)
+   --------------------------------------------------------------------------
+   Los paneles los arma el runtime con utilidades de Tailwind, que se inyectan
+   después de este archivo; por eso acá sí hace falta !important. Los colores
+   salen de los tokens semánticos (--ui-*) y de la escala tipográfica N1–N4.
+   ========================================================================== */
+/* Superficie y textos base de cualquier panel del libro. */
+body.reflow-book .reflow-reader-panel,
+body.reflow-book .reflow-reader-panel[role="dialog"],
+body.reflow-book [role="dialog"].reflow-reader-panel {
+color: var(--ui-text) !important;
+  background: var(--ui-surface) !important;
+  border-color: var(--ui-border) !important;
+}
+
+/* El contenedor interno (el dock) y las pestañas no pintan fondo propio. */
+body.reflow-book .reflow-reader-panel > div,
+body.reflow-book .reflow-reader-panel [role="tabpanel"],
+body.reflow-book .reflow-reader-panel [role="tablist"] {
+color: var(--ui-text) !important;
+  background: transparent !important;
+}
+
+/* N1 · título del panel. */
+body.reflow-book .reflow-panel-control-title,
+body.reflow-book .reflow-panel-native-title,
+body.reflow-book .reflow-panel-native-header > :is(h1, h2, h3, h4),
+body.reflow-book .reflow-reader-panel :is(h1, h2, h3, h4) {
+color: var(--ui-n1-color) !important;
+}
+
+/* N2 · bloques con título dentro del panel (Leer, Escuchar, Pantalla). */
+body.reflow-book .reflow-reader-panel :is(h5, h6) {
+color: var(--ui-n2-color) !important;
+}
+
+/* Encabezado del panel con su línea divisoria. */
+body.reflow-book .reflow-panel-control-header,
+body.reflow-book .reflow-panel-native-header {
+color: var(--ui-text) !important;
+  border-bottom-color: var(--ui-border) !important;
+}
+
+/* N3 · filas, etiquetas y botones del panel. */
+body.reflow-book .reflow-reader-panel :is(button, label, li, legend, summary, dt, th) {
+color: var(--ui-n3-color) !important;
+}
+
+/* N4 · descripciones, estados y ayudas. */
+body.reflow-book .reflow-reader-panel :is(p, small, dd, figcaption, .reflow-panel-hint) {
+color: var(--ui-n4-color) !important;
+}
+
+/* Botones de panel: sin relleno, hover gris, selección institucional. Los
+   interruptores on/off quedan afuera: el atajo `background` les borraría la
+   imagen del SVG que dibuja la pista. */
+body.reflow-book .reflow-reader-panel button:not([role="switch"]) {
+background: transparent !important;
+  border-color: transparent !important;
+}
+
+body.reflow-book .reflow-reader-panel button:not([role="switch"]):hover:not(:disabled) {
+background: var(--ui-surface-hover) !important;
+}
+
+body.reflow-book .reflow-reader-panel button[aria-pressed="true"],
+body.reflow-book .reflow-reader-panel button[aria-selected="true"],
+body.reflow-book .reflow-reader-panel button[aria-expanded="true"],
+body.reflow-book .reflow-reader-panel [aria-current="true"] {
+color: var(--ui-text-selected) !important;
+  background: var(--ui-surface-selected) !important;
+}
+
+body.reflow-book .reflow-reader-panel button:not([role="switch"]):disabled {
+color: var(--ui-disabled-text) !important;
+  background: var(--ui-disabled-surface) !important;
+}
+
+body.reflow-book .reflow-reader-panel :is(button, a, input, select, summary):focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ui-focus) !important;
+  outline-offset: 2px;
+}
+
+/* Punto 14 · Los contenedores de desplazamiento del runtime (`role="tabpanel"`
+   y `role="presentation"` con `tabindex="0"`) traen `outline-none`: al recibir
+   foco con Tab no mostraban ninguna señal. Se les devuelve el anillo turquesa,
+   por dentro para no tapar el contenido. */
+body.reflow-book .reflow-reader-panel
+  :is([role="tabpanel"], [role="presentation"])[tabindex="0"]:focus-visible {
+outline: var(--ceibal-border-focus) solid var(--ui-focus) !important;
+  outline-offset: -3px !important;
+}
+
+/* Controles de formulario del runtime (interruptores, casillas, selects). */
+body.reflow-book .reflow-reader-panel :is(input, select, textarea) {
+color: var(--ui-text) !important;
+  background: var(--ui-surface) !important;
+  border-color: var(--ui-border-strong) !important;
+  accent-color: var(--ui-accent);
+}
+
+body.reflow-book .reflow-reader-panel :is(input, textarea)::placeholder {
+color: var(--ui-text-muted) !important;
+}
+
+/* Enlaces, separadores y tarjetas internas. */
+body.reflow-book .reflow-reader-panel a {
+color: var(--ui-accent) !important;
+}
+
+body.reflow-book .reflow-reader-panel :is(hr, [role="separator"]) {
+border-color: var(--ui-border) !important;
+  background: var(--ui-border) !important;
+}
+
+body.reflow-book .reflow-reader-panel :is(section, article, form) {
+border-color: var(--ui-border) !important;
+}
+
+/* El índice y el glosario comparten la superficie del panel. */
+body.reflow-book .reflow-reader-panel.reflow-glossary-panel,
+body.reflow-book .reflow-reader-panel.reflow-index-panel {
+color: var(--ui-text) !important;
+  background: var(--ui-surface) !important;
+  border-color: var(--ui-border) !important;
+}
+
+body.reflow-book .reflow-glossary-panel > div:first-child {
+background: var(--ui-surface) !important;
+  border-color: var(--ui-border) !important;
+}
+
+body.reflow-book .reflow-glossary-panel [role="tabpanel"] li > button,
+body.reflow-book .reflow-index-group,
+body.reflow-book .reflow-index-page-button {
+color: var(--ui-n3-color) !important;
+}
+
+/* Pestañas del panel (shadcn/radix: role=tab o data-state) y filas del índice y
+   del glosario: el runtime las pinta con texto blanco o grey-400, que sobre la
+   superficie clara queda invisible. */
+body.reflow-book .reflow-reader-panel :is([role="tablist"], .group\\/tabs-list) button,
+body.reflow-book .reflow-reader-panel [role="tab"],
+body.reflow-book .reflow-reader-panel [data-state] {
+color: var(--ui-text) !important;
+  background: transparent !important;
+}
+
+body.reflow-book .reflow-reader-panel [role="tab"][aria-selected="true"],
+body.reflow-book .reflow-reader-panel [role="tab"][data-state="active"],
+body.reflow-book .reflow-reader-panel [role="tablist"] button[aria-selected="true"],
+body.reflow-book .reflow-reader-panel [data-state="active"] {
+color: var(--ui-text-selected) !important;
+  background: var(--ui-surface-selected) !important;
+}
+
+body.reflow-book .reflow-reader-panel :is(nav, ul, ol) :is(li, li > *, a, li > * > *) {
+color: var(--ui-n3-color) !important;
+}
+
+body.reflow-book .reflow-reader-panel :is(nav, ul, ol) :is(li > *, a, li > * > *):hover {
+background: var(--ui-surface-hover) !important;
+}
+
+/* Resultados y estados dentro del panel (puntajes, avisos). */
+body.reflow-book .reflow-reader-panel :is([role="status"], [role="alert"]) {
+color: var(--ui-text) !important;
+}
+
+/* Controles propios del panel de configuración (marcado de este repositorio, no
+   del runtime): el selector de tamaño de letra y su tarjeta conservaban el texto
+   casi blanco del tema oscuro. Estas reglas tienen más especificidad que las
+   duplicadas de versiones anteriores, así que las reemplazan. */
+body.reflow-book .reflow-reader-panel .reflow-font-settings-card,
+body.reflow-book .reflow-reader-panel #reflow-font-settings-label,
+body.reflow-book .reflow-reader-panel .reflow-font-settings-options button,
+body.reflow-book .reflow-reader-panel .reflow-setting-row,
+body.reflow-book .reflow-reader-panel .reflow-setting-row > * {
+color: var(--ui-text) !important;
+}
+
+body.reflow-book .reflow-reader-panel .reflow-font-settings-card {
+background: var(--ui-surface-sunken) !important;
+  border-color: var(--ui-border) !important;
+}
+
+body.reflow-book .reflow-reader-panel .reflow-font-settings-options {
+background: var(--ui-surface) !important;
+  border-color: var(--ui-border) !important;
+}
+
+body.reflow-book .reflow-reader-panel .reflow-font-settings-options button {
+background: transparent !important;
+}
+
+body.reflow-book .reflow-reader-panel .reflow-font-settings-options button[aria-pressed="true"],
+body.reflow-book .reflow-reader-panel .reflow-font-settings-options button[aria-checked="true"] {
+color: var(--ui-on-accent) !important;
+  background: var(--ui-accent) !important;
+  border-color: transparent !important;
+}
+
+body.reflow-book .reflow-reader-panel .reflow-setting-description {
+color: var(--ui-n4-color) !important;
+}
+
+/* === /eva-kit:panels === */

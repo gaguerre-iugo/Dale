@@ -12,6 +12,11 @@ __pycache__/
 # Carpetas de trabajo
 tmp/
 Export/
+voices test/
+
+# Backups y logs de herramientas
+tools/voice/*.orig
+tools/voice/*.log
 
 # Archivos de editor
 .vscode/
