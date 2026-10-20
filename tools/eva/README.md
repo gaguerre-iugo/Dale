@@ -11,7 +11,7 @@ el CSS, y un adaptador conecta la interfaz con el runtime.
 | `assets/eva-ui.js` | Adaptador: barra, panel de Herramientas y reproductor. |
 | `assets/voice-ui.css` | Arreglos legacy de los controles nativos (hoy ocultos). |
 | `tools/eva/port_kit_css.py` | Concatena `components/eva-panels.css` en `eva.css` y corrige rutas. |
-| `tools/eva/patch_runtime_bridge.py` | Agrega `window.__adtKit` al bundle. |
+| `tools/eva/patch_runtime_bridge.py` | Agrega `window.__adtKit` (ajustes, transporte y `playText`/`stopText`) al bundle. |
 
 ## Qué se corrigió respecto de la aplicación anterior
 
@@ -46,6 +46,7 @@ cada vez que actualices el eva-kit.
 - Reproductor: píldora blanca con seis iconos; opciones con voz, velocidad y
   resaltado; minimizado deja el FAB turquesa.
 - Cambio de voz: pide `voices/consultor/audio/…` (200).
+- Tap to play: las tarjetas de `pg006_sec002` piden `text-pg006-53…60` a la voz activa y reproducen el clip; sin puente caen a `speechSynthesis`.
 - Persistencia de voz, velocidad, resaltado y lectura fácil al recargar.
 - Las 19 páginas cargan sin `pageerror` ni desborde horizontal.
 
@@ -58,3 +59,10 @@ las instrucciones para aplicarlo a otro libro con runtime ADT.
 - Las opciones de **Escuchar** (reproducción automática, voz, velocidad, resaltado) aparecen sólo con la lectura en voz alta activa.
 - Los controles segmentados son blancos con borde, como el 1930; el turquesa queda para la opción activa.
 - **Reducir movimiento** y **Atajos de teclado** completan la sección Pantalla.
+
+## Audio suelto para actividades
+
+`window.__adtKit.playText(id)` reproduce el audio de una `data-id` con la voz,
+la velocidad y el volumen activos, sin encolar la lectura de la página.
+`stopText()` lo detiene. Las actividades lo usan para el tap-to-play de las
+tarjetas (`data-audio-id`), con `speechSynthesis` como respaldo.

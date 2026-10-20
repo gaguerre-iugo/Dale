@@ -18,16 +18,16 @@ sheísmo. Ver `voices test/README.md` para la comparación de voces.
 
 ```
 content/i18n/es-UY/
-├── audio/                         # voz histórica del libro (688 mp3)
-├── audio_voices.json              # mapa de las dos voces nuevas (688 ids c/u)
+├── audio/                         # voz histórica del libro (406 mp3)
+├── audio_voices.json              # mapa de las dos voces nuevas (406 ids c/u)
 └── voices/
-    ├── asesora/audio/*.mp3        # 21 archivos (páginas 1 y 2)
-    └── consultor/audio/*.mp3      # 21 archivos (páginas 1 y 2)
+    ├── asesora/audio/*.mp3        # 29 archivos (páginas 1-2 + palabras de pg006)
+    └── consultor/audio/*.mp3      # 29 archivos (páginas 1-2 + palabras de pg006)
 ```
 
-`audio_voices.json` tiene **688 entradas por voz** a propósito: el runtime elige
-el mapa completo de la voz activa, no hace fallback por id. Los 21 ids de las
-páginas 1 y 2 apuntan a `../voices/<voz>/audio/<id>.mp3`; el resto sigue
+`audio_voices.json` tiene **406 entradas por voz** a propósito: el runtime elige
+el mapa completo de la voz activa, no hace fallback por id. Los 29 ids
+convertidos apuntan a `../voices/<voz>/audio/<id>.mp3`; el resto sigue
 apuntando al MP3 histórico. Así ninguna página queda muda mientras la
 conversión avanza.
 
@@ -72,7 +72,7 @@ python tools/voice/build_voice_catalog.py        # reconstruye audio_voices.json
 - Salida MP3 mono 24 kHz, 96 kbps, `loudnorm` a **−27,5 LUFS** para emparejar
   con el corpus histórico (que mide entre −26 y −32 LUFS). Cuando se convierta
   el libro completo conviene subir todo a −16 LUFS en una sola pasada.
-- La API limita a 10 pedidos/minuto: 42 audios ≈ 5 minutos.
+- La API limita a ~10 pedidos/minuto: `generar_palabras.py` espacia 7 s entre palabras.
 
 ## Comportamiento verificado
 
@@ -84,13 +84,13 @@ Con Playwright sobre el libro servido en HTTP y desde `file://`:
   reinicia y el siguiente audio sale de `voices/consultor/…` (HTTP 200).
 - El cambio hecho en Herramientas se refleja en el dock y viceversa.
 - La elección persiste (`localStorage.narratorVoice`) entre páginas y recargas.
-- En páginas sin convertir (ej. pg006) el audio sale del corpus histórico, sin
-  silencios ni 404.
+- En pg006 las 8 palabras de la actividad 1 salen de la voz activa; el resto de
+  esa página sigue con el corpus histórico, sin silencios ni 404.
 - Las 19 páginas cargan sin errores de JS ni desborde horizontal.
 
 ## Pendiente
 
-- Convertir el resto de los 688 audios (el mapa ya está preparado).
+- Convertir el resto de los 406 audios (el mapa ya está preparado).
 - Normalización global de volumen cuando esté todo convertido.
 - El resaltado palabra por palabra queda fuera del dock porque este libro tiene
   `features.highlight=false` (1930 lo tiene activo y por eso lo muestra).
@@ -137,6 +137,45 @@ python tools/voice/ajustar_tempo.py --factor 0.88 --paginas pg001 pg002
 No es idempotente: correrlo dos veces vuelve a frenar. Si 0.88 sigue rapido,
 probá 0.85; para volver atras, `git checkout` de los MP3.
 
+
+### Palabras de actividades (tap to play)
+
+Las tarjetas de imagen de `pg006_sec002` (actividad 1) llevan `data-audio-id`
+con la palabra que nombran. Al tocarlas, la actividad llama a
+`window.__adtKit.playText(id)`: el runtime resuelve la voz activa, arma la misma
+URL que el reproductor (`./content/i18n/<lang>/audio/<filename>`) y reproduce un
+clip suelto con la velocidad y el volumen configurados. Si el puente no está o
+la ID no tiene audio, cae a `speechSynthesis` (voz del navegador).
+
+Las 8 palabras son `text-pg006-53` … `text-pg006-60` (`ola`, `ajo`, `uva`,
+`ala`, `oso`, `elefante`, `auto`, `uno`). Se generan una por pedido, con frase
+completa para que no se las coma, y se recortan al habla real:
+
+```bash
+python tools/voice/generar_palabras.py --voice consultor \
+  --model gemini-3.8-flash-lite-tts \
+  --ids text-pg006-53 text-pg006-54 text-pg006-55 text-pg006-56 \
+        text-pg006-57 text-pg006-58 text-pg006-59 text-pg006-60
+```
+
+Asesora se generó con Lite porque la cuota diaria de Flash seguía agotada; al
+renovarse conviene regenerar esas 8 palabras con el modelo grande:
+
+```bash
+python tools/voice/generar_palabras.py --voice asesora \
+  --model gemini-3.8-flash-tts \
+  --ids text-pg006-53 text-pg006-54 text-pg006-55 text-pg006-56 \
+        text-pg006-57 text-pg006-58 text-pg006-59 text-pg006-60
+```
+
+`build_voice_catalog.py` ahora arma el mapa mirando qué IDs tienen archivo en
+`voices/<voz>/audio/`; no depende de una lista fija de páginas. Después de
+cambiar el catálogo o una página, sincronizar el preloader:
+
+```bash
+python tools/voice/refresh_preloader.py   # vuelve a leer páginas y JSON
+python tools/voice/patch_preloader.py     # actualiza audio_voices.json
+```
 
 ### Frases que en el libro son dos items
 
