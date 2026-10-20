@@ -235,6 +235,21 @@
       if (!section || section.dataset.adtInitialized === 'true') return;
       section.dataset.adtInitialized = 'true';
 
+      // Orden aleatorio de las tarjetas en cada carga (las correctas no quedan juntas)
+      (function () {
+        const first = section.querySelector('[data-activity-item]');
+        const grid = first ? first.closest('.adt-grid') : null;
+        if (!grid) return;
+        const slots = Array.from(grid.children);
+        for (let i = slots.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = slots[i];
+          slots[i] = slots[j];
+          slots[j] = temp;
+        }
+        slots.forEach(function (slot) { grid.appendChild(slot); });
+      })();
+
       const cards = section.querySelectorAll('[data-activity-item]');
       const status = section.querySelector('[data-activity-status]');
       let synth = null;
