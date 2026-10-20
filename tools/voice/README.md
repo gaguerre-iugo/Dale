@@ -144,8 +144,10 @@ Las tarjetas de imagen de `pg006_sec002` (actividad 1) llevan `data-audio-id`
 con la palabra que nombran. Al tocarlas, la actividad llama a
 `window.__adtKit.playText(id)`: el runtime resuelve la voz activa, arma la misma
 URL que el reproductor (`./content/i18n/<lang>/audio/<filename>`) y reproduce un
-clip suelto con la velocidad y el volumen configurados. Si el puente no está o
-la ID no tiene audio, cae a `speechSynthesis` (voz del navegador).
+clip suelto con la velocidad y el volumen configurados. Tocar una tarjeta
+reproduce el nombre incluso antes de elegir la vocal; si no hay ronda iniciada,
+además muestra el aviso para empezar. Si el puente no está o la ID no tiene
+audio, cae a `speechSynthesis` (voz del navegador).
 
 Las 8 palabras son `text-pg006-53` … `text-pg006-60` (`ola`, `ajo`, `uva`,
 `ala`, `oso`, `elefante`, `auto`, `uno`). Se generan una por pedido, con frase
