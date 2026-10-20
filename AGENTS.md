@@ -8,9 +8,9 @@ This document describes the structure of this Accessible Digital Textbook (ADT) 
 
 - **Source language**: `es-UY`
 - **Available languages in this bundle**: `es-UY`
-- **Total pages**: 19 (`pg001_sec001` … `pg020_sec002`)
+- **Total pages**: 12 (`pg001_sec001` … `pg013_sec004`)
 - **Glossary**: yes (66 entries)
-- **Texts / audio**: 688 text IDs, 688 MP3 files
+- **Texts / audio**: 437 text IDs, 436 MP3 files
 
 ## Quick Overview
 
@@ -40,15 +40,15 @@ Dale/                                  # repository root = the web app
 ├── .gitignore
 ├── .gitattributes
 │
-├── pg001_sec001.html                  # One HTML file per page (19 files)
+├── pg001_sec001.html                  # One HTML file per page (12 files)
 ├── pg002_sec001.html
 ├── pg003_sec001.html
 ├── pg004005_sec001.html               # Two printed pages in one section
 ├── pg006_sec002.html                  # Activity pages from here on
 ├── ...
-└── pg020_sec002.html
+└── pg013_sec004.html
 │
-├── images/                            # 178 images referenced by the pages
+├── images/                            # 96 images referenced by the pages
 │   ├── pg001_im001.png                # Full-page / decorative images
 │   ├── pg006_im010_crop_v1.png        # Cropped activity images
 │   ├── pg009_upload1.png              # Card / tile images used by activities
@@ -70,7 +70,7 @@ Dale/                                  # repository root = the web app
 │           ├── videos.json            # {} placeholder
 │           ├── timecode/
 │           │   └── timecode_output.json   # {} (no word-level sync for this book)
-│           └── audio/                 # 688 MP3 files
+│           └── audio/                 # 436 MP3 files
 │
 └── assets/
     ├── config.json                    # Title, languages, feature flags
@@ -105,7 +105,7 @@ Every page loads three classic scripts at the end of `<body>`, **in this order**
 <script src="./assets/base.bundle.local.js"></script>
 ```
 
-- **`offline-preloader.js`** is generated. It holds an inline map of 32 keys — all 19 page HTML files, `index.html`, `assets/config.json`, `content/pages.json`, `content/toc.json`, `content/navigation/nav.html`, the six `content/i18n/es-UY/*.json` files, `content/i18n/es-UY/timecode/timecode_output.json`, and `assets/interface_translations/es-UY/interface_translations.json`. It does **not** embed images, audio or CSS. Its purpose is to let the book open from `file://` (where `fetch` of local JSON is blocked). **After editing any of those files, regenerate this preloader**; otherwise the `file://` copy serves stale content while the HTTP-served copy shows the edit.
+- **`offline-preloader.js`** is generated. It holds an inline map of 25 keys — all 12 page HTML files, `index.html`, `assets/config.json`, `content/pages.json`, `content/toc.json`, `content/navigation/nav.html`, the six `content/i18n/es-UY/*.json` files, `content/i18n/es-UY/timecode/timecode_output.json`, and `assets/interface_translations/es-UY/interface_translations.json`. It does **not** embed images, audio or CSS. Its purpose is to let the book open from `file://` (where `fetch` of local JSON is blocked). **After editing any of those files, regenerate this preloader**; otherwise the `file://` copy serves stale content while the HTTP-served copy shows the edit.
 - **`scorm.js`** exposes the SCORM 1.2 API when the bundle runs inside an LMS.
 - **`base.bundle.local.js`** is the reader runtime (interface, dock, glossary, read-aloud, easy-read, state).
 
@@ -139,18 +139,18 @@ Every piece of displayable text has a unique, stable **text ID**. The same ID ca
 | `pg{NNN}_sec{NNN}_ans_target-{x}` | Answer-feedback audio for drag activities (audio only) | `pg008_sec002_ans_target-e` |
 | `gl{NNN}` / `gl{NNN}_def` | Glossary word / definition | `gl001`, `gl001_def` |
 
-In this book, IDs keep their original pipeline numbering (~`text-pg006-40`, `text-pg020-56`); the numbers do **not** restart at 1 on each page. Do not renumber them: they are the join key across HTML, `texts.json`, `speech_texts.json`, `audios.json`, and the MP3 filenames.
+In this book, IDs keep their original pipeline numbering (~`text-pg006-40`, `text-pg013-28`); the numbers do **not** restart at 1 on each page. Do not renumber them: they are the join key across HTML, `texts.json`, `speech_texts.json`, `audios.json`, and the MP3 filenames.
 
 ### Three kinds of ID
 
-Not every key in `texts.json` has a `data-id` in the HTML, and not every `data-id` has a text entry. The 688 IDs break down as:
+Not every key in `texts.json` has a `data-id` in the HTML, and not every `data-id` has a text entry. The 437 IDs break down as:
 
-- **426 assigned to DOM elements** — text spans, labels, image descriptions.
-- **262 audio-only** — the runtime or the activity code looks them up by a computed name rather than by a `data-id`:
-  - `*_easy_read` (118) — the Easy Read variant, played when Easy Read is on.
+- **232 assigned to DOM elements** — text spans, labels, image descriptions.
+- **205 audio-only** — the runtime or the activity code looks them up by a computed name rather than by a `data-id`:
+  - `*_easy_read` (67) — the Easy Read variant, played when Easy Read is on.
   - `gl{NNN}` / `gl{NNN}_def` (132) — glossary pronunciation, triggered from the glossary UI.
-  - `pg{NNN}_sec{NNN}_ans_target-*` (12) — feedback lines for drag-to-classify activities.
-- **23 DOM ids with no text entry**, on purpose:
+  - `pg{NNN}_sec{NNN}_ans_target-*` (6) — feedback lines for drag-to-classify activities.
+- **17 DOM ids with no text entry**, on purpose:
   - `pg{NNN}_s{N}` — the activity section root; it has no plain text entry, only `{id}_easy_read`, a spoken summary of the whole activity.
   - `text-pg013-29` … `text-pg013-37` — empty `sr-feedback` spans that the activity script fills with "✓", "✗" or "Falta".
 
@@ -180,7 +180,7 @@ Three entries (cover, "CUADERNILLO", and activity 10), each with `section_id`, `
 
 ### `content/i18n/{lang}/texts.json` — All Text Content
 
-A flat `Record<textId, string>` with 688 entries. Example:
+A flat `Record<textId, string>` with 437 entries. Example:
 
 ```json
 {
@@ -193,7 +193,7 @@ A flat `Record<textId, string>` with 688 entries. Example:
 
 ### `content/i18n/{lang}/speech_texts.json` — Prepared Read-Aloud Text
 
-Same 688 keys, same wording by default; 191 entries differ from `texts.json` because numbers, ISBNs and edition data are written out for speech (e.g. `"ISBN: 978-9915-9930-9-6"` → `"i ese be ene: nueve siete ocho guion …"`). Keep display text and speech text independent: change the display value in `texts.json` only when the visible string must change, and `speech_texts.json` only when the pronunciation must change.
+Same 437 keys, same wording by default; 90 entries differ from `texts.json` because numbers, ISBNs and edition data are written out for speech (e.g. `"ISBN: 978-9915-9930-9-6"` → `"i ese be ene: nueve siete ocho guion …"`). Keep display text and speech text independent: change the display value in `texts.json` only when the visible string must change, and `speech_texts.json` only when the pronunciation must change.
 
 ### `content/i18n/{lang}/audios.json` — Audio Mappings
 
@@ -206,7 +206,7 @@ Maps each text ID to its MP3 filename in `audio/`:
 }
 ```
 
-Audio files live at `content/i18n/{lang}/audio/{filename}.mp3`. The mapping is 1:1 and complete: 688 keys, 688 files, no orphans.
+Audio files live at `content/i18n/{lang}/audio/{filename}.mp3`. The mapping is 1:1 and complete: 436 keys, 436 files, no orphans.
 
 ### `content/i18n/{lang}/glossary.json` — Glossary
 
@@ -272,7 +272,7 @@ Controls which features the reader UI enables. This book's config:
 
 ### `imsmanifest.xml` — SCORM 1.2
 
-Declares one organization and one `webcontent` resource at `index.html`, listing `index.html` plus the 19 page files. It does not list `assets/`, `content/` or `images/`; when packaging for an LMS, those folders still have to be shipped with the SCO. Keep the page list in sync when adding or removing a page.
+Declares one organization and one `webcontent` resource at `index.html`, listing `index.html` plus the 12 page files. It does not list `assets/`, `content/` or `images/`; when packaging for an LMS, those folders still have to be shipped with the SCO. Keep the page list in sync when adding or removing a page.
 
 ## Page HTML Structure
 
@@ -316,7 +316,7 @@ Key conventions:
 
 - **`data-id` on text elements** links to `texts.json`, `speech_texts.json`, and `audios.json` — the runtime keeps the display string from `texts.json` and uses the prepared wording for read-aloud.
 - **`data-id` on images** links to the image description text and audio.
-- **Images** use relative paths: `images/{filename}`. All 178 files in `images/` are referenced; none are missing.
+- **Images** use relative paths: `images/{filename}`. All 96 files in `images/` are referenced; none are missing.
 - **Google Fonts** is a progressive enhancement: `assets/fonts.css` ships the same families locally, so the book still renders offline.
 - **`data-section-type`** values in this book: `front_cover`, `inside_cover`, `separator`, `activity_other`, `activity_custom_vowel_rounds`, `activity_custom_multi_select_audio`, `activity_custom_sound_selection`.
 - **Activities** keep their state in `data-*` attributes and classes, and expose `validate` / `reset` to the runtime. Read an existing activity page before copying one: the scripts assume specific class names (`letter-btn`, `image-card`, `image-tile`, `sr-feedback`) and attributes (`data-activity-item`, `data-letter-group`, `data-sound-letter`, `data-word`).

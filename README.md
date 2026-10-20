@@ -5,7 +5,7 @@ un cuadernillo de juegos y actividades para iniciar a niñas y niños en la
 alfabetización: reconocimiento de vocales, consonantes y sonidos iniciales.
 
 - **Idioma:** español (es-UY)
-- **Páginas:** 19
+- **Páginas:** 12
 - **Glosario:** 66 palabras
 - **Editorial:** Dale, Montevideo, Uruguay (1.ª edición, 2026)
 - **Licencia:** CC BY-NC-SA
