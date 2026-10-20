@@ -18,15 +18,15 @@ sheísmo. Ver `voices test/README.md` para la comparación de voces.
 
 ```
 content/i18n/es-UY/
-├── audio/                         # voz histórica del libro (406 mp3)
-├── audio_voices.json              # mapa de las dos voces nuevas (406 ids c/u)
+├── audio/                         # voz histórica del libro (429 mp3)
+├── audio_voices.json              # mapa de las dos voces nuevas (429 ids c/u)
 └── voices/
-    ├── asesora/audio/*.mp3        # 29 archivos (páginas 1-2 + palabras de pg006)
-    └── consultor/audio/*.mp3      # 29 archivos (páginas 1-2 + palabras de pg006)
+    ├── asesora/audio/*.mp3        # 53 archivos (páginas 1-2 + palabras de pg006-008)
+    └── consultor/audio/*.mp3      # 53 archivos (páginas 1-2 + palabras de pg006-008)
 ```
 
-`audio_voices.json` tiene **406 entradas por voz** a propósito: el runtime elige
-el mapa completo de la voz activa, no hace fallback por id. Los 29 ids
+`audio_voices.json` tiene **429 entradas por voz** a propósito: el runtime elige
+el mapa completo de la voz activa, no hace fallback por id. Los 53 ids
 convertidos apuntan a `../voices/<voz>/audio/<id>.mp3`; el resto sigue
 apuntando al MP3 histórico. Así ninguna página queda muda mientras la
 conversión avanza.
@@ -90,7 +90,7 @@ Con Playwright sobre el libro servido en HTTP y desde `file://`:
 
 ## Pendiente
 
-- Convertir el resto de los 406 audios (el mapa ya está preparado).
+- Convertir el resto de los 429 audios (el mapa ya está preparado).
 - Normalización global de volumen cuando esté todo convertido.
 - El resaltado palabra por palabra queda fuera del dock porque este libro tiene
   `features.highlight=false` (1930 lo tiene activo y por eso lo muestra).
@@ -144,10 +144,10 @@ Las tarjetas de imagen de `pg006_sec002` (actividad 1) llevan `data-audio-id`
 con la palabra que nombran. Al tocarlas, la actividad llama a
 `window.__adtKit.playText(id)`: el runtime resuelve la voz activa, arma la misma
 URL que el reproductor (`./content/i18n/<lang>/audio/<filename>`) y reproduce un
-clip suelto con la velocidad y el volumen configurados. Tocar una tarjeta
-reproduce el nombre incluso antes de elegir la vocal; si no hay ronda iniciada,
-además muestra el aviso para empezar. Si el puente no está o la ID no tiene
-audio, cae a `speechSynthesis` (voz del navegador).
+clip suelto con la velocidad y el volumen configurados. En pg006, tocar una
+tarjeta reproduce el nombre incluso antes de elegir la vocal; si no hay ronda
+iniciada, además muestra el aviso para empezar. Si el puente no está o la ID no
+tiene audio, cae a `speechSynthesis` (voz del navegador).
 
 Las 8 palabras son `text-pg006-53` … `text-pg006-60` (`ola`, `ajo`, `uva`,
 `ala`, `oso`, `elefante`, `auto`, `uno`). Primero se probaron una por pedido
@@ -183,6 +183,17 @@ entre 0,47 y 0,93 s en ambas voces; el volumen queda dentro de ±0,2 LUFS.
 
 `generar_palabras.py` queda para casos de una sola palabra o para comparar tomas
 individuales.
+
+La misma estrategia se aplicó a las dos actividades siguientes:
+
+| Página | Actividad | Palabras | IDs |
+|---|---|---|---|
+| `pg007_sec002` | Armar parejas | 12 | `pg007_word_*` + `text-pg007-41` |
+| `pg008_sec002` | ¿Dónde va la imagen? | 12 | `pg008_word_*` |
+
+En pg007 y pg008 Flash se agotó de nuevo, así que **Asesora también salió con
+Lite**; cuando se renueve conviene regenerar los dos bloques con
+`gemini-3.8-flash-tts`. Los clips quedan nivelados y verificados por secuencia.
 
 `build_voice_catalog.py` ahora arma el mapa mirando qué IDs tienen archivo en
 `voices/<voz>/audio/`; no depende de una lista fija de páginas. Después de

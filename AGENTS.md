@@ -164,7 +164,7 @@ Not every key in `texts.json` has a `data-id` in the HTML, and not every `data-i
 
 ### Tap to play en actividades
 
-Una tarjeta o botón puede llevar `data-audio-id="<text id>"`. Al tocarlo, `window.__adtKit.playText(id)` reproduce ese audio con la voz, la velocidad y el volumen activos, sin encolar la lectura de la página; `stopText()` lo detiene. El archivo vive en `voices/<voz>/audio/<id>.mp3` y se declara en `audio_voices.json`. Si el puente no está o la ID no tiene audio, la actividad cae a `speechSynthesis` (voz del navegador). Ejemplo: `pg006_sec002.html`, con 8 tarjetas (`text-pg006-53` … `text-pg006-60`). Para generar las palabras de una actividad en una sola toma por voz y cortarlas: `tools/voice/generar_bloques.py --ids … --sep ". " --trim --tempo 0.88`; `generar_palabras.py` queda para palabras aisladas.
+Una tarjeta o botón puede llevar `data-audio-id="<text id>"`. Al tocarlo, `window.__adtKit.playText(id)` reproduce ese audio con la voz, la velocidad y el volumen activos, sin encolar la lectura de la página; `stopText()` lo detiene. El archivo vive en `voices/<voz>/audio/<id>.mp3` y se declara en `audio_voices.json`. Si el puente no está o la ID no tiene audio, la actividad cae a `speechSynthesis` (voz del navegador). Ejemplo: `pg006_sec002.html`, con 8 tarjetas (`text-pg006-53` … `text-pg006-60`); también `pg007_sec002` (12 parejas, `pg007_word_*` + `text-pg007-41`) y `pg008_sec002` (12 tarjetas, `pg008_word_*`). Para generar las palabras de una actividad en una sola toma por voz y cortarlas: `tools/voice/generar_bloques.py --ids … --sep ". " --trim --tempo 0.88`; `generar_palabras.py` queda para palabras aisladas.
 
 ## Key Files in Detail
 
