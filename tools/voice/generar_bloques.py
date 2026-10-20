@@ -9,13 +9,21 @@ el WAV en los limites reales de cada item. La alineacion usa faster-whisper
 modelo respete pausas: pedir pausas largas daba resultados distintos en cada
 toma.
 
-Solo se agrupan items cortos (tapa y creditos). Los textos largos o con numeros
-deletreados (ISBN, datos de edicion) siguen generandose por item: ahi el propio
-texto tiene pausas internas y la alineacion de numeros es fragil.
+Se usa para tapa/creditos y para las palabras de una actividad. Con `--ids` se
+define un bloque a medida; `--sep` separa los items (con ". " los lee como
+oraciones, no como lista), `--trim` recorta el silencio inicial/final de cada
+clip y `--tempo` aplica atempo despues del corte. La toma entera se normaliza, no
+cada item: despues conviene pasar `nivelar_clips.py` para emparejar el volumen.
+
+Los textos largos o con numeros deletreados (ISBN, datos de edicion) siguen
+generandose por item: ahi el propio texto tiene pausas internas y la alineacion
+de numeros es fragil.
 
 Uso:
     python tools/voice/generar_bloques.py
     python tools/voice/generar_bloques.py --dry-run
+    python tools/voice/generar_bloques.py --ids text-pg006-53 text-pg006-54 \
+        --sep ". " --trim --tempo 0.88
 """
 import argparse
 import base64
@@ -134,6 +142,42 @@ def cortar(src, dest, start, end):
         check=True)
 
 
+def recortar_silencio(path, lead=0.05, tail=0.08):
+    """Saca el silencio inicial y el final de un clip ya cortado."""
+    err = subprocess.run(
+        ["ffmpeg", "-hide_banner", "-i", str(path), "-af",
+         "silencedetect=noise=-45dB:d=0.08", "-f", "null", "-"],
+        capture_output=True, text=True).stderr
+    starts = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", err)]
+    ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", err)]
+    total = duration(path)
+    pares = list(zip(starts, ends))
+    a, b = 0.0, total
+    if pares and pares[0][0] < 0.03:
+        a = max(0.0, pares[0][1] - lead)
+    if pares and pares[-1][1] >= total - 0.03:
+        b = min(total, pares[-1][0] + tail)
+    if b - a < 0.15 or (a <= 0.001 and b >= total - 0.001):
+        return
+    out = path.with_suffix(".trim.mp3")
+    subprocess.run(
+        ["ffmpeg", "-y", "-v", "error", "-ss", f"{a:.3f}", "-to", f"{b:.3f}",
+         "-i", str(path), "-ar", "24000", "-ac", "1",
+         "-codec:a", "libmp3lame", "-b:a", "128k", str(out)],
+        check=True)
+    out.replace(path)
+
+
+def aplicar_tempo(path, factor):
+    out = path.with_suffix(".tempo.mp3")
+    subprocess.run(
+        ["ffmpeg", "-y", "-v", "error", "-i", str(path),
+         "-af", f"atempo={factor}", "-ar", "24000", "-ac", "1",
+         "-codec:a", "libmp3lame", "-b:a", "128k", str(out)],
+        check=True)
+    out.replace(path)
+
+
 def transcribir(path):
     from faster_whisper import WhisperModel
     model = WhisperModel("base", device="cpu", compute_type="int8")
@@ -197,8 +241,17 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--voice", action="append", choices=list(VOICES))
+    ap.add_argument("--ids", nargs="+",
+                    help="genera un unico bloque con estas ids (reemplaza BLOQUES)")
+    ap.add_argument("--sep", default="\n",
+                    help="separador entre items; usar '. ' para leer oraciones")
+    ap.add_argument("--trim", action="store_true",
+                    help="recorta silencio inicial/final de cada clip")
+    ap.add_argument("--tempo", type=float, default=1.0,
+                    help="atempo a aplicar despues del corte (0.88 = 12%% mas lento)")
     args = ap.parse_args()
 
+    bloques = [args.ids] if args.ids else BLOQUES
     speech = json.loads((I18N / "speech_texts.json").read_text(encoding="utf-8"))
     key = api_key()
     report = []
@@ -207,7 +260,7 @@ def main():
         for slug, voice in VOICES.items():
             if args.voice and slug not in args.voice:
                 continue
-            for bi, ids in enumerate(BLOQUES, 1):
+            for bi, ids in enumerate(bloques, 1):
                 faltan = [i for i in ids if i not in speech]
                 if faltan:
                     print(f"[{slug}] bloque {bi}: faltan textos {faltan}")
@@ -216,8 +269,11 @@ def main():
                 print(f"[{slug}] bloque {bi}: {len(ids)} items", flush=True)
                 if args.dry_run:
                     continue
+                texto = args.sep.join(textos)
+                if args.sep.startswith(".") and not texto.endswith("."):
+                    texto += "."
                 raw = tmp / f"{slug}_{bi}.wav"
-                if not synth("\n".join(textos), voice, raw, key, args.model):
+                if not synth(texto, voice, raw, key, args.model):
                     print("   fallo la sintesis")
                     report.append({"voz": slug, "bloque": bi, "estado": "sintesis"})
                     continue
@@ -231,12 +287,16 @@ def main():
                     report.append({"voz": slug, "bloque": bi, "estado": "alineacion",
                                    "sin_alinear": [ids[k] for k, s in enumerate(spans) if s is None]})
                     continue
-                # Recortar desde el habla real con un pequeno respiro.
+                # Recorte ajustado: 50-100 ms de respiro, sin solapar clips.
                 cortes = []
+                prev_b = 0.0
                 for k, (start, end) in enumerate(spans):
-                    a = 0.0 if k == 0 else max(0.0, start - PAD)
-                    b = total if k == len(spans) - 1 else min(total, end + PAD)
+                    a = max(prev_b, start - (0.05 if k == 0 else 0.10))
+                    b = min(total, end + (0.15 if k == len(spans) - 1 else 0.10))
+                    if b <= a:
+                        b = min(total, a + 0.2)
                     cortes.append((a, b))
+                    prev_b = b
                 if any(b - a < 0.2 for a, b in cortes) or any(
                         cortes[k + 1][0] < cortes[k][1] for k in range(len(cortes) - 1)):
                     print("   cortes invalidos; se omite el bloque")
@@ -246,6 +306,10 @@ def main():
                 for tid, (a, b) in zip(ids, cortes):
                     tmp_mp3 = tmp / f"{slug}_{bi}_{tid}.mp3"
                     cortar(norm_wav, tmp_mp3, a, b)
+                    if args.trim:
+                        recortar_silencio(tmp_mp3)
+                    if args.tempo != 1.0:
+                        aplicar_tempo(tmp_mp3, args.tempo)
                     temporales.append((tmp_mp3, tid))
                 for tmp_mp3, tid in temporales:
                     tmp_mp3.replace(I18N / "voices" / slug / "audio" / f"{tid}.mp3")

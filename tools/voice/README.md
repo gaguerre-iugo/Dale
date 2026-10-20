@@ -150,25 +150,39 @@ además muestra el aviso para empezar. Si el puente no está o la ID no tiene
 audio, cae a `speechSynthesis` (voz del navegador).
 
 Las 8 palabras son `text-pg006-53` … `text-pg006-60` (`ola`, `ajo`, `uva`,
-`ala`, `oso`, `elefante`, `auto`, `uno`). Se generan una por pedido, con frase
-completa para que no se las coma, y se recortan al habla real:
+`ala`, `oso`, `elefante`, `auto`, `uno`). Primero se probaron una por pedido
+(`generar_palabras.py`), pero cada toma traía un timbre y una energía apenas
+distintos. Ahora se piden las 8 en **una sola toma por voz**, separadas por
+punto, y se cortan por alineación forzada; así comparten micrófono, tono y
+volumen:
 
 ```bash
-python tools/voice/generar_palabras.py --voice consultor \
-  --model gemini-3.8-flash-lite-tts \
+python tools/voice/generar_bloques.py --voice consultor \
+  --model gemini-3.8-flash-lite-tts --sep ". " --trim --tempo 0.88 \
   --ids text-pg006-53 text-pg006-54 text-pg006-55 text-pg006-56 \
         text-pg006-57 text-pg006-58 text-pg006-59 text-pg006-60
 ```
 
-Asesora se generó con Lite porque la cuota diaria de Flash seguía agotada; al
-renovarse conviene regenerar esas 8 palabras con el modelo grande:
+- `--sep ". "` lee cada palabra como oración, no como lista.
+- `--trim` saca el silencio inicial y final de cada clip.
+- `--tempo 0.88` empareja con el ritmo de las páginas 1–2.
+
+La toma entera se normaliza, pero la primera palabra suele salir más fuerte y
+las últimas más bajas. `nivelar_clips.py` mide cada clip y lo lleva a −27,5 LUFS
+con un limitador:
 
 ```bash
-python tools/voice/generar_palabras.py --voice asesora \
-  --model gemini-3.8-flash-tts \
-  --ids text-pg006-53 text-pg006-54 text-pg006-55 text-pg006-56 \
-        text-pg006-57 text-pg006-58 text-pg006-59 text-pg006-60
+python tools/voice/nivelar_clips.py --ids text-pg006-53 text-pg006-54 text-pg006-55 \
+  text-pg006-56 text-pg006-57 text-pg006-58 text-pg006-59 text-pg006-60
 ```
+
+Asesora se generó con **Flash** (la cuota se renovó) y Consultor con **Lite**,
+igual que sus páginas 1–2. Se verificó concatenando los 8 clips: la secuencia
+transcribe “ola, ajo, uva, ala, oso, elefante, auto, uno” y las duraciones quedan
+entre 0,47 y 0,93 s en ambas voces; el volumen queda dentro de ±0,2 LUFS.
+
+`generar_palabras.py` queda para casos de una sola palabra o para comparar tomas
+individuales.
 
 `build_voice_catalog.py` ahora arma el mapa mirando qué IDs tienen archivo en
 `voices/<voz>/audio/`; no depende de una lista fija de páginas. Después de
