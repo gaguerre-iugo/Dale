@@ -136,3 +136,23 @@ python tools/voice/ajustar_tempo.py --factor 0.88 --paginas pg001 pg002
 
 No es idempotente: correrlo dos veces vuelve a frenar. Si 0.88 sigue rapido,
 probá 0.85; para volver atras, `git checkout` de los MP3.
+
+
+### Frases que en el libro son dos items
+
+En la tapa, "CUADERNILLO" y "JUEGOS" son dos `data-id` distintos. Generados por
+separado suenan a dos palabras sueltas: la primera cae como final de frase y la
+segunda arranca de cero. `generar_frase.py` los pide juntos ("Cuadernillo
+Juegos"), los corta en el punto medio entre las dos palabras y conserva la
+entonacion continua. Verificado con F0: la primera termina en 158 Hz y la
+segunda arranca en 158 Hz y cae a 133 (antes terminaba en 75 y reiniciaba en
+100).
+
+```bash
+python tools/voice/generar_frase.py --voice consultor \
+  --model gemini-3.8-flash-lite-tts --ids pg001_n0003 pg001_n0004
+```
+
+Aplicado a Consultor. Asesora conserva la version por bloques hasta que se
+renueve la cuota de Flash; ahi conviene regenerar la misma frase con el modelo
+grande para no mezclar timbres.
