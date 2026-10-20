@@ -156,3 +156,12 @@ python tools/voice/generar_frase.py --voice consultor \
 Aplicado a Consultor. Asesora conserva la version por bloques hasta que se
 renueve la cuota de Flash; ahi conviene regenerar la misma frase con el modelo
 grande para no mezclar timbres.
+
+El corte queda tan justo que las dos palabras se pegan. `--gap` agrega silencio
+al final de cada item (salvo el ultimo); por defecto 120 ms, que sumado al
+silencio natural del corte da una separacion de ~200 ms:
+
+```bash
+python tools/voice/generar_frase.py --voice consultor \
+  --model gemini-3.8-flash-lite-tts --ids pg001_n0003 pg001_n0004 --gap 0.12
+```

@@ -37,6 +37,19 @@ def lead_end(path):
     return 0.0
 
 
+def add_gap(path, gap):
+    """Agrega silencio al final del clip (separacion entre items de la frase)."""
+    if gap <= 0:
+        return
+    out = path.with_suffix(".gap.mp3")
+    subprocess.run(
+        ["ffmpeg", "-y", "-v", "error", "-i", str(path),
+         "-af", f"apad=pad_dur={gap:.3f}",
+         "-ar", "24000", "-ac", "1", "-codec:a", "libmp3lame", "-b:a", "128k", str(out)],
+        check=True)
+    out.replace(path)
+
+
 def tempo(src, factor):
     out = src.with_suffix(".tempo.mp3")
     subprocess.run(
@@ -52,6 +65,8 @@ def main():
     ap.add_argument("--model", default="gemini-3.8-flash-lite-tts")
     ap.add_argument("--ids", nargs="+", required=True)
     ap.add_argument("--tempo", type=float, default=0.88)
+    ap.add_argument("--gap", type=float, default=0.12,
+                    help="silencio al final de cada item, salvo el ultimo")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -90,11 +105,13 @@ def main():
             prev = b
         cortes.append((prev, min(total, spans[-1][1] + 0.06)))
         print("cortes:", [(round(a, 2), round(b, 2)) for a, b in cortes])
-        for tid, (a, b) in zip(args.ids, cortes):
+        for k, (tid, (a, b)) in enumerate(zip(args.ids, cortes)):
             dest = I18N / "voices" / args.voice / "audio" / f"{tid}.mp3"
             cortar(norm, dest, a, b)
             if args.tempo and args.tempo != 1.0:
                 tempo(dest, args.tempo)
+            if k < len(cortes) - 1:
+                add_gap(dest, args.gap)
             print("  ", tid, round(duration(dest), 2), "s")
 
 
