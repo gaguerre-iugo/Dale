@@ -7,7 +7,7 @@
       "acertaste",
       "acierto"
     ],
-    "emoji": "🎯✅",
+    "emoji": "🎯",
     "id": "gl001"
   },
   "actividad": {
@@ -17,7 +17,7 @@
       "actividad",
       "actividades"
     ],
-    "emoji": "📘🧠",
+    "emoji": "📘",
     "id": "gl002"
   },
   "ajo": {
@@ -37,7 +37,7 @@
       "ala",
       "alas"
     ],
-    "emoji": "🪽🐦",
+    "emoji": "🪽",
     "id": "gl004"
   },
   "arrastrar": {
@@ -48,7 +48,7 @@
       "arrastrá",
       "arrastrarla"
     ],
-    "emoji": "🖱️➡️",
+    "emoji": "🖱️",
     "id": "gl005"
   },
   "auto": {
@@ -68,7 +68,7 @@
       "casilla",
       "casillas"
     ],
-    "emoji": "⬜🎲",
+    "emoji": "⬜",
     "id": "gl007"
   },
   "comparar": {
@@ -78,7 +78,7 @@
       "comparar",
       "compará"
     ],
-    "emoji": "⚖️👀",
+    "emoji": "⚖️",
     "id": "gl008"
   },
   "comprobar": {
@@ -89,7 +89,7 @@
       "comprobá",
       "comprobaste"
     ],
-    "emoji": "✅🔍",
+    "emoji": "✅",
     "id": "gl009"
   },
   "consigna": {
@@ -99,7 +99,7 @@
       "consigna",
       "consignas"
     ],
-    "emoji": "📋✅",
+    "emoji": "📋",
     "id": "gl010"
   },
   "dado": {
@@ -131,7 +131,7 @@
       "entrometidos",
       "entrometidas"
     ],
-    "emoji": "❓🔎",
+    "emoji": "❓",
     "id": "gl013"
   },
   "fila": {
@@ -141,7 +141,7 @@
       "fila",
       "filas"
     ],
-    "emoji": "➡️👥",
+    "emoji": "👥",
     "id": "gl014"
   },
   "grupo": {
@@ -151,7 +151,7 @@
       "grupo",
       "grupos"
     ],
-    "emoji": "👥📦",
+    "emoji": "👥",
     "id": "gl015"
   },
   "imagen": {
@@ -161,7 +161,7 @@
       "imagen",
       "imágenes"
     ],
-    "emoji": "🖼️👀",
+    "emoji": "🖼️",
     "id": "gl016"
   },
   "inicial": {
@@ -171,7 +171,7 @@
       "inicial",
       "iniciales"
     ],
-    "emoji": "1️⃣🔤",
+    "emoji": "1️⃣",
     "id": "gl017"
   },
   "lana": {
@@ -181,7 +181,7 @@
       "lana",
       "lanas"
     ],
-    "emoji": "🧶🐑",
+    "emoji": "🧶",
     "id": "gl018"
   },
   "lata": {
@@ -213,7 +213,7 @@
       "letra",
       "letras"
     ],
-    "emoji": "🔠✍️",
+    "emoji": "🔠",
     "id": "gl021"
   },
   "luna": {
@@ -262,7 +262,7 @@
     "variations": [
       "miel"
     ],
-    "emoji": "🍯🐝",
+    "emoji": "🍯",
     "id": "gl026"
   },
   "mochila": {
@@ -312,7 +312,7 @@
       "muñeca",
       "muñecas"
     ],
-    "emoji": "🪆✋",
+    "emoji": "🪆",
     "id": "gl031"
   },
   "naipe": {
@@ -364,7 +364,7 @@
       "pantalla",
       "pantallas"
     ],
-    "emoji": "💻📱",
+    "emoji": "💻",
     "id": "gl036"
   },
   "pareja": {
@@ -374,7 +374,7 @@
       "pareja",
       "parejas"
     ],
-    "emoji": "👯🔗",
+    "emoji": "👯",
     "id": "gl037"
   },
   "participante": {
@@ -384,7 +384,7 @@
       "participante",
       "participantes"
     ],
-    "emoji": "🧒👧",
+    "emoji": "🧒",
     "id": "gl038"
   },
   "rama": {
@@ -394,7 +394,7 @@
       "rama",
       "ramas"
     ],
-    "emoji": "🌿🌳",
+    "emoji": "🌿",
     "id": "gl039"
   },
   "rana": {
@@ -424,7 +424,7 @@
       "rayo",
       "rayos"
     ],
-    "emoji": "⚡🌩️",
+    "emoji": "⚡",
     "id": "gl042"
   },
   "regalo": {
@@ -454,7 +454,7 @@
       "ronda",
       "rondas"
     ],
-    "emoji": "🔄🎲",
+    "emoji": "🔄",
     "id": "gl045"
   },
   "ropa": {
@@ -464,7 +464,7 @@
       "ropa",
       "ropas"
     ],
-    "emoji": "👕👖",
+    "emoji": "👕",
     "id": "gl046"
   },
   "rueda": {
@@ -527,7 +527,7 @@
       "selecciona",
       "seleccionarla"
     ],
-    "emoji": "☝️✅",
+    "emoji": "☝️",
     "id": "gl052"
   },
   "semáforo": {
@@ -577,7 +577,7 @@
       "sonido",
       "sonidos"
     ],
-    "emoji": "🔊👂",
+    "emoji": "🔊",
     "id": "gl057"
   },
   "sonido inicial": {
@@ -587,7 +587,7 @@
       "sonido inicial",
       "sonidos iniciales"
     ],
-    "emoji": "🔊1️⃣",
+    "emoji": "1️⃣",
     "id": "gl058"
   },
   "suma": {
@@ -597,7 +597,7 @@
       "suma",
       "sumas"
     ],
-    "emoji": "➕🔢",
+    "emoji": "➕",
     "id": "gl059"
   },
   "tablero": {
@@ -607,7 +607,7 @@
       "tablero",
       "tableros"
     ],
-    "emoji": "🎲🧩",
+    "emoji": "🎲",
     "id": "gl060"
   },
   "tarjeta": {
@@ -617,7 +617,7 @@
       "tarjeta",
       "tarjetas"
     ],
-    "emoji": "🃏🖼️",
+    "emoji": "🃏",
     "id": "gl061"
   },
   "teclado": {
@@ -637,7 +637,7 @@
       "trampa",
       "trampas"
     ],
-    "emoji": "⚠️🪤",
+    "emoji": "⚠️",
     "id": "gl063"
   },
   "uno": {
@@ -667,7 +667,7 @@
       "vocal",
       "vocales"
     ],
-    "emoji": "🔤🗣️",
+    "emoji": "🔤",
     "id": "gl066"
   }
 }
