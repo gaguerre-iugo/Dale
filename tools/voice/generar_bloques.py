@@ -249,6 +249,8 @@ def main():
                     help="recorta silencio inicial/final de cada clip")
     ap.add_argument("--tempo", type=float, default=1.0,
                     help="atempo a aplicar despues del corte (0.88 = 12%% mas lento)")
+    ap.add_argument("--keep-tail", action="store_true",
+                    help="no corta el final de la toma en el ultimo item (conserva sonidos finales)")
     args = ap.parse_args()
 
     bloques = [args.ids] if args.ids else BLOQUES
@@ -293,6 +295,8 @@ def main():
                 for k, (start, end) in enumerate(spans):
                     a = max(prev_b, start - (0.05 if k == 0 else 0.10))
                     b = min(total, end + (0.15 if k == len(spans) - 1 else 0.10))
+                    if k == len(spans) - 1 and args.keep_tail:
+                        b = total
                     if b <= a:
                         b = min(total, a + 0.2)
                     cortes.append((a, b))
