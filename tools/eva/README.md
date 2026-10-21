@@ -46,7 +46,7 @@ cada vez que actualices el eva-kit.
 - Reproductor: píldora blanca con seis iconos; opciones con voz, velocidad y
   resaltado; minimizado deja el FAB turquesa.
 - Cambio de voz: pide `voices/consultor/audio/…` (200).
-- Tap to play: las tarjetas de `pg006_sec002`–`pg008_sec002` piden sus IDs a la voz activa (`text-pg006-*`, `pg007_word_*`, `pg008_word_*`) y reproducen el clip; sin puente caen a `speechSynthesis`.
+- Tap to play: las tarjetas de `pg006_sec002`–`pg013_sec004` piden sus IDs a la voz activa (`text-pg006-*`, `pg00*_word_*`) y reproducen el clip; sin puente caen a `speechSynthesis`.
 - Persistencia de voz, velocidad, resaltado y lectura fácil al recargar.
 - Las 19 páginas cargan sin `pageerror` ni desborde horizontal.
 

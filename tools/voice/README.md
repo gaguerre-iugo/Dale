@@ -18,15 +18,15 @@ sheísmo. Ver `voices test/README.md` para la comparación de voces.
 
 ```
 content/i18n/es-UY/
-├── audio/                         # voz histórica del libro (429 mp3)
-├── audio_voices.json              # mapa de las dos voces nuevas (429 ids c/u)
+├── audio/                         # voz histórica del libro (493 mp3)
+├── audio_voices.json              # mapa de las dos voces nuevas (493 ids c/u)
 └── voices/
-    ├── asesora/audio/*.mp3        # 53 archivos (páginas 1-2 + palabras de pg006-008)
-    └── consultor/audio/*.mp3      # 53 archivos (páginas 1-2 + palabras de pg006-008)
+    ├── asesora/audio/*.mp3        # 117 archivos (páginas 1-2 + palabras de pg006-013)
+    └── consultor/audio/*.mp3      # 117 archivos (páginas 1-2 + palabras de pg006-013)
 ```
 
-`audio_voices.json` tiene **429 entradas por voz** a propósito: el runtime elige
-el mapa completo de la voz activa, no hace fallback por id. Los 53 ids
+`audio_voices.json` tiene **493 entradas por voz** a propósito: el runtime elige
+el mapa completo de la voz activa, no hace fallback por id. Los 117 ids
 convertidos apuntan a `../voices/<voz>/audio/<id>.mp3`; el resto sigue
 apuntando al MP3 histórico. Así ninguna página queda muda mientras la
 conversión avanza.
@@ -90,7 +90,7 @@ Con Playwright sobre el libro servido en HTTP y desde `file://`:
 
 ## Pendiente
 
-- Convertir el resto de los 429 audios (el mapa ya está preparado).
+- Convertir el resto de los 493 audios (el mapa ya está preparado).
 - Normalización global de volumen cuando esté todo convertido.
 - El resaltado palabra por palabra queda fuera del dock porque este libro tiene
   `features.highlight=false` (1930 lo tiene activo y por eso lo muestra).
@@ -190,10 +190,19 @@ La misma estrategia se aplicó a las dos actividades siguientes:
 |---|---|---|---|
 | `pg007_sec002` | Armar parejas | 12 | `pg007_word_*` + `text-pg007-41` |
 | `pg008_sec002` | ¿Dónde va la imagen? | 12 | `pg008_word_*` |
+| `pg009_sec002` | Memoria de vocales | 16 | `pg009_word_*` |
+| `pg010_sec003` | Sonido inicial M | 15 | `pg010_word_*` |
+| `pg011_sec002` | Sonidos S/M/R/L | 8 | `pg011_word_*` |
+| `pg012_sec002` | Clasificar S/M/R | 16 | `pg012_word_*` |
+| `pg013_sec004` | Sonidos M/N | 9 | `pg013_word_*` |
 
-En pg007 y pg008 Flash se agotó de nuevo, así que **Asesora también salió con
-Lite**; cuando se renueve conviene regenerar los dos bloques con
+En pg007–pg013 Flash se agotó de nuevo, así que **Asesora también salió con
+Lite**; cuando se renueve conviene regenerar esos bloques con
 `gemini-3.8-flash-tts`. Los clips quedan nivelados y verificados por secuencia.
+
+Si una palabra sale cortada o ambigua, se regenera suelta con
+`generar_palabras.py`, se recorta el silencio final y se nivela. Pasó con
+“Olla”, “Semáforo”, “Miel” y “Nuez”.
 
 `build_voice_catalog.py` ahora arma el mapa mirando qué IDs tienen archivo en
 `voices/<voz>/audio/`; no depende de una lista fija de páginas. Después de
