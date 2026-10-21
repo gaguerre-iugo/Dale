@@ -83,6 +83,43 @@ PLAYTEXT_NEW = """    var filename=map[id]||audios[id];
     try{if(window.__adtKit&&window.__adtKit.pauseReading)window.__adtKit.pauseReading();}catch(e){}
     var a=window.__adtTextAudio;"""
 
+# Al cambiar de voz, retomar desde el punto donde iba en vez de volver al
+# principio de la página: F acepta un tiempo de arranque y un flag de play.
+VOICE_FN_OLD = "let F=(0,mt.useCallback)(j=>"
+VOICE_FN_NEW = "let F=(0,mt.useCallback)((j,adtSeek,adtPlay)=>"
+
+VOICE_META_OLD = 'ee.onloadedmetadata=()=>{if(t.current&&t.current.mode==="word"&&!w[pe.id])'
+VOICE_META_NEW = (
+    'ee.onloadedmetadata=()=>{'
+    'if(typeof adtSeek==="number"&&isFinite(adtSeek)&&adtSeek>0){'
+    'try{ee.currentTime=Math.min(adtSeek,Math.max(0,(ee.duration||adtSeek)-.05))}catch(adtE){}}'
+    'if(t.current&&t.current.mode==="word"&&!w[pe.id])'
+)
+
+VOICE_PLAY_OLD = (
+    'k(pe,ee),s(j),ee.play().then(()=>{Q===n.current&&(u("tts"),r(!0))})'
+    '.catch(Z=>{Q===n.current&&(console.warn("[adt-runtime] audio.play() rejected",Z),M(),r(!1))})'
+)
+VOICE_PLAY_NEW = (
+    'k(pe,ee),s(j),adtPlay!==!1&&('
+    'typeof adtSeek==="number"&&isFinite(adtSeek)?'
+    'ee.addEventListener("loadedmetadata",()=>{ee.play().then(()=>{Q===n.current&&(u("tts"),r(!0))})'
+    '.catch(Z=>{Q===n.current&&(console.warn("[adt-runtime] audio.play() rejected",Z),M(),r(!1))})},{once:true}):'
+    'ee.play().then(()=>{Q===n.current&&(u("tts"),r(!0))})'
+    '.catch(Z=>{Q===n.current&&(console.warn("[adt-runtime] audio.play() rejected",Z),M(),r(!1))}))'
+)
+
+VOICE_EFFECT_OLD = (
+    "(0,mt.useEffect)(()=>{B.current!==p&&(B.current=p,z(),r(!1),s(0))},[p,s,r,z])"
+)
+VOICE_EFFECT_NEW = (
+    "(0,mt.useEffect)(()=>{if(B.current===p)return;"
+    "let adtJ=e.current,adtSeguia=!!(adtJ&&adtJ.src&&!adtJ.paused),"
+    "adtT=adtJ&&adtJ.src?adtJ.currentTime:0;"
+    "B.current=p;if(!adtJ||!adtJ.src)return;"
+    "F(i,adtT,adtSeguia)},[p,i])"
+)
+
 # El hook de audio devuelve su API en el ultimo termino del `return` con coma.
 # Se publica en window.__adtPlayer y se agregan stopKeep() e isPaused().
 PLAYER_OLD = (
@@ -188,6 +225,18 @@ def main():
     if "eva-pause-lectura" not in out:
         out = replace_once(out, PLAYTEXT_OLD, PLAYTEXT_NEW, "pausa al reproducir tarjeta")
         print("playText pausa la lectura")
+
+    if "adtSeek" not in out:
+        out = replace_once(out, VOICE_FN_OLD, VOICE_FN_NEW, "firma de F")
+        out = replace_once(out, VOICE_META_OLD, VOICE_META_NEW, "seek al cargar metadata")
+        out = replace_once(out, VOICE_PLAY_OLD, VOICE_PLAY_NEW, "play condicionado")
+        out = replace_once(out, VOICE_EFFECT_OLD, VOICE_EFFECT_NEW, "cambio de voz sin reinicio")
+        print("cambio de voz continuo")
+
+    # `F` se declara despues de este efecto: no puede figurar en las deps.
+    if "},[p,F,i])" in out:
+        out = out.replace("},[p,F,i])", "},[p,i])", 1)
+        print("dependencias del efecto de voz corregidas")
 
     if 'closest("#reflow-tts-player")' not in out:
         out = replace_once(out, CLICK_OLD, CLICK_NEW, "click acotado")

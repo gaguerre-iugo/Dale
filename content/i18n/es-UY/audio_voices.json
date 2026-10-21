@@ -1,7 +1,7 @@
 {
   "voices": {
     "primary": {
-      "label": "Asesora",
+      "label": "Lucía",
       "audios": {
         "pg001_n0002": "../voices/asesora/audio/pg001_n0002.mp3",
         "pg001_n0003": "../voices/asesora/audio/pg001_n0003.mp3",
@@ -354,7 +354,7 @@
       }
     },
     "secondary": {
-      "label": "Consultor",
+      "label": "Mateo",
       "audios": {
         "pg001_n0002": "../voices/consultor/audio/pg001_n0002.mp3",
         "pg001_n0003": "../voices/consultor/audio/pg001_n0003.mp3",

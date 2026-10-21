@@ -11,8 +11,8 @@
   "use strict";
 
   var VOICES = [
-    { key: "primary", label: "Asesora" },
-    { key: "secondary", label: "Consultor" }
+    { key: "primary", label: "Lucía" },
+    { key: "secondary", label: "Mateo" }
   ];
   var SPEEDS = [
     { value: 0.5, label: "Lenta" },

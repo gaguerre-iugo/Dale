@@ -76,6 +76,12 @@ botones por nombre accesible:
 | `__adtKit.play()` / `.pause()` / `.togglePlay()` | Reproducir, pausar, alternar. |
 | `__adtKit.stopKeep()` | Detiene sin perder el texto ni el punto de escucha. |
 
+Las voces se presentan como **Lucía** (`primary`) y **Mateo** (`secondary`). Al
+cambiar de voz se retoma el mismo texto y el mismo segundo en que iba la
+anterior, en vez de volver al principio de la página; si estaba pausado, queda
+pausado en ese punto. `F` acepta un tiempo de arranque y un flag de reproducción
+para lograrlo.
+
 Pausar o cerrar también **corta las otras fuentes de audio** de la página:
 `speechSynthesis` (las consignas y refuerzos que hablan las actividades) y el
 clip suelto de una tarjeta (`__adtTextAudio`). Sin eso, la voz sintética sigue
