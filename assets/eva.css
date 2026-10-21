@@ -418,15 +418,26 @@
   font-size: var(--ui-help) !important;
 }
 
-/* Botón de cierre redondo del pie del panel */
-[role="dialog"] .rounded-full.bg-foreground\/25 {
+/* Botón de cierre redondo del pie del panel.
+   Solo botones: el runtime usa ese mismo par de clases en el thumb del
+   scrollbar (un div con `rounded-full bg-foreground/25`). Cuando la regla lo
+   alcanzaba, el `min-width` de 2.5rem lo ensanchaba a 40 px y se veía como una
+   sombra gris encima del contenido del glosario. */
+[role="dialog"] button.rounded-full.bg-foreground\/25 {
   background: var(--eva-color-grey-200) !important;
   min-width: 2.5rem;
   min-height: .375rem;
 }
 
-[role="dialog"] .rounded-full.bg-foreground\/25:hover {
+[role="dialog"] button.rounded-full.bg-foreground\/25:hover {
   background: var(--eva-color-grey-300) !important;
+}
+
+/* Thumb del scrollbar del runtime: fino, dentro de su riel de 8 px. */
+[role="dialog"] [data-id$="-scrollbar"] > .rounded-full {
+  min-width: 0 !important;
+  width: 100% !important;
+  min-height: 0;
 }
 
 /* Los títulos de bloque del runtime también llevan `text-muted-foreground`; esta
