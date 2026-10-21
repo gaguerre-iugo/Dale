@@ -82,6 +82,11 @@ clip suelto de una tarjeta (`__adtTextAudio`). Sin eso, la voz sintética sigue
 hablando después de pulsar Pausa y parece que el botón no responde. Reproducir
 cancela cualquier voz sintética pendiente antes de retomar la lectura.
 
+Al revés, cuando la actividad empieza a hablar —consigna, refuerzo o palabra de
+una tarjeta— la lectura **se pausa sola** (`__adtKit.pauseReading`), así nunca
+suenan dos voces a la vez. La pausa automática no corta la voz de la actividad:
+el niño la escucha completa y después puede retomar la lectura con Reproducir.
+
 Cerrar la lectura (X) ahora **pausa y apaga el modo**, sin borrar el audio ni
 volver al índice 0: al reactivar la lectura en Herramientas, Reproducir continúa
 en el mismo texto y segundo. Reproducir/Pausa se decide con `playingReal()`, así

@@ -107,6 +107,8 @@ window.__adtKit.playText=function(id){
     if(!map||!Object.keys(map).length)map=audios;
     var filename=map[id]||audios[id];
     if(!filename)return false;
+    /* eva-pause-lectura: la tarjeta habla y la lectura se pausa */
+    try{if(window.__adtKit&&window.__adtKit.pauseReading)window.__adtKit.pauseReading();}catch(e){}
     var a=window.__adtTextAudio;
     if(!a){a=window.__adtTextAudio=new Audio();a.preload="auto";}
     try{a.pause();}catch(e){}
@@ -136,6 +138,18 @@ window.__adtKit.play=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)retu
 window.__adtKit.pause=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(!p.isPaused())p.pause();__adtSilenceExtras();return true};
 window.__adtKit.togglePlay=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(p.isPaused()){__adtSilenceExtras();p.play();}else{p.pause();__adtSilenceExtras();}return true};
 window.__adtKit.stopKeep=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;p.pause();__adtSilenceExtras();return true};
+/* Cuando la actividad empieza a hablar (consigna, refuerzo o palabra de una
+   tarjeta), la lectura se pausa para que no suenen dos voces a la vez. */
+window.__adtKit.pauseReading=function(){var p=window.__adtPlayer;if(p&&p.hasItems&&!p.isPaused()){p.pause();return true}return false};
+(function(){
+  try{
+    var s=window.speechSynthesis;
+    if(!s||s.__adtSpeakPatched)return;
+    var orig=s.speak;
+    s.speak=function(){try{if(window.__adtKit&&window.__adtKit.pauseReading)window.__adtKit.pauseReading();}catch(e){}return orig.apply(s,arguments)};
+    s.__adtSpeakPatched=true;
+  }catch(e){}
+})();
 /* eva-player-api:end */
 
 function adtVoiceDropdown(){let[e,t]=We(Fy),{t:o}=je(),n=le(_d),c=["primary","secondary"].every(u=>Object.keys(n?.voices?.[u]?.audios??{}).length>0),a=n?.voices?.[e]?.label||"Narrator";return c?(0,Fn.jsxs)(ez,{modal:!1,children:[(0,Fn.jsxs)(tz,{className:be("min-w-30 h-10 px-3 rounded-lg","flex items-center gap-1","text-xs font-medium text-foreground","hover:bg-accent hover:text-accent-foreground","transition-colors duration-150","focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1","data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"),"aria-label":`${o("narrator-voice-label")||"Narrator voice"}: ${a}`,children:[(0,Fn.jsx)("span",{className:"flex-1 text-start",children:a}),(0,Fn.jsx)(Sp,{className:"size-4 opacity-60","aria-hidden":"true"})]}),(0,Fn.jsx)(oz,{align:"end",sideOffset:8,positionMethod:"fixed",className:"min-w-[8rem]",children:(0,Fn.jsx)(nz,{value:e,onValueChange:u=>t(u),children:["primary","secondary"].map(u=>(0,Fn.jsx)(az,{value:u,children:n?.voices?.[u]?.label||u},u))})})]}):null}

@@ -52,6 +52,8 @@ EXTRAS = """window.__adtKit.playText=function(id){
     if(!map||!Object.keys(map).length)map=audios;
     var filename=map[id]||audios[id];
     if(!filename)return false;
+    /* eva-pause-lectura: la tarjeta habla y la lectura se pausa */
+    try{if(window.__adtKit&&window.__adtKit.pauseReading)window.__adtKit.pauseReading();}catch(e){}
     var a=window.__adtTextAudio;
     if(!a){a=window.__adtTextAudio=new Audio();a.preload="auto";}
     try{a.pause();}catch(e){}
@@ -69,6 +71,17 @@ window.__adtKit.stopText=function(){
   var a=window.__adtTextAudio;
   if(a){try{a.pause();a.currentTime=0;}catch(e){}}
 };"""
+
+# Antes de sonar la palabra de una tarjeta, pausar la lectura (evita dos voces).
+PLAYTEXT_OLD = """    var filename=map[id]||audios[id];
+    if(!filename)return false;
+    var a=window.__adtTextAudio;"""
+
+PLAYTEXT_NEW = """    var filename=map[id]||audios[id];
+    if(!filename)return false;
+    /* eva-pause-lectura: la tarjeta habla y la lectura se pausa */
+    try{if(window.__adtKit&&window.__adtKit.pauseReading)window.__adtKit.pauseReading();}catch(e){}
+    var a=window.__adtTextAudio;"""
 
 # El hook de audio devuelve su API en el ultimo termino del `return` con coma.
 # Se publica en window.__adtPlayer y se agregan stopKeep() e isPaused().
@@ -117,6 +130,18 @@ window.__adtKit.play=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)retu
 window.__adtKit.pause=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(!p.isPaused())p.pause();__adtSilenceExtras();return true};
 window.__adtKit.togglePlay=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(p.isPaused()){__adtSilenceExtras();p.play();}else{p.pause();__adtSilenceExtras();}return true};
 window.__adtKit.stopKeep=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;p.pause();__adtSilenceExtras();return true};
+/* Cuando la actividad empieza a hablar (consigna, refuerzo o palabra de una
+   tarjeta), la lectura se pausa para que no suenen dos voces a la vez. */
+window.__adtKit.pauseReading=function(){var p=window.__adtPlayer;if(p&&p.hasItems&&!p.isPaused()){p.pause();return true}return false};
+(function(){
+  try{
+    var s=window.speechSynthesis;
+    if(!s||s.__adtSpeakPatched)return;
+    var orig=s.speak;
+    s.speak=function(){try{if(window.__adtKit&&window.__adtKit.pauseReading)window.__adtKit.pauseReading();}catch(e){}return orig.apply(s,arguments)};
+    s.__adtSpeakPatched=true;
+  }catch(e){}
+})();
 /* eva-player-api:end */
 """
 
@@ -159,6 +184,10 @@ def main():
     else:
         out = replace_once(out, ANCHOR, PLAYER_METHODS + "\n" + ANCHOR, "metodos de reproduccion")
         print("metodos play/pause/stopKeep agregados")
+
+    if "eva-pause-lectura" not in out:
+        out = replace_once(out, PLAYTEXT_OLD, PLAYTEXT_NEW, "pausa al reproducir tarjeta")
+        print("playText pausa la lectura")
 
     if 'closest("#reflow-tts-player")' not in out:
         out = replace_once(out, CLICK_OLD, CLICK_NEW, "click acotado")
