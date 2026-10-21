@@ -76,6 +76,12 @@ botones por nombre accesible:
 | `__adtKit.play()` / `.pause()` / `.togglePlay()` | Reproducir, pausar, alternar. |
 | `__adtKit.stopKeep()` | Detiene sin perder el texto ni el punto de escucha. |
 
+Pausar o cerrar también **corta las otras fuentes de audio** de la página:
+`speechSynthesis` (las consignas y refuerzos que hablan las actividades) y el
+clip suelto de una tarjeta (`__adtTextAudio`). Sin eso, la voz sintética sigue
+hablando después de pulsar Pausa y parece que el botón no responde. Reproducir
+cancela cualquier voz sintética pendiente antes de retomar la lectura.
+
 Cerrar la lectura (X) ahora **pausa y apaga el modo**, sin borrar el audio ni
 volver al índice 0: al reactivar la lectura en Herramientas, Reproducir continúa
 en el mismo texto y segundo. Reproducir/Pausa se decide con `playingReal()`, así

@@ -101,12 +101,23 @@ CLICK_NEW = (
     'if(!b)return false;b.click();return !b.disabled}'
 )
 
-PLAYER_METHODS = """window.__adtKit.hasItems=function(){var p=window.__adtPlayer;return !!(p&&p.hasItems)};
+# Las actividades hablan con speechSynthesis (consignas, refuerzos) y las
+# tarjetas reproducen su palabra con __adtTextAudio. Ninguno de esos audios pasa
+# por el reproductor, asi que Pausa tiene que cortarlos: si no, la voz sintetica
+# sigue hablando y parece que la pausa no funciona.
+PLAYER_METHODS = """/* eva-player-api:start */
+function __adtSilenceExtras(){
+  try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}
+  var a=window.__adtTextAudio;
+  if(a){try{a.pause();}catch(e){}}
+}
+window.__adtKit.hasItems=function(){var p=window.__adtPlayer;return !!(p&&p.hasItems)};
 window.__adtKit.playingReal=function(){var p=window.__adtPlayer;return !!(p&&p.hasItems&&!p.isPaused())};
-window.__adtKit.play=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(p.isPaused())p.play();return true};
-window.__adtKit.pause=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(!p.isPaused())p.pause();return true};
-window.__adtKit.togglePlay=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(p.isPaused())p.play();else p.pause();return true};
-window.__adtKit.stopKeep=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;p.pause();return true};
+window.__adtKit.play=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;__adtSilenceExtras();if(p.isPaused())p.play();return true};
+window.__adtKit.pause=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(!p.isPaused())p.pause();__adtSilenceExtras();return true};
+window.__adtKit.togglePlay=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;if(p.isPaused()){__adtSilenceExtras();p.play();}else{p.pause();__adtSilenceExtras();}return true};
+window.__adtKit.stopKeep=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;p.pause();__adtSilenceExtras();return true};
+/* eva-player-api:end */
 """
 
 
@@ -132,7 +143,20 @@ def main():
         out = replace_once(out, CLOSE_OLD, CLOSE_NEW, "cierre sin reinicio")
         print("API del reproductor publicada")
 
-    if "__adtKit.stopKeep=" not in out:
+    if "/* eva-player-api:start */" in out:
+        begin = out.index("/* eva-player-api:start */")
+        end = out.index("/* eva-player-api:end */", begin) + len("/* eva-player-api:end */")
+        actual = out[begin:end]
+        if actual != PLAYER_METHODS.strip():
+            out = out[:begin] + PLAYER_METHODS.strip() + out[end:]
+            print("metodos del reproductor actualizados")
+    elif "__adtKit.stopKeep=" in out:
+        begin = out.index("window.__adtKit.hasItems=function(){")
+        cierre = "window.__adtKit.stopKeep=function(){var p=window.__adtPlayer;if(!p||!p.hasItems)return false;p.pause();return true};\n"
+        end = out.index(cierre, begin) + len(cierre)
+        out = out[:begin] + PLAYER_METHODS + out[end:]
+        print("metodos del reproductor actualizados")
+    else:
         out = replace_once(out, ANCHOR, PLAYER_METHODS + "\n" + ANCHOR, "metodos de reproduccion")
         print("metodos play/pause/stopKeep agregados")
 
