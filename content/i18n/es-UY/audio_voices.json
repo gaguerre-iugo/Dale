@@ -108,11 +108,11 @@
         "pg008_sec002_ans_target-e": "pg008_sec002_ans_target-e.mp3",
         "pg008_sec002_ans_target-i": "pg008_sec002_ans_target-i.mp3",
         "pg008_sec002_ans_target-distractores": "pg008_sec002_ans_target-distractores.mp3",
-        "text-pg009-200": "text-pg009-200.mp3",
-        "text-pg009-201": "text-pg009-201.mp3",
-        "text-pg009-202": "text-pg009-202.mp3",
-        "text-pg009-203": "text-pg009-203.mp3",
-        "text-pg009-204": "text-pg009-204.mp3",
+        "text-pg009-200": "../voices/asesora/audio/text-pg009-200.mp3",
+        "text-pg009-201": "../voices/asesora/audio/text-pg009-201.mp3",
+        "text-pg009-202": "../voices/asesora/audio/text-pg009-202.mp3",
+        "text-pg009-203": "../voices/asesora/audio/text-pg009-203.mp3",
+        "text-pg009-204": "../voices/asesora/audio/text-pg009-204.mp3",
         "pg009_upload5": "pg009_upload5.mp3",
         "pg009_upload1": "pg009_upload1.mp3",
         "pg009_upload6": "pg009_upload6.mp3",
@@ -379,8 +379,8 @@
         "text-pg008-65_easy_read": "../voices/asesora/audio/text-pg008-65_easy_read.mp3",
         "text-pg008-66_easy_read": "../voices/asesora/audio/text-pg008-66_easy_read.mp3",
         "pg009_s2_easy_read": "pg009_s2_easy_read.mp3",
-        "text-pg009-203_easy_read": "text-pg009-203_easy_read.mp3",
-        "text-pg009-204_easy_read": "text-pg009-204_easy_read.mp3",
+        "text-pg009-203_easy_read": "../voices/asesora/audio/text-pg009-203_easy_read.mp3",
+        "text-pg009-204_easy_read": "../voices/asesora/audio/text-pg009-204_easy_read.mp3",
         "pg010_s2_easy_read": "pg010_s2_easy_read.mp3",
         "text-pg010-22_easy_read": "text-pg010-22_easy_read.mp3",
         "text-pg010-23_easy_read": "text-pg010-23_easy_read.mp3",
@@ -492,7 +492,9 @@
         "pg013_word_nube": "../voices/asesora/audio/pg013_word_nube.mp3",
         "pg013_word_nuez": "../voices/asesora/audio/pg013_word_nuez.mp3",
         "pg013_word_nido": "../voices/asesora/audio/pg013_word_nido.mp3",
-        "pg013_word_mate": "../voices/asesora/audio/pg013_word_mate.mp3"
+        "pg013_word_mate": "../voices/asesora/audio/pg013_word_mate.mp3",
+        "text-pg009-205": "../voices/asesora/audio/text-pg009-205.mp3",
+        "text-pg009-205_easy_read": "../voices/asesora/audio/text-pg009-205_easy_read.mp3"
       }
     },
     "secondary": {
@@ -603,11 +605,11 @@
         "pg008_sec002_ans_target-e": "pg008_sec002_ans_target-e.mp3",
         "pg008_sec002_ans_target-i": "pg008_sec002_ans_target-i.mp3",
         "pg008_sec002_ans_target-distractores": "pg008_sec002_ans_target-distractores.mp3",
-        "text-pg009-200": "text-pg009-200.mp3",
-        "text-pg009-201": "text-pg009-201.mp3",
-        "text-pg009-202": "text-pg009-202.mp3",
-        "text-pg009-203": "text-pg009-203.mp3",
-        "text-pg009-204": "text-pg009-204.mp3",
+        "text-pg009-200": "../voices/consultor/audio/text-pg009-200.mp3",
+        "text-pg009-201": "../voices/consultor/audio/text-pg009-201.mp3",
+        "text-pg009-202": "../voices/consultor/audio/text-pg009-202.mp3",
+        "text-pg009-203": "../voices/consultor/audio/text-pg009-203.mp3",
+        "text-pg009-204": "../voices/consultor/audio/text-pg009-204.mp3",
         "pg009_upload5": "pg009_upload5.mp3",
         "pg009_upload1": "pg009_upload1.mp3",
         "pg009_upload6": "pg009_upload6.mp3",
@@ -874,8 +876,8 @@
         "text-pg008-65_easy_read": "../voices/consultor/audio/text-pg008-65_easy_read.mp3",
         "text-pg008-66_easy_read": "../voices/consultor/audio/text-pg008-66_easy_read.mp3",
         "pg009_s2_easy_read": "pg009_s2_easy_read.mp3",
-        "text-pg009-203_easy_read": "text-pg009-203_easy_read.mp3",
-        "text-pg009-204_easy_read": "text-pg009-204_easy_read.mp3",
+        "text-pg009-203_easy_read": "../voices/consultor/audio/text-pg009-203_easy_read.mp3",
+        "text-pg009-204_easy_read": "../voices/consultor/audio/text-pg009-204_easy_read.mp3",
         "pg010_s2_easy_read": "pg010_s2_easy_read.mp3",
         "text-pg010-22_easy_read": "text-pg010-22_easy_read.mp3",
         "text-pg010-23_easy_read": "text-pg010-23_easy_read.mp3",
@@ -987,7 +989,9 @@
         "pg013_word_nube": "../voices/consultor/audio/pg013_word_nube.mp3",
         "pg013_word_nuez": "../voices/consultor/audio/pg013_word_nuez.mp3",
         "pg013_word_nido": "../voices/consultor/audio/pg013_word_nido.mp3",
-        "pg013_word_mate": "../voices/consultor/audio/pg013_word_mate.mp3"
+        "pg013_word_mate": "../voices/consultor/audio/pg013_word_mate.mp3",
+        "text-pg009-205": "../voices/consultor/audio/text-pg009-205.mp3",
+        "text-pg009-205_easy_read": "../voices/consultor/audio/text-pg009-205_easy_read.mp3"
       }
     }
   }
