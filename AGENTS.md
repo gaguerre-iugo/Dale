@@ -56,7 +56,7 @@ Dale/                                  # repository root = the web app
 │
 ├── content/
 │   ├── pages.json                     # Reading order manifest
-│   ├── toc.json                       # Table of contents (3 entries)
+│   ├── toc.json                       # Table of contents (10 entries)
 │   ├── tailwind_output.css            # Compiled Tailwind CSS
 │   ├── navigation/
 │   │   └── nav.html                   # Navigation fragment
@@ -188,7 +188,9 @@ An ordered array that defines the navigation spine (19 entries, no quizzes):
 
 ### `content/toc.json` — Table of Contents
 
-Three entries (cover, "CUADERNILLO", and activity 10), each with `section_id`, `href`, `title`, `chapter_id`, and `level` (1 = main section, 2 = nested).
+Ten entries: the cover, the "CUADERNILLO" section cover, and one per activity. Each has `section_id`, `href`, `title`, `chapter_id`, and `level` (1 = main section, 2 = nested; everything here is level 1, so the index renders a flat list).
+
+Activity titles follow `Actividad {N} {kicker}: {title}` — e.g. `Actividad 1 Vocales: ¿Qué voy a decir?`. `N` comes from `.adt-head-num` (`data-adt-num`), the kicker from `.adt-head-kicker` and the title from `.adt-head-title`, written in sentence case even though the page renders it in uppercase. `chapter_id` is the `data-id` of that `.adt-head-title`, so the runtime can mark the current chapter. The index panel lists these entries; the "Lista de páginas" tab still lists `pages.json`.
 
 ### `content/i18n/{lang}/texts.json` — All Text Content
 

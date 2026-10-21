@@ -12,5 +12,61 @@
     "title": "CUADERNILLO",
     "chapter_id": "pg004005_n0003",
     "level": 1
+  },
+  {
+    "section_id": "pg006_sec002",
+    "href": "pg006_sec002.html",
+    "title": "Actividad 1 Vocales: ¿Qué voy a decir?",
+    "chapter_id": "text-pg006-42",
+    "level": 1
+  },
+  {
+    "section_id": "pg007_sec002",
+    "href": "pg007_sec002.html",
+    "title": "Actividad 2 Vocales O y U: Armar parejas",
+    "chapter_id": "text-pg007-35",
+    "level": 1
+  },
+  {
+    "section_id": "pg008_sec002",
+    "href": "pg008_sec002.html",
+    "title": "Actividad 3 Vocales: ¿Dónde va la imagen?",
+    "chapter_id": "text-pg008-62",
+    "level": 1
+  },
+  {
+    "section_id": "pg009_sec002",
+    "href": "pg009_sec002.html",
+    "title": "Actividad 4 Vocales: Memory de sonido inicial",
+    "chapter_id": "text-pg009-202",
+    "level": 1
+  },
+  {
+    "section_id": "pg010_sec003",
+    "href": "pg010_sec003.html",
+    "title": "Actividad 5 M: ¿Cuáles son?",
+    "chapter_id": "text-pg010-21",
+    "level": 1
+  },
+  {
+    "section_id": "pg011_sec002",
+    "href": "pg011_sec002.html",
+    "title": "Actividad 6 S: Armar parejas",
+    "chapter_id": "text-pg011-42",
+    "level": 1
+  },
+  {
+    "section_id": "pg012_sec002",
+    "href": "pg012_sec002.html",
+    "title": "Actividad 7 R: ¿En qué fila van?",
+    "chapter_id": "text-pg012-22",
+    "level": 1
+  },
+  {
+    "section_id": "pg013_sec004",
+    "href": "pg013_sec004.html",
+    "title": "Actividad 8 M y N: ¿Qué voy a decir?",
+    "chapter_id": "text-pg013-24",
+    "level": 1
   }
 ]
