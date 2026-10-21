@@ -11,7 +11,7 @@ el CSS, y un adaptador conecta la interfaz con el runtime.
 | `assets/eva-ui.js` | Adaptador: barra, panel de Herramientas y reproductor. |
 | `assets/voice-ui.css` | Arreglos legacy de los controles nativos (hoy ocultos). |
 | `tools/eva/port_kit_css.py` | Concatena `components/eva-panels.css` en `eva.css` y corrige rutas. |
-| `tools/eva/patch_runtime_bridge.py` | Agrega `window.__adtKit` (ajustes, transporte y `playText`/`stopText`) al bundle. |
+| `tools/eva/patch_runtime_bridge.py` | Agrega `window.__adtKit` (ajustes, reproducción real y `playText`/`stopText`) y publica `window.__adtPlayer` en el bundle. |
 
 ## Qué se corrigió respecto de la aplicación anterior
 
@@ -27,7 +27,8 @@ el CSS, y un adaptador conecta la interfaz con el runtime.
    `Escuchar`, `Pantalla`) y sincroniza los ajustes por el puente.
 5. **El reproductor nativo no era el del kit.** El adaptador monta la píldora de
    1930 (anterior / reproducir / siguiente / opciones / minimizar / cerrar) y
-   reenvía el transporte a los botones nativos ocultos.
+   reenvía el transporte al reproductor real del runtime por su API, no por
+   clics sobre etiquetas.
 
 ## Regenerar
 
@@ -59,6 +60,28 @@ las instrucciones para aplicarlo a otro libro con runtime ADT.
 - Las opciones de **Escuchar** (reproducción automática, voz, velocidad, resaltado) aparecen sólo con la lectura en voz alta activa.
 - Los controles segmentados son blancos con borde, como el 1930; el turquesa queda para la opción activa.
 - **Reducir movimiento** y **Atajos de teclado** completan la sección Pantalla.
+
+## Reproductor
+
+El hook de audio del runtime publica su API en `window.__adtPlayer` en cada
+render, y el puente la expone para que la píldora del kit no dependa de buscar
+botones por nombre accesible:
+
+| Método | Qué hace |
+|---|---|
+| `__adtKit.hasItems()` | Si la página tiene textos con audio. |
+| `__adtKit.playingReal()` | Si el audio está sonando de verdad (mira el elemento, no el estado de React). |
+| `__adtKit.play()` / `.pause()` / `.togglePlay()` | Reproducir, pausar, alternar. |
+| `__adtKit.stopKeep()` | Detiene sin perder el texto ni el punto de escucha. |
+
+Cerrar la lectura (X) ahora **pausa y apaga el modo**, sin borrar el audio ni
+volver al índice 0: al reactivar la lectura en Herramientas, Reproducir continúa
+en el mismo texto y segundo. Reproducir/Pausa se decide con `playingReal()`, así
+que un doble clic ya no deja el botón invertido, y el botón se deshabilita si la
+página no tiene audio.
+
+`click(label)` acota la búsqueda a `#interface-container` y descarta los botones
+del propio reproductor del kit, que usan las mismas etiquetas.
 
 ## Audio suelto para actividades
 

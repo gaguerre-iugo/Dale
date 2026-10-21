@@ -593,11 +593,18 @@
     s.querySelector("#reflow-tts-previous").addEventListener("click", function () { clickRuntime(["previous-audio"]); });
     s.querySelector("#reflow-tts-next").addEventListener("click", function () { clickRuntime(["next-audio"]); });
     s.querySelector("#reflow-tts-toggle").addEventListener("click", function () {
+      /* Se usa el reproductor real del runtime, no un clic por etiqueta: asi el
+         boton no se puede desincronizar ni clickear a si mismo. */
+      var k = kit();
+      if (k && k.togglePlay && k.hasItems && k.hasItems()) { k.togglePlay(); return; }
       if (!clickRuntime(["Pausa"])) clickRuntime(["Reproducir"]);
     });
     s.querySelector("#reflow-tts-stop").addEventListener("click", function () {
-      clickRuntime(["Detener"]);
-      kit().set("readAloud", false);
+      /* Cerrar la lectura detiene el audio pero conserva el texto y el punto de
+         escucha: al reactivar el modo, Reproducir continua donde iba. */
+      var k = kit();
+      if (!(k && k.stopKeep && k.stopKeep())) clickRuntime(["Detener"]);
+      if (k) k.set("readAloud", false);
     });
     s.querySelector("#reflow-tts-options").addEventListener("click", function () {
       var panel = s.querySelector("#reflow-tts-options-panel");
@@ -630,15 +637,28 @@
     if (!s || !st) return;
     s.hidden = !st.readAloud;
     if (!st.readAloud) {
+      /* Al cerrar, el boton queda listo para la proxima sesion: no debe seguir
+         mostrando "Pausa" mientras el reproductor esta oculto. */
+      var offToggle = s.querySelector("#reflow-tts-toggle");
+      if (offToggle) {
+        offToggle.setAttribute("aria-pressed", "false");
+        offToggle.setAttribute("aria-label", "Reproducir");
+        offToggle.querySelector(".reflow-tts-player-label").textContent = "Reproducir";
+        offToggle.querySelector(".reflow-tts-player-icon").innerHTML = ICONS.play;
+      }
       s.classList.remove("reflow-tts-player-minimized");
       return;
     }
     var toggle = s.querySelector("#reflow-tts-toggle");
-    var playing = Boolean(st.playing);
+    var k = kit();
+    var playing = k && k.playingReal ? k.playingReal() : Boolean(st.playing);
     toggle.setAttribute("aria-pressed", String(playing));
     toggle.setAttribute("aria-label", playing ? "Pausa" : "Reproducir");
     toggle.querySelector(".reflow-tts-player-label").textContent = playing ? "Pausa" : "Reproducir";
     toggle.querySelector(".reflow-tts-player-icon").innerHTML = playing ? ICONS.pause : ICONS.play;
+    /* Sin textos con audio el boton no tiene nada que hacer: se deshabilita en
+       lugar de fallar en silencio. */
+    toggle.disabled = k && k.hasItems ? !k.hasItems() : false;
     s.querySelector("#reflow-tts-previous").disabled = isDisabled("previous-audio");
     s.querySelector("#reflow-tts-next").disabled = isDisabled("next-audio");
     s.querySelectorAll("[data-voice]").forEach(function (b) {
