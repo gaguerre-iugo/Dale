@@ -309,6 +309,114 @@
 
   document.addEventListener("keydown", onShortcutKey, true);
 
+  /* ── Estado de las actividades en el índice ──────────────────────────────
+     «Por hacer» / «Incompleta» / «Completa» debajo de cada actividad, como en
+     el 1930. El progreso se guarda por sección en localStorage:
+
+       · empieza en «Por hacer»;
+       · pasa a «Incompleta» con la primera interacción dentro de la actividad;
+       · pasa a «Completa» cuando el botón de validar del runtime deja de decir
+         «Enviar» y pasa a «Siguiente»: es la señal que da el runtime cuando
+         todas las validaciones devolvieron true. */
+  var ACTIVITY_KEY = "evaActivityProgress";
+  var EVALUAR = { pending: "Por hacer", started: "Incompleta", complete: "Completa" };
+  var tocEntries = null;
+
+  function activityProgress() {
+    try {
+      var raw = localStorage.getItem(ACTIVITY_KEY);
+      var data = raw ? JSON.parse(raw) : null;
+      return data && typeof data === "object" ? data : {};
+    } catch (_e) { return {}; }
+  }
+
+  function saveActivityProgress(all) {
+    try { localStorage.setItem(ACTIVITY_KEY, JSON.stringify(all)); } catch (_e) {}
+  }
+
+  function currentSectionId() {
+    var meta = document.querySelector('meta[name="title-id"]');
+    return meta ? meta.getAttribute("content") : null;
+  }
+
+  function isActivityPage() {
+    return Boolean(document.querySelector('#content section[data-section-type^="activity"]'));
+  }
+
+  function markActivity(id, state) {
+    if (!id) return;
+    var all = activityProgress();
+    if (all[id] === "complete") return;
+    if (all[id] === state) return;
+    all[id] = state;
+    saveActivityProgress(all);
+  }
+
+  function loadToc() {
+    if (!tocEntries) {
+      tocEntries = fetch("./content/toc.json")
+        .then(function (res) { return res.ok ? res.json() : []; })
+        .catch(function () { return []; });
+    }
+    return tocEntries;
+  }
+
+  function decorateActivityEntry(btn, state) {
+    var label = EVALUAR[state] || EVALUAR.pending;
+    if (!btn.classList.contains("eva-toc-entry")) btn.classList.add("eva-toc-entry");
+    if (state) btn.setAttribute("data-eva-activity-status", state);
+    else btn.removeAttribute("data-eva-activity-status");
+    var titulo = btn.querySelector(".eva-toc-title");
+    if (!titulo) {
+      titulo = document.createElement("span");
+      titulo.className = "eva-toc-title";
+      while (btn.firstChild) titulo.appendChild(btn.firstChild);
+      btn.appendChild(titulo);
+    }
+    var status = btn.querySelector(".eva-toc-status");
+    if (!status) {
+      status = document.createElement("span");
+      status.className = "eva-toc-status";
+      btn.appendChild(status);
+    }
+    if (status.textContent !== label) status.textContent = label;
+  }
+
+  function refreshActivityStatus() {
+    var buttons = document.querySelectorAll('[role="dialog"] button[title]');
+    if (!buttons.length) return;
+    loadToc().then(function (entries) {
+      var actividades = entries.filter(function (entry) { return entry.activity; });
+      if (!actividades.length) return;
+      var progress = activityProgress();
+      actividades.forEach(function (entry) {
+        for (var i = 0; i < buttons.length; i += 1) {
+          if (buttons[i].getAttribute("title") === entry.title) {
+            decorateActivityEntry(buttons[i], progress[entry.section_id] || "");
+            break;
+          }
+        }
+      });
+    });
+  }
+
+  function syncActivityCompletion() {
+    if (!isActivityPage()) return;
+    var boton = document.querySelector('#nav-container button[title="Siguiente"]');
+    if (boton) markActivity(currentSectionId(), "complete");
+  }
+
+  function onActivityUse(ev) {
+    if (!isActivityPage()) return;
+    var target = ev.target;
+    if (!target || typeof target.closest !== "function") return;
+    if (!target.closest('#content section[data-section-type^="activity"]')) return;
+    markActivity(currentSectionId(), "started");
+  }
+
+  document.addEventListener("click", onActivityUse, true);
+  document.addEventListener("keydown", onActivityUse, true);
+
   var FONT_SIZES = [16, 17.5, 19, 20.5];
   var FONT_LABELS = ["Normal", "Grande", "Extra grande", "Máximo"];
   var FONT_KEYS = ["normal", "large", "xlarge", "xxlarge"];
@@ -586,6 +694,8 @@
     if (dlg) renderTools(dlg);
     syncToolbar();
     syncPlayer();
+    syncActivityCompletion();
+    refreshActivityStatus();
     var shell = document.querySelector(".eva-tools-shell");
     if (shell) syncTools(shell);
   }

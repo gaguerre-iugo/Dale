@@ -190,7 +190,7 @@ An ordered array that defines the navigation spine (19 entries, no quizzes):
 
 Ten entries: the cover, the "CUADERNILLO" section cover, and one per activity. Each has `section_id`, `href`, `title`, `chapter_id`, and `level` (1 = main section, 2 = nested; everything here is level 1, so the index renders a flat list).
 
-Activity titles follow `Actividad {N} {kicker}: {title}` — e.g. `Actividad 1 Vocales: ¿Qué voy a decir?`. `N` comes from `.adt-head-num` (`data-adt-num`), the kicker from `.adt-head-kicker` and the title from `.adt-head-title`, written in sentence case even though the page renders it in uppercase. `chapter_id` is the `data-id` of that `.adt-head-title`, so the runtime can mark the current chapter. The index panel lists these entries; the "Lista de páginas" tab still lists `pages.json`.
+Activity titles follow `{N} {kicker}: {title}` — e.g. `1 Vocales: ¿Qué voy a decir?`, without the word "Actividad" so the index stays short. `N` comes from `.adt-head-num` (`data-adt-num`), the kicker from `.adt-head-kicker` and the title from `.adt-head-title`, written in sentence case even though the page renders it in uppercase. `chapter_id` is the `data-id` of that `.adt-head-title`, so the runtime can mark the current chapter. Activity entries also carry `"activity": true`: `eva-ui.js` uses that flag to add the progress label under each entry — **Por hacer**, **Incompleta** (first interaction) or **Completa** (validation passed) — stored in `localStorage.evaActivityProgress`. The index panel lists these entries; the "Lista de páginas" tab still lists `pages.json`.
 
 ### `content/i18n/{lang}/texts.json` — All Text Content
 
