@@ -107,8 +107,8 @@
   "text-pg009-200": "4",
   "text-pg009-201": "VOCALES",
   "text-pg009-202": "MEMORY DE SONIDO INICIAL",
-  "text-pg009-203": "Dá vuelta dos tarjetas. \nSi los nombres empiezan con la misma letra, la pareja queda fija. \nSi no, se vuelven a tapar.",
-  "text-pg009-204": "Al abrir una tarjeta, escuchás solo el nombre de la imagen.",
+  "text-pg009-203": "Seleccioná una tarjeta, mirá la imagen y escuchá su nombre.",
+  "text-pg009-204": "Seguí seleccionando tarjetas y escuchando sus nombres.",
   "pg009_upload5": "Ojo.",
   "pg009_upload1": "Auto rojo.",
   "pg009_upload6": "Racimo de uvas.",
@@ -376,8 +376,8 @@
   "text-pg008-65_easy_read": "Buscá y arrastrá hacia la letra E todas las imágenes que empiezan con el sonido e.",
   "text-pg008-66_easy_read": "Después buscá y arrastrá hacia la letra I todas las imágenes que empiezan con el sonido i. Van a sobrarte dos imágenes.",
   "pg009_s2_easy_read": "4. Vocales\nMemory de sonido inicial\n\nEn este juego buscás parejas.\nDá vuelta 2 tarjetas.\nMirá si los nombres empiezan con la misma letra.\n\nSi empiezan con la misma letra, la pareja queda fija.\nSi empiezan con letras distintas, las tarjetas se tapan otra vez.\n\nCuando abrís una tarjeta, escuchás solo el nombre de la imagen.\n\nTambién podés jugar con el teclado:\n- usá Tab para moverte;\n- usá Enter o Espacio para dar vuelta una tarjeta.",
-  "text-pg009-203_easy_read": "Dá vuelta 2 tarjetas.\nMirá si los nombres empiezan con la misma letra.\n\nSi empiezan con la misma letra, la pareja queda fija.\nSi empiezan con letras distintas, las tarjetas se tapan otra vez.",
-  "text-pg009-204_easy_read": "Cuando abrís una tarjeta, escuchás solo el nombre de la imagen.",
+  "text-pg009-203_easy_read": "Seleccioná una tarjeta, mirá la imagen y escuchá su nombre.",
+  "text-pg009-204_easy_read": "Seguí seleccionando tarjetas y escuchando sus nombres.",
   "pg010_s2_easy_read": "5. M. ¿Cuáles son?\n\nTocá cada imagen.\nEscuchá su nombre.\n\nElegí las imágenes que empiezan con el sonido M.\n\nCada vez que elijas una imagen, vas a escuchar su nombre.\nAsí podés revisar si elegiste bien.\n\nSeguí buscando hasta encontrar todas las palabras que empiezan con M.",
   "text-pg010-22_easy_read": "Tocá cada imagen.\nEscuchá su nombre.",
   "text-pg010-23_easy_read": "Elegí las imágenes que empiezan con el sonido M.",
@@ -489,5 +489,7 @@
   "pg013_word_nube": "Nube",
   "pg013_word_nuez": "Nuez",
   "pg013_word_nido": "Nido",
-  "pg013_word_mate": "Mate"
+  "pg013_word_mate": "Mate",
+  "text-pg009-205": "Tenés que encontrar las imágenes que comiencen con el mismo sonido.",
+  "text-pg009-205_easy_read": "Tenés que encontrar las imágenes que comiencen con el mismo sonido."
 }
