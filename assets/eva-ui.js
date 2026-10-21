@@ -652,11 +652,26 @@
     });
   }
 
-  /* ── Barra: estado de página ───────────────────────────────────────────── */
+  /* ── Barra: estado de página ─────────────────────────────────────────────
+     El total sale de content/pages.json. Antes se deducía del texto del dock
+     nativo («5 /12» seguido del número de la actividad) y ese número se pegaba
+     al total: daba 121, 122… */
+  var totalPaginas = null;
+
+  function loadTotalPages() {
+    if (totalPaginas !== null) return;
+    totalPaginas = 0;
+    fetch("./content/pages.json")
+      .then(function (res) { return res.ok ? res.json() : []; })
+      .then(function (lista) {
+        totalPaginas = Array.isArray(lista) ? lista.length : 0;
+        syncToolbar();
+      })
+      .catch(function () {});
+  }
+
   function totalPages() {
-    var grupo = document.querySelector("#nav-container [role='group']");
-    var m = grupo && (grupo.textContent || "").match(/\d+\s*\/\s*(\d+)/);
-    return m ? +m[1] : null;
+    return totalPaginas && totalPaginas > 0 ? totalPaginas : null;
   }
 
   function syncToolbar() {
@@ -690,6 +705,7 @@
     if (!window.__evaFontApplied) { window.__evaFontApplied = true; applyFontSize(storedFontSize()); }
     mountToolbar();
     mountPlayer();
+    loadTotalPages();
     var dlg = findSettingsDialog();
     if (dlg) renderTools(dlg);
     syncToolbar();

@@ -3388,10 +3388,15 @@ color: var(--ui-n4-color) !important;
    (background-size:706px 408px; background-position:center top), para que la
    trama siga exactamente donde termina la del .adt-skin. */
 body:has(.adt-skin) {
-  background-image: url("./adt-entramado.png");
+  background-color: #eae5d6;
+  background-image: url("./adt-entramado.png?v=5");
   background-repeat: repeat;
   background-size: 706px 408px;
   background-position: center top;
+  /* El tile tiene fondo blanco: al multiplicarlo por el papel, el blanco pasa a
+     ser el color de la hoja y las líneas quedan en un beige más oscuro. Así el
+     entramado se ve, pero las tarjetas blancas se recortan. */
+  background-blend-mode: multiply;
 }
 
 /* ============================================================================
@@ -3467,8 +3472,8 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
    punteados rojos, radios y separaciones en cero, fondos blancos). Acá se
    unifican:
 
-     · tarjeta crema, borde suave de 2 px y esquinas de 16 px, con 1 rem de
-       separación en la grilla;
+     · tarjeta blanca, esquinas de 16 px y una sombra muy suave hacia abajo y a
+       la derecha en lugar de borde, con 1 rem de separación en la grilla;
      · seleccionada: borde azul, fondo azul claro y tilde en la esquina;
      · par encontrado o respuesta correcta: fondo verde claro y borde más
        grueso, sin etiqueta ni tilde;
@@ -3479,9 +3484,9 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
    ========================================================================== */
 
 :root {
-  --carta-fondo: #fbfaf4;
-  --carta-borde: #e2ddcf;
+  --carta-fondo: #ffffff;
   --carta-radio: 16px;
+  --carta-sombra: 4px 6px 18px rgba(21, 23, 26, 0.12), 1px 2px 3px rgba(21, 23, 26, 0.06);
   --carta-sel-fondo: #e8f2ff;
   --carta-sel-borde: #2f7cf6;
   --carta-ok-fondo: #e7f3e9;
@@ -3490,6 +3495,13 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
   --carta-error-borde: #d05a55;
   --carta-aviso-fondo: #fdf4d9;
   --carta-aviso-borde: #c99a2e;
+}
+
+/* Papel del libro: mismo color y mezcla que el body, para que la trama se lea
+   como una hoja beige y no como líneas sobre blanco. */
+#content .adt-skin {
+  background-color: #eae5d6 !important;
+  background-blend-mode: multiply !important;
 }
 
 /* Separación entre tarjetas: la piel la ponía en 0. */
@@ -3511,14 +3523,147 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
   border-color: transparent !important;
 }
 
-/* Tarjeta base. */
+/* Tarjeta base: sin borde duro, con una sombra suave hacia abajo y a la derecha.
+   El borde queda transparente (2 px) para no mover el contenido cuando la
+   tarjeta se selecciona y aparece el azul. */
 #content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card) {
   position: relative !important;
   margin: 0 !important;
   background: var(--carta-fondo) !important;
-  border: 2px solid var(--carta-borde) !important;
+  border: 2px solid transparent !important;
   border-radius: var(--carta-radio) !important;
-  box-shadow: none !important;
+  box-shadow: var(--carta-sombra) !important;
+}
+
+/* Todas las tarjetas, del mismo tamaño: misma altura y el contenido centrado.
+   Antes la altura dependía de cada imagen, así que en una misma actividad las
+   filas quedaban de alturas distintas. Se usa una altura fija (y no una
+   relación de aspecto) para que las grillas de 2 columnas no generen tarjetas
+   gigantes. */
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card),
+#content .adt-skin button[data-activity-item][data-state] {
+  height: 200px !important;
+  min-height: 0 !important;
+  /* Sin relación de aspecto: la tarjeta toma el ancho de su columna, así todas
+     las actividades tienen la misma proporción (antes pg013 quedaba cuadrada). */
+  aspect-ratio: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.75rem !important;
+}
+
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card) img,
+#content .adt-skin button[data-activity-item][data-state] img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+/* En la actividad 1 las imágenes van un 20 % más chicas dentro de la tarjeta
+   (va después de la regla general para ganarle en el orden). */
+#content .adt-skin .image-card img {
+  max-width: 80% !important;
+  max-height: 80% !important;
+}
+
+/* Tarjetas que en vez de imagen muestran un número (actividades 1 y 6): el
+   número ocupaba 60–72 px y se veía chico al lado de las ilustraciones. El
+   tamaño acompaña el de la imagen de cada actividad. */
+#content .adt-skin .image-card > div:not(:has(img)),
+#content .adt-skin .image-card > div:not(:has(img)) span:not(.sr-only) {
+  font-size: 9rem !important;
+  line-height: 1 !important;
+}
+
+#content .adt-skin .sound-card > div:not(:has(img)),
+#content .adt-skin .sound-card > div:not(:has(img)) span:not(.sr-only) {
+  font-size: 10.5rem !important;
+  line-height: 1 !important;
+}
+
+/* Índice: panel más alto, para que las diez entradas entren sin scroll. */
+[role="dialog"]:has([data-slot="tabs"]) > div:first-child {
+  height: min(calc(100vh - 3rem), 52rem) !important;
+}
+
+/* Números de la actividad 2 (8 y 1): mismo formato que el número grande de la
+   actividad 1, en lugar de una imagen chica del dígito. */
+#content .adt-skin .adt-digit {
+  font-size: 9rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  color: #ef3b35 !important;
+}
+
+/* Letras M y N (actividad 8): mismo patrón, colores y tamaño que las vocales de
+   la actividad 1 — disponible en rojo claro, elegida en rojo lleno y completada
+   en verde lleno. Las clases de estado las pone el JS de la página; acá se
+   traducen a la paleta de las vocales. */
+#content .adt-skin .letter-chip {
+  padding: 0.75rem 1.25rem !important;
+  min-width: 2.75rem !important;
+  min-height: 2.75rem !important;
+  border: 2px solid #fca5a5 !important;
+  background: #ffffff !important;
+  color: #e3202a !important;
+}
+
+#content .adt-skin .letter-chip[class*="border-gray-"]:not([class*="border-red"]):not([class*="border-green"]):not([class*="border-yellow"]) {
+  border-color: #ddd6c8 !important;
+  background: #ffffff !important;
+  color: #6b7280 !important;
+}
+
+/* Elegida: rojo lleno, como la vocal en curso. */
+#content .adt-skin .letter-chip[class*="border-yellow-500"],
+#content .adt-skin .letter-chip[class*="bg-yellow-100"] {
+  border-color: #ef4444 !important;
+  background: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+/* Completada: verde lleno, como la vocal terminada. */
+#content .adt-skin .letter-chip[class*="border-green-500"] {
+  border-color: #22c55e !important;
+  background: #22c55e !important;
+  color: #ffffff !important;
+}
+
+/* Cartas de memoria (pg009): boca abajo también son tarjetas blancas. La piel
+   las pintaba de beige (#e9e2d2) y les dejaba un borde negro de 4 px, así que
+   se confundían con el papel. */
+#content .adt-skin button[data-activity-item][data-state] {
+  background: var(--carta-fondo) !important;
+  border: 2px solid transparent !important;
+  border-radius: var(--carta-radio) !important;
+  box-shadow: var(--carta-sombra) !important;
+}
+
+/* Las caras llenan la tarjeta: el contenedor no agrega margen y las caras no
+   tienen radio propio, así al voltear no aparece un marco dentro de otro. */
+#content .adt-skin button[data-activity-item][data-state] > span {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+  padding: 0 !important;
+  background: var(--carta-fondo) !important;
+  border-radius: inherit !important;
+  overflow: hidden !important;
+}
+
+#content .adt-skin button[data-activity-item][data-state] [data-card-front],
+#content .adt-skin button[data-activity-item][data-state] [data-card-back] {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+  padding: 0.6rem !important;
+  background: var(--carta-fondo) !important;
+  border-radius: inherit !important;
+  overflow: hidden !important;
 }
 
 /* La tarjeta de pg006 reservaba espacio para el círculo de selección, que ya
