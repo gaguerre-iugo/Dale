@@ -3460,6 +3460,125 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
   color: #157a3b;
 }
 
+/* ============================================================================
+   Tarjetas de las actividades — un solo diseño
+   ----------------------------------------------------------------------------
+   Las actividades venían con aspectos distintos según la página (bordes
+   punteados rojos, radios y separaciones en cero, fondos blancos). Acá se
+   unifican:
+
+     · tarjeta crema, borde suave de 2 px y esquinas de 16 px, con 1 rem de
+       separación en la grilla;
+     · seleccionada: borde azul, fondo azul claro y tilde en la esquina;
+     · par encontrado o respuesta correcta: fondo verde claro y borde más
+       grueso, sin etiqueta ni tilde;
+     · respuesta incorrecta: fondo y borde rojos; falta algo: ámbar.
+
+   Se usa el id #content para ganarle a la piel incrustada de cada página, que
+   fija bordes y fondos con !important.
+   ========================================================================== */
+
+:root {
+  --carta-fondo: #fbfaf4;
+  --carta-borde: #e2ddcf;
+  --carta-radio: 16px;
+  --carta-sel-fondo: #e8f2ff;
+  --carta-sel-borde: #2f7cf6;
+  --carta-ok-fondo: #e7f3e9;
+  --carta-ok-borde: #7fb294;
+  --carta-error-fondo: #fdecea;
+  --carta-error-borde: #d05a55;
+  --carta-aviso-fondo: #fdf4d9;
+  --carta-aviso-borde: #c99a2e;
+}
+
+/* Separación entre tarjetas: la piel la ponía en 0. */
+#content .adt-skin .adt-page-open :is(.grid, .adt-grid) {
+  gap: 1rem !important;
+}
+
+/* Celdas intermedias (pg010): el aspecto lo lleva la tarjeta, no la celda. */
+#content .adt-skin .adt-page-open .adt-grid > :not(.image-card):not(.activity-card):not(.image-tile):not(.pair-card):not(.sound-card) {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+/* En las actividades de selección el tablero punteado que envuelve la grilla
+   también sobra: las tarjetas ya se leen solas. En las de arrastrar (drag_drop)
+   los recuadros punteados son zonas donde soltar y se conservan. */
+#content .adt-skin section.adt-page-open[data-section-type*="multi_select"] .adt-grid[class*="border-dashed"],
+#content .adt-skin section.adt-page-open[data-section-type*="vowel_rounds"] .adt-grid[class*="border-dashed"] {
+  border-color: transparent !important;
+}
+
+/* Tarjeta base. */
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card) {
+  position: relative !important;
+  margin: 0 !important;
+  background: var(--carta-fondo) !important;
+  border: 2px solid var(--carta-borde) !important;
+  border-radius: var(--carta-radio) !important;
+  box-shadow: none !important;
+}
+
+/* La tarjeta de pg006 reservaba espacio para el círculo de selección, que ya
+   no se usa: el tilde va en la esquina. */
+#content .adt-skin .image-card {
+  padding-bottom: 1rem !important;
+}
+
+#content .adt-skin .selection-icon {
+  display: none !important;
+}
+
+/* Seleccionada: azul + tilde. */
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card):is([aria-pressed="true"], .is-selected, [class*="border-blue-500"]):not(.is-matched) {
+  background: var(--carta-sel-fondo) !important;
+  border-color: var(--carta-sel-borde) !important;
+}
+
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card):is([aria-pressed="true"], .is-selected, [class*="border-blue-500"]):not(.is-matched)::after {
+  content: "";
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background-color: var(--carta-sel-borde);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5 9.8 16.8 18.5 7.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 72%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+
+/* Par encontrado / respuesta correcta: verde, borde más grueso y sin etiqueta. */
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card).is-matched,
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card)[class*="border-green-500"] {
+  background: var(--carta-ok-fondo) !important;
+  border: 3px solid var(--carta-ok-borde) !important;
+}
+
+#content .adt-skin .is-matched .activity-feedback-icon,
+#content .adt-skin .is-matched .activity-feedback-label {
+  display: none !important;
+}
+
+/* Respuesta incorrecta. No se toma `border-red-300`: en pg013 es el borde por
+   defecto de la tarjeta, no un error. */
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card)[class*="border-red-500"] {
+  background: var(--carta-error-fondo) !important;
+  border-color: var(--carta-error-borde) !important;
+}
+
+/* Falta algo (pg013): ámbar. */
+#content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card)[class*="border-yellow-500"] {
+  background: var(--carta-aviso-fondo) !important;
+  border-color: var(--carta-aviso-borde) !important;
+}
+
 /* El entramado es fondo del canvas: el dock (z 55/56) y la barra de navegación
    (z 64) quedan siempre por encima, sin tocar su apilado. */
 
