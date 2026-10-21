@@ -48,6 +48,8 @@ cada vez que actualices el eva-kit.
   resaltado; minimizado deja el FAB turquesa.
 - Cambio de voz: pide `voices/consultor/audio/…` (200).
 - Tap to play: las tarjetas de `pg006_sec002`–`pg013_sec004` piden sus IDs a la voz activa (`text-pg006-*`, `pg00*_word_*`) y reproducen el clip; sin puente caen a `speechSynthesis`.
+- Índice: pegado al borde izquierdo, con X, toggle desde la barra y sin apertura automática al cargar.
+- Glosario: pegado al borde derecho, por encima del dock, cierra con su botón o clic afuera.
 - Persistencia de voz, velocidad, resaltado y lectura fácil al recargar.
 - Las 19 páginas cargan sin `pageerror` ni desborde horizontal.
 

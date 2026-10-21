@@ -18,18 +18,17 @@ sheísmo. Ver `voices test/README.md` para la comparación de voces.
 
 ```
 content/i18n/es-UY/
-├── audio/                         # voz histórica del libro (493 mp3)
-├── audio_voices.json              # mapa de las dos voces nuevas (493 ids c/u)
+├── audio/                         # MP3 base de respaldo (348)
+├── audio_voices.json              # mapa de las dos voces nuevas (348 ids c/u)
 └── voices/
-    ├── asesora/audio/*.mp3        # 117 archivos (páginas 1-2 + palabras de pg006-013)
-    └── consultor/audio/*.mp3      # 117 archivos (páginas 1-2 + palabras de pg006-013)
+    ├── asesora/audio/*.mp3        # 348 archivos
+    └── consultor/audio/*.mp3      # 348 archivos
 ```
 
-`audio_voices.json` tiene **493 entradas por voz** a propósito: el runtime elige
-el mapa completo de la voz activa, no hace fallback por id. Los 117 ids
-convertidos apuntan a `../voices/<voz>/audio/<id>.mp3`; el resto sigue
-apuntando al MP3 histórico. Así ninguna página queda muda mientras la
-conversión avanza.
+`audio_voices.json` tiene **348 entradas por voz** a propósito: el runtime elige
+el mapa completo de la voz activa, no hace fallback por id. **Los 348 ids están
+convertidos** y apuntan a `../voices/<voz>/audio/<id>.mp3`; los MP3 de `audio/`
+quedan como respaldo histórico.
 
 El runtime arma la URL como `./content/i18n/<lang>/audio/<filename>`, por eso el
 `../` del mapa: sale de `audio/` y entra en `voices/`.
@@ -84,14 +83,27 @@ Con Playwright sobre el libro servido en HTTP y desde `file://`:
   reinicia y el siguiente audio sale de `voices/consultor/…` (HTTP 200).
 - El cambio hecho en Herramientas se refleja en el dock y viceversa.
 - La elección persiste (`localStorage.narratorVoice`) entre páginas y recargas.
-- En pg006 las 8 palabras de la actividad 1 salen de la voz activa; el resto de
-  esa página sigue con el corpus histórico, sin silencios ni 404.
-- Las 19 páginas cargan sin errores de JS ni desborde horizontal.
+- Todas las páginas, la lectura fácil, los resúmenes de actividad y el glosario
+  salen de la voz activa; no quedan ids apuntando al MP3 histórico.
+- Las 12 páginas cargan sin errores de JS ni desborde horizontal.
+
+## Glosario
+
+`glossary.json` tiene 51 entradas y 102 audios (palabra + definición).
+`generar_glosario.py` los genera por bloques y reintenta sueltos los que no
+alinean:
+
+```bash
+python tools/voice/generar_glosario.py --voice asesora --model gemini-3.8-flash-tts
+python tools/voice/generar_glosario.py --voice consultor --model gemini-3.8-flash-lite-tts
+```
+
+Las descripciones de imágenes se quitaron de la lectura y de los mapas; los
+`alt` de las imágenes se mantienen para accesibilidad.
 
 ## Pendiente
 
-- Convertir el resto de los 493 audios (el mapa ya está preparado).
-- Normalización global de volumen cuando esté todo convertido.
+- Si cambia la redacción de los resúmenes de lectura fácil, regenerarlos.
 - El resaltado palabra por palabra queda fuera del dock porque este libro tiene
   `features.highlight=false` (1930 lo tiene activo y por eso lo muestra).
 

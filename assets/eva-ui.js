@@ -141,10 +141,30 @@
         '<span class="reflow-toolbar-icon" data-eva-icon="gear" aria-hidden="true"></span><span class="reflow-toolbar-label">Herramientas</span></button>';
     document.body.appendChild(barra);
 
-    barra.querySelector("#reflow-index").addEventListener("click", function () { clickRuntime(["Menú principal", "Main Menu"]); });
+    barra.querySelector("#reflow-index").addEventListener("click", function () {
+      if (indexDialog()) {
+        closeNativeDialog();
+        try { localStorage.removeItem("dockMenuValue"); } catch (e) {}
+        this.setAttribute("aria-expanded", "false");
+        return;
+      }
+      clickRuntime(["Menú principal", "Main Menu"]);
+      this.setAttribute("aria-expanded", "true");
+      setTimeout(tagIndexDialog, 60);
+    });
     barra.querySelector("#reflow-previous").addEventListener("click", function () { clickRuntime(["Página anterior", "Previous page"]); });
     barra.querySelector("#reflow-next").addEventListener("click", function () { clickRuntime(["Página siguiente", "Next page"]); });
-    barra.querySelector("#reflow-glossary").addEventListener("click", function () { clickRuntime(["Glosario", "Glossary"]); });
+    barra.querySelector("#reflow-glossary").addEventListener("click", function () {
+      if (glossaryDialog()) {
+        closeNativeDialog();
+        try { localStorage.removeItem("dockMenuValue"); } catch (e) {}
+        this.setAttribute("aria-expanded", "false");
+        return;
+      }
+      clickRuntime(["Glosario", "Glossary"]);
+      this.setAttribute("aria-expanded", "true");
+      setTimeout(tagGlossaryDialog, 60);
+    });
     barra.querySelector("#reflow-tools").addEventListener("click", function () {
       var dlg = findSettingsDialog();
       if (dlg) { closeNativeDialog(); return; }
@@ -163,6 +183,87 @@
 
   function closeNativeDialog() {
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", code: "Escape", keyCode: 27, which: 27, bubbles: true }));
+  }
+
+  /* El índice es un popover nativo anclado al dock oculto. Lo fijamos al borde
+     izquierdo y le agregamos una X, sin tocar el runtime. */
+  function indexDialog() {
+    var ds = document.querySelectorAll("#interface-container [role='dialog']");
+    for (var i = 0; i < ds.length; i += 1) {
+      var h = ds[i].querySelector("h4");
+      if (h && h.textContent.trim() === "Índice" && ds[i].querySelector("[role='tablist']")) return ds[i];
+    }
+    return null;
+  }
+
+  function tagIndexDialog() {
+    var dlg = indexDialog();
+    if (!dlg) return;
+    var wrap = dlg.parentElement;
+    if (!wrap) return;
+    wrap.classList.add("eva-index-panel-wrap");
+    dlg.classList.add("eva-index-panel");
+    try {
+      ["position:fixed", "left:0", "top:0", "right:auto", "bottom:auto",
+       "transform:none", "width:min(20rem, 92vw)"].forEach(function (pair) {
+        var p = pair.split(":");
+        wrap.style.setProperty(p[0], p[1], "important");
+      });
+    } catch (e) {}
+    if (!dlg.querySelector(".eva-index-close")) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "eva-index-close";
+      btn.setAttribute("aria-label", "Cerrar índice");
+      btn.textContent = "×";
+      btn.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        closeNativeDialog();
+        try { localStorage.removeItem("dockMenuValue"); } catch (e) {}
+        var trigger = document.getElementById("reflow-index");
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      });
+      dlg.appendChild(btn);
+    }
+  }
+
+  var indexObserver = null;
+
+  function glossaryDialog() {
+    var ds = document.querySelectorAll("#interface-container [role='dialog']");
+    for (var i = 0; i < ds.length; i += 1) {
+      var h = ds[i].querySelector("h4");
+      if (h && h.textContent.trim() === "Glosario") return ds[i];
+    }
+    return null;
+  }
+
+  function tagGlossaryDialog() {
+    var dlg = glossaryDialog();
+    if (!dlg) return;
+    var wrap = dlg.parentElement;
+    if (!wrap) return;
+    wrap.classList.add("eva-glossary-panel-wrap");
+    dlg.classList.add("eva-glossary-panel");
+    try {
+      ["position:fixed", "left:auto", "right:0", "top:0", "bottom:5.5rem",
+       "transform:none", "width:min(22rem, 92vw)"].forEach(function (pair) {
+        var p = pair.split(":");
+        wrap.style.setProperty(p[0], p[1], "important");
+      });
+    } catch (e) {}
+    var trigger = document.getElementById("reflow-glossary");
+    if (trigger) trigger.setAttribute("aria-expanded", "true");
+  }
+
+  function initIndexPanel() {
+    var host = document.getElementById("interface-container");
+    if (!host || indexObserver) return;
+    indexObserver = new MutationObserver(function () { tagIndexDialog(); tagGlossaryDialog(); });
+    indexObserver.observe(host, { childList: true, subtree: true });
+    tagIndexDialog();
+    tagGlossaryDialog();
   }
 
   /* ── Atajos de teclado ─────────────────────────────────────────────────── */
@@ -724,6 +825,7 @@
     ensureStyles();
     if (!window.__evaFontApplied) { window.__evaFontApplied = true; applyFontSize(storedFontSize()); }
     mountToolbar();
+    initIndexPanel();
     mountPlayer();
     loadTotalPages();
     var dlg = findSettingsDialog();

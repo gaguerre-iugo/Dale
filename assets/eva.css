@@ -3727,3 +3727,94 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
 /* El entramado es fondo del canvas: el dock (z 55/56) y la barra de navegación
    (z 64) quedan siempre por encima, sin tocar su apilado. */
 
+
+/* ── Índice pegado al borde izquierdo ─────────────────────────────────────
+   El índice nativo es un popover anclado al dock oculto; el adaptador le
+   agrega .eva-index-panel-wrap cuando lo detecta. */
+#interface-container .eva-index-panel-wrap {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: min(20rem, 92vw) !important;
+  height: auto !important;
+  z-index: 70 !important;
+}
+
+#interface-container .eva-index-panel-wrap .eva-index-panel {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  max-height: calc(100dvh - 1rem) !important;
+  border-radius: 0 1rem 1rem 0 !important;
+}
+
+#interface-container .eva-index-panel-wrap .eva-index-panel > div:first-child {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#interface-container .eva-index-panel-wrap .eva-index-panel h4 {
+  padding-right: 2.5rem;
+}
+
+#interface-container .eva-index-panel-wrap .eva-index-panel > .eva-index-close {
+  position: absolute !important;
+  top: .7rem !important;
+  right: .7rem !important;
+  left: auto !important;
+  z-index: 5 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 2rem !important;
+  min-width: 2rem !important;
+  max-width: 2rem !important;
+  height: 2rem !important;
+  min-height: 2rem !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  border: 1px solid #9dbcb7 !important;
+  border-radius: .5rem !important;
+  background: #d9e9e6 !important;
+  color: #0f4d4a !important;
+  font-size: 1.4rem !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+}
+
+.eva-index-close:hover { background: #cbe2de; }
+.eva-index-close:focus-visible { outline: 3px solid #008078; outline-offset: 2px; }
+
+/* ── Glosario pegado al borde derecho ─────────────────────────────────────
+   Mismo caso que el índice: es un popover nativo anclado al dock oculto. */
+#interface-container .eva-glossary-panel-wrap {
+  position: fixed !important;
+  right: 0 !important;
+  left: auto !important;
+  top: 0 !important;
+  bottom: 5.5rem !important;
+  transform: none !important;
+  width: min(22rem, 92vw) !important;
+  height: auto !important;
+  z-index: 70 !important;
+}
+
+#interface-container .eva-glossary-panel-wrap .eva-glossary-panel {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  border-radius: 1rem 0 0 1rem !important;
+}
+
+#interface-container .eva-glossary-panel-wrap .eva-glossary-panel > div:first-child {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
