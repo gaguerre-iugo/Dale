@@ -4,14 +4,6 @@
     "href": "pg001_sec001.html"
   },
   {
-    "section_id": "pg002_sec001",
-    "href": "pg002_sec001.html"
-  },
-  {
-    "section_id": "pg003_sec001",
-    "href": "pg003_sec001.html"
-  },
-  {
     "section_id": "pg004005_sec001",
     "href": "pg004005_sec001.html"
   },
@@ -46,5 +38,9 @@
   {
     "section_id": "pg013_sec004",
     "href": "pg013_sec004.html"
+  },
+  {
+    "section_id": "pg002_sec001",
+    "href": "pg002_sec001.html"
   }
 ]

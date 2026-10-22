@@ -3,8 +3,8 @@
 
 El preloader es generado. Cuando se edita una pagina o un JSON que ya esta
 incrustado, hay que volver a leerlo; si no, la version file:// sirve contenido
-viejo. Este script actualiza cada clave existente desde su archivo y deja el
-resto del preloader intacto.
+viejo. Este script actualiza cada clave existente desde su archivo, elimina las
+claves cuyo archivo ya no existe y deja el resto del preloader intacto.
 
 Uso: python tools/voice/refresh_preloader.py
 """
@@ -40,6 +40,8 @@ def main():
     for key in list(data):
         path = local_path(key)
         if not path.is_file():
+            del data[key]
+            changed.append(key + " (archivo eliminado)")
             continue
         if path.suffix.lower() == ".json":
             value = json.loads(path.read_text(encoding="utf-8"))
