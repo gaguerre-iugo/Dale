@@ -3848,16 +3848,16 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
 }
 
 #nav-container [aria-label="dock-label"] button[class*="bg-emerald-600"]:not(:disabled) {
-  background: #e8423b !important;
+  background: var(--ceibal-institutional-600) !important;
   color: #fff !important;
 }
 
 #nav-container [aria-label="dock-label"] button[class*="bg-emerald-600"]:not(:disabled):hover {
-  background: #d23832 !important;
+  background: var(--ceibal-institutional-700) !important;
 }
 
 #nav-container [aria-label="dock-label"] button[class*="bg-emerald-600"]:not(:disabled):active {
-  background: #b92d28 !important;
+  background: var(--ceibal-institutional-800) !important;
 }
 
 /* El contenedor flotante del botón de actividad no debe dibujar un marco
