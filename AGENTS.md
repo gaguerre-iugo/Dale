@@ -160,7 +160,7 @@ Not every key in `texts.json` has a `data-id` in the HTML, and not every `data-i
   - `pg{NNN}_sec{NNN}_ans_target-*` (6) — feedback lines for drag-to-classify activities.
 - **17 DOM ids with no text entry**, on purpose:
   - `pg{NNN}_s{N}` — the activity section root; it has no plain text entry, only `{id}_easy_read`, a spoken summary of the whole activity.
-  - `text-pg013-29` … `text-pg013-37` — empty `sr-feedback` spans that the activity script fills with "✓", "✗" or "Falta".
+  - `text-pg013-29` … `text-pg013-37` — empty `sr-feedback` spans that the activity script fills with "✓" or "✗".
 
 ### Tap to play en actividades
 

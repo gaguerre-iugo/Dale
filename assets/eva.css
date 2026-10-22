@@ -3718,7 +3718,7 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
   border-color: var(--carta-error-borde) !important;
 }
 
-/* Falta algo (pg013): ámbar. */
+/* Aviso (pg013): ámbar. */
 #content .adt-skin :is(.image-card, .activity-card, .image-tile, .pair-card, .sound-card)[class*="border-yellow-500"] {
   background: var(--carta-aviso-fondo) !important;
   border-color: var(--carta-aviso-borde) !important;
