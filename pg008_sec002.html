@@ -334,7 +334,8 @@
           if (dragged) placeItemInTarget(dragged, target);
         });
 
-        target.addEventListener('click', function () {
+        target.addEventListener('click', function (e) {
+          if (e.target.closest('[data-activity-item]')) return;
           if (selectedItem) placeItemInTarget(selectedItem, target);
         });
 
@@ -355,6 +356,36 @@
           }
         });
       });
+
+      if (itemsSource) {
+        itemsSource.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          itemsSource.classList.add('ring-4', 'ring-blue-200');
+        });
+
+        itemsSource.addEventListener('dragleave', function () {
+          itemsSource.classList.remove('ring-4', 'ring-blue-200');
+        });
+
+        itemsSource.addEventListener('drop', function (e) {
+          e.preventDefault();
+          itemsSource.classList.remove('ring-4', 'ring-blue-200');
+          const id = e.dataTransfer.getData('text/plain');
+          const dragged = section.querySelector(`[data-activity-item='${id}']`);
+          if (dragged && dragged.closest('[data-activity-target]')) moveItemBack(dragged);
+        });
+
+        itemsSource.addEventListener('click', function () {
+          if (selectedItem && !itemsSource.contains(selectedItem)) moveItemBack(selectedItem);
+        });
+
+        itemsSource.addEventListener('keydown', function (e) {
+          if ((e.key === 'Enter' || e.key === ' ') && selectedItem && !itemsSource.contains(selectedItem)) {
+            e.preventDefault();
+            moveItemBack(selectedItem);
+          }
+        });
+      }
 
       shuffleItems();
 
