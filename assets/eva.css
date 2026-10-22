@@ -3818,3 +3818,59 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
   max-height: 100% !important;
   overflow-y: auto !important;
 }
+
+/* Botón de envío de actividades (runtime): misma forma que las acciones
+   principales de EVA. Enviar va en amarillo; al completar la actividad el
+   mismo botón pasa a Siguiente y usa el rojo del número de actividad. */
+#nav-container [aria-label="dock-label"] button[class*="bg-blue-600"]:not(:disabled),
+#nav-container [aria-label="dock-label"] button[class*="bg-blue-600"]:not(:disabled),
+#nav-container [aria-label="dock-label"] button[class*="bg-emerald-600"]:not(:disabled) {
+  min-width: 11.25rem !important;
+  min-height: 3.5rem !important;
+  padding: .75rem 1.25rem !important;
+  border: 1px solid transparent !important;
+  border-radius: .75rem !important;
+  font-weight: 700 !important;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, .1) !important;
+}
+
+#nav-container [aria-label="dock-label"] button[class*="bg-blue-600"]:not(:disabled) {
+  background: #ffd333 !important;
+  color: #15171a !important;
+}
+
+#nav-container [aria-label="dock-label"] button[class*="bg-blue-600"]:not(:disabled):hover {
+  background: #f2c400 !important;
+}
+
+#nav-container [aria-label="dock-label"] button[class*="bg-blue-600"]:not(:disabled):active {
+  background: #e0b400 !important;
+}
+
+#nav-container [aria-label="dock-label"] button[class*="bg-emerald-600"]:not(:disabled) {
+  background: #e8423b !important;
+  color: #fff !important;
+}
+
+#nav-container [aria-label="dock-label"] button[class*="bg-emerald-600"]:not(:disabled):hover {
+  background: #d23832 !important;
+}
+
+#nav-container [aria-label="dock-label"] button[class*="bg-emerald-600"]:not(:disabled):active {
+  background: #b92d28 !important;
+}
+
+/* El Siguiente de la barra de navegación usa el mismo rojo. */
+body.reflow-book #reflow-pagination #reflow-next:not(:disabled) {
+  background: #e8423b !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+body.reflow-book #reflow-pagination #reflow-next:not(:disabled):hover {
+  background: #d23832 !important;
+}
+
+body.reflow-book #reflow-pagination #reflow-next:not(:disabled):active {
+  background: #b92d28 !important;
+}
