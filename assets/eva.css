@@ -3827,11 +3827,11 @@ body.reflow-book .reflow-reader-panel.reflow-accessibility-panel :is(.reflow-tts
 #nav-container [aria-label="dock-label"] button[class*="bg-emerald-600"]:not(:disabled) {
   min-width: 11.25rem !important;
   min-height: 3.5rem !important;
-  padding: .75rem 1.25rem !important;
+  padding: .75rem 1.5rem !important;
   border: 0 !important;
-  border-radius: .75rem !important;
+  border-radius: 999px !important;
   font-weight: 700 !important;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, .1) !important;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, .1) !important;
 }
 
 #nav-container [aria-label="dock-label"] button[class*="bg-blue-600"]:not(:disabled) {
