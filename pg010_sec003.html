@@ -229,11 +229,12 @@
           </button>
         </div>
       </div>
-      <div class="mt-4 min-h-[1.5rem] text-base font-semibold" data-activity-status role="status" aria-live="polite"></div>
+
     </div>
   </div>
 
-  <script>
+  <div class="mt-6 min-h-[1.5rem] text-base font-semibold" data-activity-status role="status" aria-live="polite"></div>
+        <script>
     (function () {
       const section = document.currentScript.closest('section');
       if (!section || section.dataset.adtInitialized === 'true') return;
@@ -354,7 +355,7 @@
               status.textContent = 'Elegí una o más imágenes y luego probá de nuevo.';
               status.classList.add('text-red-700');
             } else {
-              status.textContent = 'Todavía no. Revisá las imágenes marcadas con ✗ y seguí buscando las que empiezan con M.';
+              status.textContent = 'Todavía no. Revisá las imágenes marcadas con ✗ y seguí buscando las que empiezan con /m/.';
               status.classList.add('text-red-700');
             }
           }

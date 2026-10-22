@@ -99,7 +99,7 @@
       
     </div>
 
-    <div class="mt-4 min-h-[1.5rem] text-base font-semibold activity-status" data-activity-status role="status" aria-live="polite"></div>
+
   </div><div class="adt-grid grid grid-cols-2 md:grid-cols-4 gap-6" role="list" aria-label="Tarjetas con im&#xe1;genes para armar parejas">
         <button type="button" role="listitem" data-activity-item="item-1" data-sound="sol" data-label="sol" data-pair-key="s" data-audio-id="pg011_word_sol" class="sound-card min-h-11 rounded-3xl border-2 border-gray-200 bg-transparent p-5 flex flex-col items-center justify-center text-center shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300">
           <img src="images/pg011_im010.png?v=2" alt="Ilustraci&#xf3;n de un sol" class="max-h-36 h-auto w-auto max-w-full rounded-lg mx-auto object-contain pointer-events-none">
@@ -144,7 +144,8 @@
         </button>
       </div>
 
-  <script>
+  <div class="mt-6 min-h-[1.5rem] text-base font-semibold activity-status" data-activity-status role="status" aria-live="polite"></div>
+        <script>
     (function () {
       const section = document.currentScript.closest('section');
       if (!section || section.dataset.adtInitialized === 'true') return;
